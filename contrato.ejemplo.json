@@ -1,0 +1,57 @@
+{
+  "_leeme": "Contrato de ejemplo para puente_luz.py. Copia este archivo como contrato.json y cambia los valores por los de tu factura. Las claves que empiezan por _ son comentarios y el script las ignora. Todos los importes van sin IVA ni impuesto eléctrico, como aparecen en el desglose de la factura.",
+  "version": 1,
+  "descripcion": "Ejemplo genérico: PVPC 2.0TD en la península, valores regulados de 2026",
+
+  "tarifa": {
+    "_tipo": "pvpc = precio por horas de REE (indicador 1001). fijo = un precio por kWh todo el día. periodos = un precio por kWh para P1, P2 y P3 (mercado libre con discriminación horaria).",
+    "tipo": "pvpc",
+    "peaje": "2.0TD",
+    "_sistema": "peninsula, baleares, canarias o ceuta_melilla. Solo cambia los horarios de P1/P2/P3 (Ceuta y Melilla van una hora más tarde). El PVPC por horas de REData solo se ha probado para la península.",
+    "sistema": "peninsula"
+  },
+
+  "energia": {
+    "_nota": "Solo se usa si tarifa.tipo es fijo o periodos. Pon el precio por kWh que figura en tu contrato. Si tu comercializadora lo da ya con peajes y cargos (lo normal en mercado libre), deja incluye_peajes_cargos en true.",
+    "precio_fijo_eur_kwh": null,
+    "precio_periodos_eur_kwh": {"P1": null, "P2": null, "P3": null},
+    "incluye_peajes_cargos": true
+  },
+
+  "potencia": {
+    "_nota": "En 2.0TD la potencia tiene dos periodos: P1 (punta y llano, 8 a 24 h en laborables) y P2 (valle). Peajes (CNMC) y cargos (Ministerio) son iguales para todos los consumidores 2.0TD y cambian cada año.",
+    "contratada_kw": {"P1": 4.6, "P2": 4.6},
+    "peajes_eur_kw_dia": {"P1": 0.063904, "P2": 0.001216},
+    "cargos_eur_kw_dia": {"P1": 0.011999, "P2": 0.000772},
+    "margen_comercializacion_eur_kw_dia": 0.008529
+  },
+
+  "peajes_cargos_energia_eur_kwh": {
+    "_nota": "En PVPC ya van dentro del precio horario de REE: aquí sirven para explicar la factura y para avisar si la normativa cambia (puente_luz.py desglose los compara con ESIOS). NO se suman al precio de REE.",
+    "peajes": {"P1": 0.033261, "P2": 0.016409, "P3": 0.000077},
+    "cargos": {"P1": 0.064292, "P2": 0.012858, "P3": 0.003215}
+  },
+
+  "otros_fijos": {
+    "_nota": "Importes diarios que no dependen de cuánto consumes. El alquiler del contador depende de la distribuidora y del tipo de contador: mira tu factura.",
+    "bono_social_eur_dia": 0.024688,
+    "alquiler_contador_eur_dia": 0.02663
+  },
+
+  "impuestos": {
+    "_nota": "Impuesto especial sobre la electricidad (Ley 38/1992, art. 99) y IVA. En Canarias no hay IVA sino IGIC, y en Ceuta y Melilla IPSI: cambia iva por el tipo que aplique y comprueba la base en tu factura.",
+    "impuesto_electrico": 0.0511269632,
+    "impuesto_electrico_minimo_eur_mwh": 1.0,
+    "impuesto_electrico_base": ["potencia", "energia", "bono_social"],
+    "iva": 0.21,
+    "_iva_base": "todo lo anterior más el impuesto eléctrico y el alquiler del contador"
+  },
+
+  "calendario": {
+    "_nota": "Días enteros en valle (P3) en 2.0TD, además de sábados y domingos: festivos nacionales de fecha fija y no sustituibles, y el 6 de enero (Circular CNMC 3/2020). Formato MM-DD. Revisa cada año el calendario laboral del BOE.",
+    "festivos_valle": ["01-01", "01-06", "05-01", "08-15", "10-12", "11-01", "12-06", "12-08", "12-25"],
+    "festivos_valle_extra": []
+  },
+
+  "factura_referencia": null
+}

@@ -1,0 +1,7 @@
+contrato.json
+__pycache__/
+*.pyc
+cache*/
+*.png
+*.bak
+.env
