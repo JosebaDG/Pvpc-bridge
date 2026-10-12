@@ -1,6 +1,6 @@
 # Archivo del estudio de la API REData (9 y 10 de octubre de 2026)
 
-Aquí están las pruebas del estudio que dio lugar a la [guía de la API](../../redata-api-red-electrica-guia.md): las respuestas reales que devolvieron REData y ESIOS, los errores, los scripts que se usaron y el informe original. Sirve para comprobar lo que dice la guía sin volver a preguntar al servidor.
+Aquí están las pruebas del estudio que dio lugar a la [guía de la API](../../docs/guia-api-redata.md): las respuestas reales que devolvieron REData y ESIOS, los errores, los scripts que se usaron y el informe original. Sirve para comprobar lo que dice la guía sin volver a preguntar al servidor.
 
 El histórico completo de precios y generación no está aquí, sino en [`datos/`](../../datos/README.md). Las limitaciones y problemas encontrados están resumidos en [`datos/LIMITACIONES.md`](../../datos/LIMITACIONES.md).
 

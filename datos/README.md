@@ -109,7 +109,7 @@ La descarga del 12 de octubre de 2026 cumplió estas reglas: cada petición y su
 3. Mencionar la fecha de la última actualización.
 4. No usar logotipos ni marcas de REE.
 
-Por eso: estos datos **no** están bajo la licencia del código de este repositorio, no se pueden usar con fines comerciales sin autorización de REE, las respuestas crudas se guardan sin tocar y la fecha de última actualización que declara REE está en `manifiesto.json` (`ultima_actualizacion_declarada_por_ree`) y en cada respuesta (`last-update`). Para un uso que vaya más allá, consulta a REE.
+Por eso: estos datos **no** están bajo las licencias de este repositorio (MIT para el código, [`LICENSE`](../LICENSE), y CC BY 4.0 para la documentación, [`docs/LICENSE.md`](../docs/LICENSE.md)), no se pueden usar con fines comerciales sin autorización de REE, las respuestas crudas se guardan sin tocar y la fecha de última actualización que declara REE está en `manifiesto.json` (`ultima_actualizacion_declarada_por_ree`) y en cada respuesta (`last-update`). Para un uso que vaya más allá, consulta a REE.
 
 Cita sugerida: *Datos: Red Eléctrica (REE), REData, https://www.ree.es/es/datos/apidatos, descargados el 12 de octubre de 2026.*
 

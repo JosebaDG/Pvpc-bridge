@@ -1,5 +1,5 @@
 ruta,tipo,bytes,sha256,procedencia
-README.md,documento,4717,1e1d69d503a236bb1eb9e53f1aa4440486c4f2b976a605b9662c69c2d6de0fa0,escrito para el repositorio el 12-10-2026
+README.md,documento,4691,e7feccf4ad3c9850a8a766895a5c2cb5730ed2d1d3ddee77a1e1b25dc4e84c06,escrito para el repositorio el 12-10-2026
 fuentes.md,documento,1960,801d2f09f69d7962c7265e3c161e5485ac15b3abd9f0530be4aa07d1d791e05b,escrito para el repositorio el 12-10-2026
 graficas/pvpc_2026-10-09_eje_cada_2h.png,derivado,58354,d0a3ea5e784bc8103f8a2c7f8d1ae7c7088f795cd25d19a5bf01d30e7240725a,gráfica de puente_luz.py del 9-10-2026 (antes de corregir el eje)
 graficas/pvpc_2026-10-09_eje_cada_hora.png,derivado,101453,6d5f223f0466a2eadc07606f4dac3a2240cce1ffa1aa549676d5ab75cbc9e29e,gráfica de puente_luz.py del 9-10-2026 (después de corregir el eje)
