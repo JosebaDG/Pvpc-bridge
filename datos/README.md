@@ -28,6 +28,7 @@ Las limitaciones de la API y los problemas que fueron saliendo están en [LIMITA
 | `consultas/registro_descargas.csv` | Cada petición que se hizo, cuándo y con qué resultado |
 | `herramientas/cache_ree.py` | La caché: devuelve la copia local si existe y solo descarga lo que falta |
 | `herramientas/actualizar_historico.py` | Descarga solo lo que falta, con pausas, y rehace los CSV y el manifiesto |
+| `herramientas/comprobar_con_esios.py` | Compara el PVPC de los CSV con el archivo 70 oficial de ESIOS, sin tocar la red |
 
 Los CSV son derivados de las respuestas crudas, que son la fuente de verdad: si dudas de un CSV, bórralo y rehazlo con `--solo-csv`.
 
@@ -36,6 +37,10 @@ Los CSV son derivados de las respuestas crudas, que son la fuente de verdad: si 
 - **Precios:** `fecha_hora_local` (hora peninsular con su desfase, `+01:00` o `+02:00`), `fecha_hora_utc` y `eur_mwh`. Para pasar a €/kWh, divide entre 1000 (100 €/MWh son 0,10 €/kWh). Los días de cambio de hora tienen 23 o 25 filas; la hora UTC no se repite nunca.
 - **Generación:** `fecha` y una columna por tecnología en MWh (`eolica_mwh`, `solar_fotovoltaica_mwh`, `hidraulica_mwh`, `nuclear_mwh`, `ciclo_combinado_mwh`...), con `generacion_total_mwh` al final. Una celda vacía es que REE no da esa tecnología ese día.
 - **Meteo:** `fecha` y las variables diarias de Open-Meteo con su nombre original: `wind_speed_10m_max` y `wind_gusts_10m_max` (km/h), `wind_direction_10m_dominant` (grados), `shortwave_radiation_sum` (MJ/m²), `temperature_2m_mean` (°C) y `precipitation_sum` (mm). Los puntos y por qué se eligieron están en `manifiesto.json`.
+
+## Comprobado contra ESIOS
+
+El PVPC de los CSV coincide hora a hora con el archivo 70 oficial de ESIOS (columna PCB, península) en los ocho días que se guardaron en el estudio: 1-6-2021, 8-12-2025, 6-1-2026, 3-4-2026, 1-5-2026, 26-9-2026 (el del PVPC negativo), 8-10-2026 y 9-10-2026. Son 192 horas con diferencia cero. Para repetirlo sin tocar la red: `python3 datos/herramientas/comprobar_con_esios.py`.
 
 ## Cómo reciclar las consultas
 
