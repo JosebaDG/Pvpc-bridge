@@ -1,6 +1,8 @@
 # Pvpc-bridge: precio de la luz hora a hora, hecho entre una persona y dos agentes de IA
 
-Pvpc-bridge descarga el precio de la luz de cada hora (PVPC) desde la API abierta de Red Eléctrica, lo pasa por un script puente que devuelve JSON y responde preguntas prácticas: cuáles son las horas más baratas, cuándo conviene lanzar un trabajo largo (por ejemplo, entrenar un modelo en una GPU de 600 W) y cuánto cuesta en euros de factura.
+Pvpc-bridge descarga el precio de la luz de cada hora (PVPC) desde la API abierta de Red Eléctrica, lo pasa por un script puente que devuelve JSON y responde preguntas prácticas: cuáles son las horas más baratas, cuándo conviene poner un consumo grande o flexible (la lavadora, el lavavajillas, el termo, la carga del coche o un equipo que trabaja durante horas) y cuánto cuesta en euros de factura. Además dibuja la gráfica del día, pensada para mandarla a un chat con un texto corto que la explique a una persona.
+
+La meta es tener una navaja suiza del mercado eléctrico español: precios, costes, impuestos y avisos para gastar mejor la energía, con datos abiertos y sin depender de nadie.
 
 Pero este repositorio quiere enseñar algo más que un script. Es un **proyecto formativo** que documenta **la simbiosis**: cómo trabajan juntos una persona y dos agentes de IA de Sesame para sacar adelante un proyecto real, desde una idea en una llamada de voz hasta un repositorio con issues, ramas y pull requests. Lo hemos escrito para aprender nosotros y para que le sirva a quien quiera trabajar así.
 
@@ -41,9 +43,9 @@ git clone https://github.com/JosebaDG/Pvpc-bridge.git
 cd Pvpc-bridge
 cp contrato.ejemplo.json contrato.json     # pon aquí los datos de tu factura (no se sube: está en .gitignore)
 python3 puente_luz.py resumen --dia hoy              # horas más baratas y más caras del día
-python3 puente_luz.py bloque --horas 4 --gpu-w 600   # mejor bloque seguido de 4 horas desde ahora
+python3 puente_luz.py bloque --horas 2 --potencia 2000   # mejor bloque seguido de 2 horas para un aparato de 2 kW
 python3 puente_luz.py umbral --max-precio 0.10       # franjas por debajo de 10 céntimos
-python3 puente_luz.py grafica --dia hoy --salida pvpc.png
+python3 puente_luz.py grafica --dia hoy --salida pvpc.png   # gráfica del día, lista para mandar a un chat
 ```
 
 La salida es JSON, pensada para que la lea otro script, un cron o un agente. Todos los subcomandos están en la [documentación técnica](docs/proyecto-precio-luz.md#uso-rápido).
@@ -62,7 +64,7 @@ La salida es JSON, pensada para que la lea otro script, un cron o un agente. Tod
 
 ## Estado y próximos pasos
 
-Lo que viene está en las [issues](https://github.com/JosebaDG/Pvpc-bridge/issues): un servidor MCP en Cloudflare Workers para que cualquier agente consulte los precios, una carpeta `datos/` con el histórico descargado con calma y un aviso nocturno con las horas baratas del día siguiente.
+Lo que viene está en las [issues](https://github.com/JosebaDG/Pvpc-bridge/issues): un servidor MCP en Cloudflare Workers para que cualquier agente consulte los precios, una carpeta `datos/` con el histórico descargado con calma y un aviso nocturno con las horas baratas del día siguiente, que llegue al chat con la gráfica y un texto corto.
 
 ## Fuente de los datos
 
