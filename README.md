@@ -46,6 +46,7 @@ python3 puente_luz.py resumen --dia hoy              # horas más baratas y más
 python3 puente_luz.py bloque --horas 2 --potencia 2000   # mejor bloque seguido de 2 horas para un aparato de 2 kW
 python3 puente_luz.py umbral --max-precio 0.10       # franjas por debajo de 10 céntimos
 python3 puente_luz.py grafica --dia hoy --salida pvpc.png   # gráfica del día, lista para mandar a un chat
+python3 aviso_nocturno.py                            # aviso de mañana: mejor bloque, imagen y mensaje corto
 ```
 
 La salida es JSON, pensada para que la lea otro script, un cron o un agente. Todos los subcomandos están en la [documentación técnica](docs/proyecto-precio-luz.md#uso-rápido).
@@ -55,6 +56,7 @@ La salida es JSON, pensada para que la lea otro script, un cron o un agente. Tod
 | Ruta | Qué es |
 |---|---|
 | `puente_luz.py` | Script puente: descarga de REE, calcula bloques, repartos y costes, devuelve JSON. |
+| `aviso_nocturno.py` | Aviso de cada noche: el bloque más barato de mañana con lo que dura, la gráfica para el móvil y una conclusión curiosa cruzada con `datos/`. Cómo está montado: [docs/aviso-nocturno.md](docs/aviso-nocturno.md). |
 | `precios_luz_ree.py` | El primer script, más sencillo. Se conserva como ejemplo mínimo. |
 | `contrato.ejemplo.json` | Contrato genérico (PVPC 2.0TD, península, valores de 2026). |
 | `docs/` | Documentación técnica, guía de la API, guía de iniciación a GitHub y la carpeta `simbiosis/`. |

@@ -22,7 +22,7 @@ jobs:
           python-version: "3.12"
 
       - name: Los scripts compilan
-        run: python -m py_compile puente_luz.py precios_luz_ree.py herramientas/github-device-flow/*.py
+        run: python -m py_compile puente_luz.py precios_luz_ree.py aviso_nocturno.py herramientas/github-device-flow/*.py
 
       - name: El contrato de ejemplo se lee bien
         run: |
