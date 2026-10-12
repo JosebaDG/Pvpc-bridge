@@ -4,14 +4,14 @@ GitHub es la mesa de trabajo común: aquí se apunta lo pendiente (issues), se p
 
 ## El ciclo de un cambio
 
-1. **Issue.** Todo trabajo empieza como una issue: qué se quiere, por qué y cómo sabremos que está hecho. Puede abrirla Joseba o un agente.
+1. **Issue.** Todo trabajo empieza como una issue: qué se quiere, por qué y cómo sabremos que está hecho. Puede abrirla la persona o un agente.
 2. **Rama.** El agente crea una rama desde `main` con un nombre que diga qué contiene.
 3. **Commits.** Cambios pequeños, con mensajes en español que expliquen el porqué.
 4. **Pull request.** El agente abre un PR contra `main`, rellena la plantilla y enlaza la issue con `Closes #N`, para que se cierre sola al fusionar.
 5. **Comprobaciones.** GitHub Actions ejecuta las [comprobaciones básicas](../../.github/workflows/comprobaciones.yml): que los scripts compilen, que el contrato de ejemplo se lea y que no se haya colado nada privado. No llaman a ninguna API.
-6. **Revisión humana.** Joseba lee el PR, comenta si algo no le encaja y, cuando le convence, lo aprueba.
-7. **Fusión.** Joseba pulsa el botón. Recomendado: *Squash and merge* para cambios pequeños, *Create a merge commit* cuando interese conservar los pasos.
-8. **Limpieza.** Tras fusionar, GitHub ofrece borrar la rama. Puede hacerlo Joseba; los agentes no borran nada.
+6. **Revisión humana.** La persona lee el PR, comenta si algo no le encaja y, cuando le convence, lo aprueba.
+7. **Fusión.** La persona pulsa el botón. Recomendado: *Squash and merge* para cambios pequeños, *Create a merge commit* cuando interese conservar los pasos.
+8. **Limpieza.** Tras fusionar, GitHub ofrece borrar la rama. Puede hacerlo la persona; los agentes no borran nada.
 
 La [guía de iniciación](../iniciacion-github.md) explica los pasos 6 a 8 con detalle, pantalla a pantalla.
 
@@ -32,7 +32,7 @@ La [guía de iniciación](../iniciacion-github.md) explica los pasos 6 a 8 con d
 | `datos` | Histórico, caché, descarga de datos de REE. |
 | `mcp` | Servidor MCP en Cloudflare Workers. |
 | `automatización` | Avisos, tareas programadas, integración con otros scripts. |
-| `decisión-humana` | Necesita que Joseba decida algo antes de seguir. |
+| `decisión-humana` | Necesita que la persona decida algo antes de seguir. |
 | `agente:charlie` | Lo lleva Charlie. |
 | `agente:miles` | Lo lleva o lo revisa Miles. |
 | `documentation`, `enhancement`, `bug`, `good first issue` | Las de serie de GitHub, con su significado habitual. |

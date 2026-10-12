@@ -69,9 +69,7 @@ publicado, 1 otro error):
   python3 puente_luz.py desglose --dia 2026-09-26
 
   Potencia: --potencia es el consumo TOTAL del aparato o del equipo en vatios.
-  En un ordenador, si solo sabes lo que gasta la tarjeta gráfica, usa
-  --gpu-w y --resto-w (resto = CPU, placa, discos, pérdidas de la fuente);
-  el JSON avisa si el resto queda en 0.
+  Si dudas, mídelo en el enchufe.
   Ventana: --dia hoy|manana|AAAA-MM-DD y/o --desde/--hasta ("ahora", "HH:MM"
   del --dia, o fecha ISO). Sin ventana: desde ahora hasta el último precio
   publicado (hoy y, si ya está, mañana).
@@ -1057,12 +1055,7 @@ def _potencia_cli(args) -> tuple[float, list[str]]:
     avisos = []
     if args.potencia:
         return args.potencia, avisos
-    if args.gpu_w:
-        if not args.resto_w:
-            avisos.append("Solo se ha dado la potencia de la GPU; el equipo entero consume más "
-                          "(CPU, placa, discos, pérdidas de la fuente). Usa --resto-w o mide en el enchufe.")
-        return args.gpu_w + (args.resto_w or 0), avisos
-    raise SystemExit("Falta --potencia (W del equipo) o --gpu-w [--resto-w]")
+    raise SystemExit("Falta --potencia (W totales del aparato o del equipo)")
 
 
 def main(argv=None) -> int:
@@ -1079,9 +1072,7 @@ def main(argv=None) -> int:
         p.add_argument("--sin-impuestos", action="store_true", help="precio limpio, sin impuestos")
         p.add_argument("--contrato", help="ruta a contrato.json (por defecto, junto al script)")
         if potencia:
-            p.add_argument("--potencia", type=float, help="W totales del equipo")
-            p.add_argument("--gpu-w", type=float)
-            p.add_argument("--resto-w", type=float)
+            p.add_argument("--potencia", type=float, help="W totales del aparato o del equipo")
 
     p = sub.add_parser("precios"); p.add_argument("--dia", default="hoy")
     p.add_argument("--serie", default="pvpc", choices=list(SERIES))

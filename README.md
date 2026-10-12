@@ -10,11 +10,11 @@ Pero este repositorio quiere enseñar algo más que un script. Es un **proyecto 
 
 | Quién | Qué es | Su papel |
 |---|---|---|
-| **Joseba** ([@JosebaDG](https://github.com/JosebaDG)) | La persona | Tiene la necesidad, decide, valida los resultados y fusiona. Hace de puente entre los dos agentes. |
+| **Joseba** ([@JosebaDG](https://github.com/JosebaDG)) | La persona | Tiene la necesidad, decide, valida los resultados y fusiona. |
 | **Charlie** | Agente de Sesame con un espacio de trabajo Linux en la nube | Escribe y ejecuta el código, consulta las APIs, documenta y sube los cambios. |
-| **Miles** | Agente de Sesame | Propone soluciones y revisa enfoques. Encontró la forma de conectar el espacio de trabajo con GitHub (una GitHub App con *device flow*). |
+| **Miles** | Agente de Sesame | Propone soluciones, revisa los PR de Charlie y se encarga de todo lo visual (gráficas, imágenes, capturas), porque Charlie no ve imágenes. Encontró la forma de conectar el espacio de trabajo con GitHub (una GitHub App con *device flow*). |
 
-Charlie y Miles no pueden hablar entre sí: lo que uno dice al otro pasa por Joseba. Eso, lejos de ser un estorbo, mantiene a la persona en el centro de cada decisión. Las reglas completas están en [Roles y reglas](docs/simbiosis/02-roles-y-reglas.md).
+Charlie y Miles no hablan directamente: se coordinan por escrito en el [tablón de coordinación (#11)](https://github.com/JosebaDG/Pvpc-bridge/issues/11), y la persona lo lee y decide. Así ninguna decisión se toma entre agentes sin que ella la vea, y lo que hace uno lo revisa el otro. Las reglas completas están en [Roles y reglas](docs/simbiosis/02-roles-y-reglas.md).
 
 ## Por dónde empezar
 
@@ -68,7 +68,7 @@ La salida es JSON, pensada para que la lea otro script, un cron o un agente. Tod
 
 ## Estado y próximos pasos
 
-Lo que viene está en las [issues](https://github.com/JosebaDG/Pvpc-bridge/issues): un servidor MCP en Cloudflare Workers para que cualquier agente consulte los precios y un aviso nocturno con las horas baratas del día siguiente, que llegue al chat con la gráfica y un texto corto.
+El [aviso nocturno](docs/aviso-nocturno.md) ya funciona: cada noche a las 21:30 llega al chat la gráfica de mañana con el bloque más barato. Lo siguiente está en las [issues](https://github.com/JosebaDG/Pvpc-bridge/issues): un servidor MCP en Cloudflare Workers para que cualquier agente consulte los precios.
 
 ## Datos históricos y archivo del estudio
 
@@ -76,6 +76,12 @@ Lo que viene está en las [issues](https://github.com/JosebaDG/Pvpc-bridge/issue
 - [`archivo/estudio-2026-10-09/`](archivo/estudio-2026-10-09/README.md): las pruebas del estudio de la API (respuestas reales, errores, archivo 70 de ESIOS, scripts y el informe original).
 
 `datos/consultas/` solo guarda respuestas públicas de REE y Open-Meteo; la caché local de `puente_luz.py` no se publica. Los datos de REE no quedan cubiertos por la licencia del repositorio: sus condiciones de uso están en [`datos/README.md`](datos/README.md).
+
+## Licencia
+
+- **Código:** MIT, en [`LICENSE`](LICENSE).
+- **Documentación:** CC BY 4.0, en [`docs/LICENSE.md`](docs/LICENSE.md).
+- **Datos de REE y Open-Meteo:** tienen sus propias condiciones, en [`datos/README.md`](datos/README.md).
 
 ## Fuente de los datos
 

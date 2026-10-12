@@ -17,7 +17,7 @@ En una llamada de voz, Joseba propone a Charlie un proyecto de prueba en Python:
 - Repartir un trabajo largo en varios bloques si no cabe en uno.
 - Una gráfica diaria para compararla con la oficial y validar que los datos son correctos.
 
-Joseba deja la decisión técnica en manos del agente. Charlie propone separar dos piezas: un **script puente** que hace el trabajo y devuelve JSON, y una **skill** (instrucciones guardadas para el asistente) que lo usa cuando Joseba pregunta.
+Y deja la decisión técnica en manos del agente. Charlie propone separar dos piezas: un **script puente** que hace el trabajo y devuelve JSON, y una **skill** (instrucciones guardadas para el asistente) que lo usa cuando Joseba pregunta.
 
 Resultado de esa mañana: `precios_luz_ree.py` (el primer script, mínimo), `puente_luz.py` (el puente) y la primera gráfica. Charlie confirmó que la API REData de Red Eléctrica funciona sin token, y que en la prueba solo servía para la península.
 
@@ -40,7 +40,7 @@ Charlie prueba todos los widgets de REData uno a uno y escribe un informe. Halla
 - Un dato sospechoso: un PVPC negativo de -12,63 €/MWh el 26 de septiembre de 2026. Se marcó "por verificar" y más tarde se confirmó contra el archivo oficial de ESIOS: era real.
 - Para el tiempo, Charlie añadió por su cuenta una fuente meteorológica abierta, [Open-Meteo](https://open-meteo.com/).
 
-Joseba reflexiona en voz alta: **correlación no es predicción**. Que los datos muestren un patrón no significa que sirvan para adivinar el precio de mañana. El ejercicio vale como ejercicio de programación y de minería de datos, no como oráculo.
+Y queda clara una idea: **correlación no es predicción**. Que los datos muestren un patrón no significa que sirvan para adivinar el precio de mañana. El ejercicio vale como ejercicio de programación y de minería de datos, no como oráculo.
 
 Dos peticiones más salen de esa conversación:
 
@@ -59,7 +59,7 @@ Ahí llegan las fricciones (contadas en detalle en [Fricciones y aprendizajes](0
 
 1. Subir desde el espacio de trabajo de Charlie con una URL que llevara un token dentro se descartó por seguridad.
 2. Un intento con OAuth a través de Copilot fallaba.
-3. Como salida provisional, Charlie entregó un *git bundle* de 38 KB. Joseba se extrañó del tamaño, tan pequeño: el malentendido se aclaró enseguida, porque el histórico de datos aún no se había descargado y el repositorio solo tenía código y documentación.
+3. Como salida provisional, Charlie entregó un *git bundle* de 38 KB. Sorprendió que pesara tan poco: el malentendido se aclaró enseguida, porque el histórico de datos aún no se había descargado y el repositorio solo tenía código y documentación.
 4. Charlie y Miles no pueden hablar entre sí. Joseba hizo de puente, pegando los mensajes de uno al otro.
 
 Fue Miles quien dio con la solución: una **GitHub App con *device flow***. Charlie pidió el código de dispositivo, Joseba lo autorizó en `github.com/login/device`, y Charlie hizo el primer push a `main`. Los detalles están en [Conectar GitHub con *device flow*](05-conectar-github-device-flow.md).
@@ -68,4 +68,4 @@ Fue Miles quien dio con la solución: una **GitHub App con *device flow***. Char
 
 Con el repositorio en marcha, Joseba lo dice claro: "ahora documentamos todo", "tiene que ser un proyecto formativo, que me sirva a mí y a la comunidad", "es la simbiosis la que hay que documentar". Y deja la forma en manos de los agentes: "sabéis ambos mejor que yo cómo exprimir la plataforma GitHub, yo os acompaño".
 
-De ahí sale esta carpeta, la guía de iniciación a GitHub, las plantillas, las primeras issues y el primer pull request, que Joseba revisa y fusiona él mismo como parte del aprendizaje.
+De ahí sale esta carpeta, la guía de iniciación a GitHub, las plantillas, las primeras issues y el primer pull request, que se revisa y fusiona a mano como parte del aprendizaje.
