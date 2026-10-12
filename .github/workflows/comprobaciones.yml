@@ -1,0 +1,43 @@
+name: Comprobaciones
+
+# Comprobaciones baratas en cada PR y en cada push a main.
+# No llaman a ninguna API: no gastan peticiones del servidor de Red Eléctrica.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  comprobar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Los scripts compilan
+        run: python -m py_compile puente_luz.py precios_luz_ree.py herramientas/github-device-flow/*.py
+
+      - name: El contrato de ejemplo se lee bien
+        run: |
+          python puente_luz.py contrato --contrato contrato.ejemplo.json > salida.json
+          python -c "import json; d = json.load(open('salida.json')); assert d['ok'], d; print('factor de impuestos:', d['factor_impuestos'])"
+
+      - name: No se ha colado nada privado
+        run: |
+          fallo=0
+          for f in contrato.json .env; do
+            if git ls-files --error-unmatch "$f" >/dev/null 2>&1; then
+              echo "::error::$f no debe estar en el repositorio"; fallo=1
+            fi
+          done
+          if git grep -nE '(gh[opsu]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{40,}|ghr_[A-Za-z0-9]{30,})' -- . ':!.github/workflows/comprobaciones.yml'; then
+            echo "::error::Parece que hay un token de GitHub en el repositorio"; fallo=1
+          fi
+          exit $fallo

@@ -152,7 +152,7 @@ La API devuelve un PVPC negativo el sábado 26 de septiembre de 2026 entre las 1
 
 El spot también tuvo valores negativos esos días, pero mucho más pequeños: -1,14 €/MWh el 20 de septiembre a las 13:30.
 
-Contrastado el 9 de octubre de 2026 con el archivo oficial de ESIOS (`https://api.esios.ree.es/archives/70/download_json?locale=es&date=2026-09-26`, sin token): el 26 de septiembre el PVPC fue negativo de 11:00 a 17:00, con mínimo de -12,63 €/MWh entre las 14:00 y las 15:00, y REData coincide con ESIOS en las 24 horas. No es un error de la API. Ese archivo da además cada hora desglosada (mercado, servicios de ajuste, peajes y cargos, ajuste de futuros...), y explica el caso: sábado en valle, mercado casi a cero a mediodía y un ajuste de futuros de unos -46 €/MWh en todas las horas. El porqué, con la factura y los tramos, está en el README del proyecto (`README.md`).
+Contrastado el 9 de octubre de 2026 con el archivo oficial de ESIOS (`https://api.esios.ree.es/archives/70/download_json?locale=es&date=2026-09-26`, sin token): el 26 de septiembre el PVPC fue negativo de 11:00 a 17:00, con mínimo de -12,63 €/MWh entre las 14:00 y las 15:00, y REData coincide con ESIOS en las 24 horas. No es un error de la API. Ese archivo da además cada hora desglosada (mercado, servicios de ajuste, peajes y cargos, ajuste de futuros...), y explica el caso: sábado en valle, mercado casi a cero a mediodía y un ajuste de futuros de unos -46 €/MWh en todas las horas. El porqué, con la factura y los tramos, está en la [documentación técnica del proyecto](proyecto-precio-luz.md).
 
 ## Discontinuidades al comparar años
 
@@ -194,7 +194,7 @@ Conviene separar tres tipos de dato que a menudo se mezclan:
 - **Consumo de un suministro concreto:** la demanda de REData es la del sistema. El consumo de un contador lo tiene la distribuidora del suministro, no REE.
 - **Desglose del PVPC por componentes:** REData da el total. El archivo 70 de ESIOS (`https://api.esios.ree.es/archives/70/download_json?locale=es&date=AAAA-MM-DD`) lo da hora a hora y sin token: mercado, servicios de ajuste, peajes y cargos, ajuste de futuros, comercialización, pagos por capacidad. Probado el 9 de octubre de 2026 con días de 2021 a 2026.
 
-Para qué significa cada componente, los tramos 2.0TD, los impuestos y cómo leer una factura, mira el `README.md` del proyecto, que usa esta API.
+Para qué significa cada componente, los tramos 2.0TD, los impuestos y cómo leer una factura, mira la [documentación técnica del proyecto](proyecto-precio-luz.md), que usa esta API.
 
 ## Posibles integraciones (no implementadas)
 
