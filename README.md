@@ -58,13 +58,22 @@ La salida es JSON, pensada para que la lea otro script, un cron o un agente. Tod
 | `precios_luz_ree.py` | El primer script, más sencillo. Se conserva como ejemplo mínimo. |
 | `contrato.ejemplo.json` | Contrato genérico (PVPC 2.0TD, península, valores de 2026). |
 | `docs/` | Documentación técnica, guía de la API, guía de iniciación a GitHub y la carpeta `simbiosis/`. |
+| `datos/` | Histórico de REE ya descargado en CSV (PVPC, mercado diario, generación y meteorología), con la caché de consultas, el manifiesto y las herramientas para actualizarlo. |
+| `archivo/estudio-2026-10-09/` | Las pruebas del estudio de la API REData: respuestas reales, errores, scripts y el informe original. |
 | `herramientas/github-device-flow/` | Los dos scripts con los que el agente se conecta a GitHub sin guardar contraseñas. |
 | `.github/` | Plantillas de issues y PR, y una comprobación automática que no llama a ninguna API. |
 | `CONTRIBUTING.md` | Cómo proponer cambios, seas persona o agente. |
 
 ## Estado y próximos pasos
 
-Lo que viene está en las [issues](https://github.com/JosebaDG/Pvpc-bridge/issues): un servidor MCP en Cloudflare Workers para que cualquier agente consulte los precios, una carpeta `datos/` con el histórico descargado con calma y un aviso nocturno con las horas baratas del día siguiente, que llegue al chat con la gráfica y un texto corto.
+Lo que viene está en las [issues](https://github.com/JosebaDG/Pvpc-bridge/issues): un servidor MCP en Cloudflare Workers para que cualquier agente consulte los precios y un aviso nocturno con las horas baratas del día siguiente, que llegue al chat con la gráfica y un texto corto.
+
+## Datos históricos y archivo del estudio
+
+- [`datos/`](datos/README.md): el histórico ya descargado de REData (PVPC por horas desde junio de 2021, mercado diario desde 2014 y generación diaria desde 2011, más meteorología de Open-Meteo) en CSV, con las respuestas crudas, la caché de consultas, un manifiesto y un script que solo descarga lo que falta. Antes de pedir nada a REE, mira ahí. Las limitaciones y problemas encontrados están en [`datos/LIMITACIONES.md`](datos/LIMITACIONES.md).
+- [`archivo/estudio-2026-10-09/`](archivo/estudio-2026-10-09/README.md): las pruebas del estudio de la API (respuestas reales, errores, archivo 70 de ESIOS, scripts y el informe original).
+
+`datos/consultas/` solo guarda respuestas públicas de REE y Open-Meteo; la caché local de `puente_luz.py` no se publica. Los datos de REE no quedan cubiertos por la licencia del repositorio: sus condiciones de uso están en [`datos/README.md`](datos/README.md).
 
 ## Fuente de los datos
 

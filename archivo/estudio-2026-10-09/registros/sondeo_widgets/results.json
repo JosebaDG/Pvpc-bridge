@@ -1,0 +1,5279 @@
+[
+ {
+  "cat": "balance",
+  "w": "balance-electrico",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 24443,
+   "ind": [
+    [
+     "Renovable>Hidráulica",
+     7
+    ],
+    [
+     "Renovable>Eólica",
+     7
+    ],
+    [
+     "Renovable>Solar fotovoltaica",
+     7
+    ],
+    [
+     "Renovable>Solar térmica",
+     7
+    ],
+    [
+     "Renovable>Hidroeólica",
+     7
+    ],
+    [
+     "Renovable>Otras renovables",
+     7
+    ],
+    [
+     "Renovable>Residuos renovables",
+     7
+    ],
+    [
+     "Renovable>Generación renovable",
+     7
+    ],
+    [
+     "No-Renovable>Nuclear",
+     7
+    ],
+    [
+     "No-Renovable>Ciclo combinado",
+     7
+    ],
+    [
+     "No-Renovable>Carbón",
+     7
+    ],
+    [
+     "No-Renovable>Motores diésel",
+     7
+    ],
+    [
+     "No-Renovable>Turbina de gas",
+     7
+    ],
+    [
+     "No-Renovable>Turbina de vapor",
+     7
+    ],
+    [
+     "No-Renovable>Cogeneración",
+     7
+    ],
+    [
+     "No-Renovable>Residuos no renovables",
+     7
+    ],
+    [
+     "No-Renovable>Generación no renovable",
+     7
+    ],
+    [
+     "Almacenamiento>Turbinación bombeo",
+     7
+    ],
+    [
+     "Almacenamiento>Consumo bombeo",
+     7
+    ],
+    [
+     "Almacenamiento>Entrega batería",
+     7
+    ],
+    [
+     "Almacenamiento>Carga batería",
+     7
+    ],
+    [
+     "Almacenamiento>Saldo almacenamiento",
+     7
+    ],
+    [
+     "Demanda>Saldo I. internacionales",
+     7
+    ],
+    [
+     "Demanda>Demanda en b.c.",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 27305,
+   "ind": [
+    [
+     "Renovable>Hidráulica",
+     8
+    ],
+    [
+     "Renovable>Eólica",
+     8
+    ],
+    [
+     "Renovable>Solar fotovoltaica",
+     8
+    ],
+    [
+     "Renovable>Solar térmica",
+     8
+    ],
+    [
+     "Renovable>Hidroeólica",
+     8
+    ],
+    [
+     "Renovable>Otras renovables",
+     8
+    ],
+    [
+     "Renovable>Residuos renovables",
+     8
+    ],
+    [
+     "Renovable>Generación renovable",
+     8
+    ],
+    [
+     "No-Renovable>Nuclear",
+     8
+    ],
+    [
+     "No-Renovable>Ciclo combinado",
+     8
+    ],
+    [
+     "No-Renovable>Carbón",
+     8
+    ],
+    [
+     "No-Renovable>Motores diésel",
+     8
+    ],
+    [
+     "No-Renovable>Turbina de gas",
+     8
+    ],
+    [
+     "No-Renovable>Turbina de vapor",
+     8
+    ],
+    [
+     "No-Renovable>Fuel + Gas",
+     1
+    ],
+    [
+     "No-Renovable>Cogeneración",
+     8
+    ],
+    [
+     "No-Renovable>Residuos no renovables",
+     8
+    ],
+    [
+     "No-Renovable>Generación no renovable",
+     8
+    ],
+    [
+     "Almacenamiento>Turbinación bombeo",
+     8
+    ],
+    [
+     "Almacenamiento>Consumo bombeo",
+     8
+    ],
+    [
+     "Almacenamiento>Entrega batería",
+     8
+    ],
+    [
+     "Almacenamiento>Carga batería",
+     8
+    ],
+    [
+     "Almacenamiento>Saldo almacenamiento",
+     8
+    ],
+    [
+     "Demanda>Saldo I. internacionales",
+     8
+    ],
+    [
+     "Demanda>Demanda en b.c.",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 16559,
+   "ind": [
+    [
+     "Renovable>Hidráulica",
+     3
+    ],
+    [
+     "Renovable>Eólica",
+     3
+    ],
+    [
+     "Renovable>Solar fotovoltaica",
+     3
+    ],
+    [
+     "Renovable>Solar térmica",
+     3
+    ],
+    [
+     "Renovable>Hidroeólica",
+     3
+    ],
+    [
+     "Renovable>Otras renovables",
+     3
+    ],
+    [
+     "Renovable>Residuos renovables",
+     3
+    ],
+    [
+     "Renovable>Generación renovable",
+     3
+    ],
+    [
+     "No-Renovable>Nuclear",
+     3
+    ],
+    [
+     "No-Renovable>Ciclo combinado",
+     3
+    ],
+    [
+     "No-Renovable>Carbón",
+     3
+    ],
+    [
+     "No-Renovable>Motores diésel",
+     3
+    ],
+    [
+     "No-Renovable>Turbina de gas",
+     3
+    ],
+    [
+     "No-Renovable>Turbina de vapor",
+     3
+    ],
+    [
+     "No-Renovable>Fuel + Gas",
+     3
+    ],
+    [
+     "No-Renovable>Cogeneración",
+     3
+    ],
+    [
+     "No-Renovable>Residuos no renovables",
+     3
+    ],
+    [
+     "No-Renovable>Generación no renovable",
+     3
+    ],
+    [
+     "Almacenamiento>Turbinación bombeo",
+     3
+    ],
+    [
+     "Almacenamiento>Consumo bombeo",
+     3
+    ],
+    [
+     "Almacenamiento>Entrega batería",
+     3
+    ],
+    [
+     "Almacenamiento>Carga batería",
+     3
+    ],
+    [
+     "Almacenamiento>Saldo almacenamiento",
+     3
+    ],
+    [
+     "Demanda>Saldo I. internacionales",
+     3
+    ],
+    [
+     "Demanda>Demanda en b.c.",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "evolucion",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 1043,
+   "ind": [
+    [
+     "Demanda",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 1138,
+   "ind": [
+    [
+     "Demanda",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 757,
+   "ind": [
+    [
+     "Demanda",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "variacion-componentes",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 502,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 3923,
+   "ind": [
+    [
+     "Laboralidad",
+     8
+    ],
+    [
+     "Temperatura",
+     8
+    ],
+    [
+     "Demanda corregida",
+     8
+    ],
+    [
+     "Variación de la demanda",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 502,
+   "bytes": 169
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "variacion-componentes-movil",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 502,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 3951,
+   "ind": [
+    [
+     "Laboralidad",
+     8
+    ],
+    [
+     "Temperatura",
+     8
+    ],
+    [
+     "Demanda corregida",
+     8
+    ],
+    [
+     "Variación de la demanda",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 502,
+   "bytes": 169
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "ire-general",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 4520,
+   "ind": [
+    [
+     "Índice general",
+     8
+    ],
+    [
+     "Índice general corregido",
+     8
+    ],
+    [
+     "Variación mensual",
+     8
+    ],
+    [
+     "Variación mensual corregida",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 2584,
+   "ind": [
+    [
+     "Índice general (media anual)",
+     3
+    ],
+    [
+     "Índice general corregido (media anual)",
+     3
+    ],
+    [
+     "Annual variation",
+     3
+    ],
+    [
+     "Corrected annual variation",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "ire-general-anual",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 4406,
+   "ind": [
+    [
+     "Índice general",
+     8
+    ],
+    [
+     "Índice general corregido",
+     8
+    ],
+    [
+     "Annual variation",
+     8
+    ],
+    [
+     "Corrected annual variation",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1710,
+   "ind": [
+    [
+     "Índice general (media anual)",
+     0
+    ],
+    [
+     "Índice general corregido (media anual)",
+     0
+    ],
+    [
+     "Annual variation",
+     0
+    ],
+    [
+     "Corrected annual variation",
+     0
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "ire-general-movil",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 4455,
+   "ind": [
+    [
+     "Índice general",
+     8
+    ],
+    [
+     "Índice general corregido",
+     8
+    ],
+    [
+     "Annual variation",
+     8
+    ],
+    [
+     "Corrected annual variation",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1720,
+   "ind": [
+    [
+     "Índice general (media anual)",
+     0
+    ],
+    [
+     "Índice general corregido (media anual)",
+     0
+    ],
+    [
+     "Annual variation",
+     0
+    ],
+    [
+     "Corrected annual variation",
+     0
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "ire-industria",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 4534,
+   "ind": [
+    [
+     "Índice industria",
+     8
+    ],
+    [
+     "Índice industria corregido",
+     8
+    ],
+    [
+     "Variación mensual",
+     8
+    ],
+    [
+     "Variación mensual corregida",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 2599,
+   "ind": [
+    [
+     "Índice industria (media anual)",
+     3
+    ],
+    [
+     "Índice industria corregido (media anual)",
+     3
+    ],
+    [
+     "Annual variation",
+     3
+    ],
+    [
+     "Corrected annual variation",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "ire-industria-anual",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 4380,
+   "ind": [
+    [
+     "Índice industria",
+     8
+    ],
+    [
+     "Índice industria corregido",
+     8
+    ],
+    [
+     "Annual variation",
+     8
+    ],
+    [
+     "Corrected annual variation",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1728,
+   "ind": [
+    [
+     "Índice industria (media anual)",
+     0
+    ],
+    [
+     "Índice industria corregido (media anual)",
+     0
+    ],
+    [
+     "Annual variation",
+     0
+    ],
+    [
+     "Corrected annual variation",
+     0
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "ire-industria-movil",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 4483,
+   "ind": [
+    [
+     "Índice industria",
+     8
+    ],
+    [
+     "Índice industria corregido",
+     8
+    ],
+    [
+     "Annual variation",
+     8
+    ],
+    [
+     "Corrected annual variation",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1738,
+   "ind": [
+    [
+     "Índice industria (media anual)",
+     0
+    ],
+    [
+     "Índice industria corregido (media anual)",
+     0
+    ],
+    [
+     "Annual variation",
+     0
+    ],
+    [
+     "Corrected annual variation",
+     0
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "ire-servicios",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 4552,
+   "ind": [
+    [
+     "Índice servicios",
+     8
+    ],
+    [
+     "Índice servicios corregido",
+     8
+    ],
+    [
+     "Variación mensual",
+     8
+    ],
+    [
+     "Variación mensual corregida",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 2602,
+   "ind": [
+    [
+     "Índice servicios (media anual)",
+     3
+    ],
+    [
+     "Índice servicios corregido (media anual)",
+     3
+    ],
+    [
+     "Annual variation",
+     3
+    ],
+    [
+     "Corrected annual variation",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "ire-servicios-anual",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 4412,
+   "ind": [
+    [
+     "Índice servicios",
+     8
+    ],
+    [
+     "Índice servicios corregido",
+     8
+    ],
+    [
+     "Annual variation",
+     8
+    ],
+    [
+     "Corrected annual variation",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1728,
+   "ind": [
+    [
+     "Índice servicios (media anual)",
+     0
+    ],
+    [
+     "Índice servicios corregido (media anual)",
+     0
+    ],
+    [
+     "Annual variation",
+     0
+    ],
+    [
+     "Corrected annual variation",
+     0
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "ire-servicios-movil",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 4501,
+   "ind": [
+    [
+     "Índice servicios",
+     8
+    ],
+    [
+     "Índice servicios corregido",
+     8
+    ],
+    [
+     "Annual variation",
+     8
+    ],
+    [
+     "Corrected annual variation",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1738,
+   "ind": [
+    [
+     "Índice servicios (media anual)",
+     0
+    ],
+    [
+     "Índice servicios corregido (media anual)",
+     0
+    ],
+    [
+     "Annual variation",
+     0
+    ],
+    [
+     "Corrected annual variation",
+     0
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "ire-otras",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 4568,
+   "ind": [
+    [
+     "Índice servicios",
+     8
+    ],
+    [
+     "Índice servicios corregido",
+     8
+    ],
+    [
+     "Variación mensual",
+     8
+    ],
+    [
+     "Variación mensual corregida",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 2618,
+   "ind": [
+    [
+     "Índice servicios (media anual)",
+     3
+    ],
+    [
+     "Índice servicios corregido (media anual)",
+     3
+    ],
+    [
+     "Annual variation",
+     3
+    ],
+    [
+     "Corrected annual variation",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "ire-otras-anual",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 4475,
+   "ind": [
+    [
+     "Índice servicios",
+     8
+    ],
+    [
+     "Índice servicios corregido",
+     8
+    ],
+    [
+     "Annual variation",
+     8
+    ],
+    [
+     "Corrected annual variation",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1744,
+   "ind": [
+    [
+     "Índice servicios (media anual)",
+     0
+    ],
+    [
+     "Índice servicios corregido (media anual)",
+     0
+    ],
+    [
+     "Annual variation",
+     0
+    ],
+    [
+     "Corrected annual variation",
+     0
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "ire-otras-movil",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 4519,
+   "ind": [
+    [
+     "Índice servicios",
+     8
+    ],
+    [
+     "Índice servicios corregido",
+     8
+    ],
+    [
+     "Annual variation",
+     8
+    ],
+    [
+     "Corrected annual variation",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1732,
+   "ind": [
+    [
+     "Índice servicios (media anual)",
+     0
+    ],
+    [
+     "Índice servicios corregido (media anual)",
+     0
+    ],
+    [
+     "Annual variation",
+     0
+    ],
+    [
+     "Corrected annual variation",
+     0
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "demanda-maxima-diaria",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 1352,
+   "ind": [
+    [
+     "Demanda máxima diaria",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1464,
+   "ind": [
+    [
+     "Demanda máxima diaria",
+     3
+    ],
+    [
+     "Demanda máxima diaria",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "demanda-maxima-horaria",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 1346,
+   "ind": [
+    [
+     "Demanda máxima horaria",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1461,
+   "ind": [
+    [
+     "Demanda máxima horaria",
+     3
+    ],
+    [
+     "Demanda máxima horaria",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "perdidas-transporte",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 2111,
+   "ind": [
+    [
+     "Pérdidas de transporte",
+     7
+    ],
+    [
+     "Demanda",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 2330,
+   "ind": [
+    [
+     "Pérdidas de transporte",
+     8
+    ],
+    [
+     "Demanda",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1378,
+   "ind": [
+    [
+     "Pérdidas de transporte",
+     3
+    ],
+    [
+     "Demanda",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "potencia-maxima-instantanea",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 1355,
+   "ind": [
+    [
+     "Potencia máxima instantánea",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1499,
+   "ind": [
+    [
+     "Potencia máxima instantánea",
+     3
+    ],
+    [
+     "Potencia máxima instantánea",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "variacion-demanda",
+  "hour": {
+   "st": 500,
+   "bytes": 841
+  },
+  "day": {
+   "st": 500,
+   "bytes": 841
+  },
+  "month": {
+   "st": 500,
+   "bytes": 841
+  },
+  "year": {
+   "st": 500,
+   "bytes": 841
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "potencia-maxima-instantanea-variacion",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 2233,
+   "ind": [
+    [
+     "Potencia máxima instantánea",
+     8
+    ],
+    [
+     "Variación potencia máxima instantánea",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1467,
+   "ind": [
+    [
+     "Potencia máxima instantánea",
+     3
+    ],
+    [
+     "Variación potencia máxima instantánea",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "potencia-maxima-instantanea-variacion-historico",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 1257,
+   "ind": [
+    [
+     "Potencia máxima instantánea",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 3563,
+   "err": "'attributes'"
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "variacion-componentes-anual",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 502,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 3975,
+   "ind": [
+    [
+     "Laboralidad",
+     8
+    ],
+    [
+     "Temperatura",
+     8
+    ],
+    [
+     "Demanda corregida",
+     8
+    ],
+    [
+     "Variación de la demanda anual",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 502,
+   "bytes": 169
+  }
+ },
+ {
+  "cat": "demanda",
+  "w": "demanda-tiempo-real",
+  "hour": {
+   "st": 200,
+   "bytes": 106648,
+   "ind": [
+    [
+     "Prevista",
+     288
+    ],
+    [
+     "Programada",
+     288
+    ],
+    [
+     "Real",
+     288
+    ],
+    [
+     "Programada total",
+     288
+    ]
+   ]
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 400,
+   "bytes": 169
+  },
+  "year": {
+   "st": 400,
+   "bytes": 169
+  }
+ },
+ {
+  "cat": "generacion",
+  "w": "estructura-generacion",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 14936,
+   "ind": [
+    [
+     "Hidráulica",
+     7
+    ],
+    [
+     "Nuclear",
+     7
+    ],
+    [
+     "Carbón",
+     7
+    ],
+    [
+     "Motores diésel",
+     7
+    ],
+    [
+     "Turbina de gas",
+     7
+    ],
+    [
+     "Turbina de vapor",
+     7
+    ],
+    [
+     "Ciclo combinado",
+     7
+    ],
+    [
+     "Hidroeólica",
+     7
+    ],
+    [
+     "Eólica",
+     7
+    ],
+    [
+     "Solar fotovoltaica",
+     7
+    ],
+    [
+     "Solar térmica",
+     7
+    ],
+    [
+     "Otras renovables",
+     7
+    ],
+    [
+     "Cogeneración",
+     7
+    ],
+    [
+     "Residuos no renovables",
+     7
+    ],
+    [
+     "Residuos renovables",
+     7
+    ],
+    [
+     "Generación total",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 16893,
+   "ind": [
+    [
+     "Hidráulica",
+     8
+    ],
+    [
+     "Nuclear",
+     8
+    ],
+    [
+     "Carbón",
+     8
+    ],
+    [
+     "Fuel + Gas",
+     1
+    ],
+    [
+     "Motores diésel",
+     8
+    ],
+    [
+     "Turbina de gas",
+     8
+    ],
+    [
+     "Turbina de vapor",
+     8
+    ],
+    [
+     "Ciclo combinado",
+     8
+    ],
+    [
+     "Hidroeólica",
+     8
+    ],
+    [
+     "Eólica",
+     8
+    ],
+    [
+     "Solar fotovoltaica",
+     8
+    ],
+    [
+     "Solar térmica",
+     8
+    ],
+    [
+     "Otras renovables",
+     8
+    ],
+    [
+     "Cogeneración",
+     8
+    ],
+    [
+     "Residuos no renovables",
+     8
+    ],
+    [
+     "Residuos renovables",
+     8
+    ],
+    [
+     "Generación total",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 9658,
+   "ind": [
+    [
+     "Hidráulica",
+     3
+    ],
+    [
+     "Nuclear",
+     3
+    ],
+    [
+     "Carbón",
+     3
+    ],
+    [
+     "Fuel + Gas",
+     3
+    ],
+    [
+     "Motores diésel",
+     3
+    ],
+    [
+     "Turbina de gas",
+     3
+    ],
+    [
+     "Turbina de vapor",
+     3
+    ],
+    [
+     "Ciclo combinado",
+     3
+    ],
+    [
+     "Hidroeólica",
+     3
+    ],
+    [
+     "Eólica",
+     3
+    ],
+    [
+     "Solar fotovoltaica",
+     3
+    ],
+    [
+     "Solar térmica",
+     3
+    ],
+    [
+     "Otras renovables",
+     3
+    ],
+    [
+     "Cogeneración",
+     3
+    ],
+    [
+     "Residuos no renovables",
+     3
+    ],
+    [
+     "Residuos renovables",
+     3
+    ],
+    [
+     "Generación total",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "generacion",
+  "w": "evolucion-renovable-no-renovable",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 2328,
+   "ind": [
+    [
+     "Renovable",
+     7
+    ],
+    [
+     "No renovable",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 2549,
+   "ind": [
+    [
+     "Renovable",
+     8
+    ],
+    [
+     "No renovable",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1596,
+   "ind": [
+    [
+     "Renovable",
+     3
+    ],
+    [
+     "No renovable",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "generacion",
+  "w": "estructura-renovables",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 7822,
+   "ind": [
+    [
+     "Hidráulica",
+     7
+    ],
+    [
+     "Hidroeólica",
+     7
+    ],
+    [
+     "Eólica",
+     7
+    ],
+    [
+     "Solar fotovoltaica",
+     7
+    ],
+    [
+     "Solar térmica",
+     7
+    ],
+    [
+     "Otras renovables",
+     7
+    ],
+    [
+     "Residuos renovables",
+     7
+    ],
+    [
+     "Generación renovable",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 8659,
+   "ind": [
+    [
+     "Hidráulica",
+     8
+    ],
+    [
+     "Hidroeólica",
+     8
+    ],
+    [
+     "Eólica",
+     8
+    ],
+    [
+     "Solar fotovoltaica",
+     8
+    ],
+    [
+     "Solar térmica",
+     8
+    ],
+    [
+     "Otras renovables",
+     8
+    ],
+    [
+     "Residuos renovables",
+     8
+    ],
+    [
+     "Generación renovable",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 4937,
+   "ind": [
+    [
+     "Hidráulica",
+     3
+    ],
+    [
+     "Hidroeólica",
+     3
+    ],
+    [
+     "Eólica",
+     3
+    ],
+    [
+     "Solar fotovoltaica",
+     3
+    ],
+    [
+     "Solar térmica",
+     3
+    ],
+    [
+     "Otras renovables",
+     3
+    ],
+    [
+     "Residuos renovables",
+     3
+    ],
+    [
+     "Generación renovable",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "generacion",
+  "w": "estructura-generacion-emisiones-asociadas",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 14599,
+   "ind": [
+    [
+     "Hidráulica",
+     7
+    ],
+    [
+     "Nuclear",
+     7
+    ],
+    [
+     "Carbón",
+     7
+    ],
+    [
+     "Motores diésel",
+     7
+    ],
+    [
+     "Turbina de gas",
+     7
+    ],
+    [
+     "Turbina de vapor",
+     7
+    ],
+    [
+     "Ciclo combinado",
+     7
+    ],
+    [
+     "Hidroeólica",
+     7
+    ],
+    [
+     "Eólica",
+     7
+    ],
+    [
+     "Solar fotovoltaica",
+     7
+    ],
+    [
+     "Solar térmica",
+     7
+    ],
+    [
+     "Otras renovables",
+     7
+    ],
+    [
+     "Cogeneración",
+     7
+    ],
+    [
+     "Residuos no renovables",
+     7
+    ],
+    [
+     "Residuos renovables",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 16588,
+   "ind": [
+    [
+     "Hidráulica",
+     8
+    ],
+    [
+     "Nuclear",
+     8
+    ],
+    [
+     "Carbón",
+     8
+    ],
+    [
+     "Fuel + Gas",
+     1
+    ],
+    [
+     "Motores diésel",
+     8
+    ],
+    [
+     "Turbina de gas",
+     8
+    ],
+    [
+     "Turbina de vapor",
+     8
+    ],
+    [
+     "Ciclo combinado",
+     8
+    ],
+    [
+     "Hidroeólica",
+     8
+    ],
+    [
+     "Eólica",
+     8
+    ],
+    [
+     "Solar fotovoltaica",
+     8
+    ],
+    [
+     "Solar térmica",
+     8
+    ],
+    [
+     "Otras renovables",
+     8
+    ],
+    [
+     "Cogeneración",
+     8
+    ],
+    [
+     "Residuos no renovables",
+     8
+    ],
+    [
+     "Residuos renovables",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 9735,
+   "ind": [
+    [
+     "Hidráulica",
+     3
+    ],
+    [
+     "Nuclear",
+     3
+    ],
+    [
+     "Carbón",
+     3
+    ],
+    [
+     "Fuel + Gas",
+     3
+    ],
+    [
+     "Motores diésel",
+     3
+    ],
+    [
+     "Turbina de gas",
+     3
+    ],
+    [
+     "Turbina de vapor",
+     3
+    ],
+    [
+     "Ciclo combinado",
+     3
+    ],
+    [
+     "Hidroeólica",
+     3
+    ],
+    [
+     "Eólica",
+     3
+    ],
+    [
+     "Solar fotovoltaica",
+     3
+    ],
+    [
+     "Solar térmica",
+     3
+    ],
+    [
+     "Otras renovables",
+     3
+    ],
+    [
+     "Cogeneración",
+     3
+    ],
+    [
+     "Residuos no renovables",
+     3
+    ],
+    [
+     "Residuos renovables",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "generacion",
+  "w": "evolucion-estructura-generacion-emisiones-asociadas",
+  "hour": {
+   "st": 200,
+   "bytes": 5878,
+   "ind": [
+    [
+     "Sin emisiones de CO2 eq.",
+     25
+    ],
+    [
+     "Con emisiones de CO2 eq.",
+     25
+    ]
+   ]
+  },
+  "day": {
+   "st": 200,
+   "bytes": 2414,
+   "ind": [
+    [
+     "Sin emisiones de CO2 eq.",
+     7
+    ],
+    [
+     "Con emisiones de CO2 eq.",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 2622,
+   "ind": [
+    [
+     "Sin emisiones de CO2 eq.",
+     8
+    ],
+    [
+     "Con emisiones de CO2 eq.",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1637,
+   "ind": [
+    [
+     "Sin emisiones de CO2 eq.",
+     3
+    ],
+    [
+     "Con emisiones de CO2 eq.",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "generacion",
+  "w": "no-renovables-detalle-emisiones-CO2",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 8830,
+   "ind": [
+    [
+     "Carbón",
+     7
+    ],
+    [
+     "Motores diésel",
+     7
+    ],
+    [
+     "Turbina de gas",
+     7
+    ],
+    [
+     "Turbina de vapor",
+     7
+    ],
+    [
+     "Ciclo combinado",
+     7
+    ],
+    [
+     "Cogeneración",
+     7
+    ],
+    [
+     "Residuos no renovables",
+     7
+    ],
+    [
+     "Total tCO2 eq.",
+     7
+    ],
+    [
+     "tCO2 eq./MWh",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 10315,
+   "ind": [
+    [
+     "Carbón",
+     8
+    ],
+    [
+     "Fuel + Gas",
+     1
+    ],
+    [
+     "Motores diésel",
+     8
+    ],
+    [
+     "Turbina de gas",
+     8
+    ],
+    [
+     "Turbina de vapor",
+     8
+    ],
+    [
+     "Ciclo combinado",
+     8
+    ],
+    [
+     "Cogeneración",
+     8
+    ],
+    [
+     "Residuos no renovables",
+     8
+    ],
+    [
+     "Total tCO2 eq.",
+     8
+    ],
+    [
+     "tCO2 eq./MWh",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 6258,
+   "ind": [
+    [
+     "Carbón",
+     3
+    ],
+    [
+     "Fuel + Gas",
+     3
+    ],
+    [
+     "Motores diésel",
+     3
+    ],
+    [
+     "Turbina de gas",
+     3
+    ],
+    [
+     "Turbina de vapor",
+     3
+    ],
+    [
+     "Ciclo combinado",
+     3
+    ],
+    [
+     "Cogeneración",
+     3
+    ],
+    [
+     "Residuos no renovables",
+     3
+    ],
+    [
+     "Total tCO2 eq.",
+     3
+    ],
+    [
+     "tCO2 eq./MWh",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "generacion",
+  "w": "maxima-renovable",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 1325,
+   "ind": [
+    [
+     "Máxima generación renovable",
+     7
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1537,
+   "ind": [
+    [
+     "Máxima generación renovable",
+     3
+    ],
+    [
+     "Máxima generación renovable",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "generacion",
+  "w": "potencia-instalada",
+  "hour": {
+   "st": 500,
+   "bytes": 841
+  },
+  "day": {
+   "st": 500,
+   "bytes": 841
+  },
+  "month": {
+   "st": 500,
+   "bytes": 841
+  },
+  "year": {
+   "st": 500,
+   "bytes": 841
+  }
+ },
+ {
+  "cat": "generacion",
+  "w": "maxima-renovable-historico",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 739,
+   "ind": [
+    [
+     "Máxima generación renovable - Máximo histórico",
+     1
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 739,
+   "ind": [
+    [
+     "Máxima generación renovable - Máximo histórico",
+     1
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "generacion",
+  "w": "maxima-sin-emisiones-historico",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 755,
+   "ind": [
+    [
+     "Máxima generación sin emisiones - Máximo histórico",
+     1
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 756,
+   "ind": [
+    [
+     "Máxima generación sin emisiones - Máximo histórico",
+     1
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "intercambios",
+  "w": "francia-frontera",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 2902,
+   "ind": [
+    [
+     "Exportación",
+     7
+    ],
+    [
+     "Importación",
+     7
+    ],
+    [
+     "saldo",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 3222,
+   "ind": [
+    [
+     "Exportación",
+     8
+    ],
+    [
+     "Importación",
+     8
+    ],
+    [
+     "saldo",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1856,
+   "ind": [
+    [
+     "Exportación",
+     3
+    ],
+    [
+     "Importación",
+     3
+    ],
+    [
+     "saldo",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "intercambios",
+  "w": "portugal-frontera",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 2928,
+   "ind": [
+    [
+     "Exportación",
+     7
+    ],
+    [
+     "Importación",
+     7
+    ],
+    [
+     "saldo",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 3233,
+   "ind": [
+    [
+     "Exportación",
+     8
+    ],
+    [
+     "Importación",
+     8
+    ],
+    [
+     "saldo",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1847,
+   "ind": [
+    [
+     "Exportación",
+     3
+    ],
+    [
+     "Importación",
+     3
+    ],
+    [
+     "saldo",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "intercambios",
+  "w": "marruecos-frontera",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 2749,
+   "ind": [
+    [
+     "Exportación",
+     7
+    ],
+    [
+     "Importación",
+     7
+    ],
+    [
+     "saldo",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 3224,
+   "ind": [
+    [
+     "Exportación",
+     8
+    ],
+    [
+     "Importación",
+     8
+    ],
+    [
+     "saldo",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1854,
+   "ind": [
+    [
+     "Exportación",
+     3
+    ],
+    [
+     "Importación",
+     3
+    ],
+    [
+     "saldo",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "intercambios",
+  "w": "andorra-frontera",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 2562,
+   "ind": [
+    [
+     "Exportación",
+     7
+    ],
+    [
+     "Importación",
+     7
+    ],
+    [
+     "saldo",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 3068,
+   "ind": [
+    [
+     "Exportación",
+     8
+    ],
+    [
+     "Importación",
+     8
+    ],
+    [
+     "saldo",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1814,
+   "ind": [
+    [
+     "Exportación",
+     3
+    ],
+    [
+     "Importación",
+     3
+    ],
+    [
+     "saldo",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "intercambios",
+  "w": "lineas-francia",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 20594,
+   "ind": [
+    [
+     "irun-errondenia-fisicos>Irún - Errondenia",
+     7
+    ],
+    [
+     "irun-errondenia-fisicos>Irún - Errondenia",
+     7
+    ],
+    [
+     "irun-errondenia-fisicos>saldo",
+     7
+    ],
+    [
+     "arkale-argia-fisicos>Arkale - Argia",
+     7
+    ],
+    [
+     "arkale-argia-fisicos>Arkale - Argia",
+     7
+    ],
+    [
+     "arkale-argia-fisicos>saldo",
+     7
+    ],
+    [
+     "hernani-argia-fisicos>Hernani - Argia",
+     7
+    ],
+    [
+     "hernani-argia-fisicos>Hernani - Argia",
+     7
+    ],
+    [
+     "hernani-argia-fisicos>saldo",
+     7
+    ],
+    [
+     "biescas-pragneres-fisicos>Biescas - Pragnéres",
+     7
+    ],
+    [
+     "biescas-pragneres-fisicos>Biescas - Pragnéres",
+     7
+    ],
+    [
+     "biescas-pragneres-fisicos>saldo",
+     7
+    ],
+    [
+     "Benos-Lac-DOo-fisicos>Benós - Lac D'Oo",
+     7
+    ],
+    [
+     "Benos-Lac-DOo-fisicos>Benós - Lac D'Oo",
+     7
+    ],
+    [
+     "Benos-Lac-DOo-fisicos>saldo",
+     7
+    ],
+    [
+     "vic-baixas-fisicos>Vic - Baixas",
+     7
+    ],
+    [
+     "vic-baixas-fisicos>Vic - Baixas",
+     7
+    ],
+    [
+     "vic-baixas-fisicos>saldo",
+     7
+    ],
+    [
+     "santa-llogaia-braixas-fisicos>Santa Llogaia - Baixas",
+     7
+    ],
+    [
+     "santa-llogaia-braixas-fisicos>Santa Llogaia - Braixas",
+     7
+    ],
+    [
+     "santa-llogaia-braixas-fisicos>saldo",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 22809,
+   "ind": [
+    [
+     "irun-errondenia-fisicos>Irún - Errondenia",
+     8
+    ],
+    [
+     "irun-errondenia-fisicos>Irún - Errondenia",
+     8
+    ],
+    [
+     "irun-errondenia-fisicos>saldo",
+     8
+    ],
+    [
+     "arkale-argia-fisicos>Arkale - Argia",
+     8
+    ],
+    [
+     "arkale-argia-fisicos>Arkale - Argia",
+     8
+    ],
+    [
+     "arkale-argia-fisicos>saldo",
+     8
+    ],
+    [
+     "hernani-argia-fisicos>Hernani - Argia",
+     8
+    ],
+    [
+     "hernani-argia-fisicos>Hernani - Argia",
+     8
+    ],
+    [
+     "hernani-argia-fisicos>saldo",
+     8
+    ],
+    [
+     "biescas-pragneres-fisicos>Biescas - Pragnéres",
+     8
+    ],
+    [
+     "biescas-pragneres-fisicos>Biescas - Pragnéres",
+     8
+    ],
+    [
+     "biescas-pragneres-fisicos>saldo",
+     8
+    ],
+    [
+     "Benos-Lac-DOo-fisicos>Benós - Lac D'Oo",
+     8
+    ],
+    [
+     "Benos-Lac-DOo-fisicos>Benós - Lac D'Oo",
+     8
+    ],
+    [
+     "Benos-Lac-DOo-fisicos>saldo",
+     8
+    ],
+    [
+     "vic-baixas-fisicos>Vic - Baixas",
+     8
+    ],
+    [
+     "vic-baixas-fisicos>Vic - Baixas",
+     8
+    ],
+    [
+     "vic-baixas-fisicos>saldo",
+     8
+    ],
+    [
+     "santa-llogaia-braixas-fisicos>Santa Llogaia - Baixas",
+     8
+    ],
+    [
+     "santa-llogaia-braixas-fisicos>Santa Llogaia - Braixas",
+     8
+    ],
+    [
+     "santa-llogaia-braixas-fisicos>saldo",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 14036,
+   "ind": [
+    [
+     "irun-errondenia-fisicos>Irún - Errondenia",
+     3
+    ],
+    [
+     "irun-errondenia-fisicos>Irún - Errondenia",
+     3
+    ],
+    [
+     "irun-errondenia-fisicos>saldo",
+     3
+    ],
+    [
+     "arkale-argia-fisicos>Arkale - Argia",
+     3
+    ],
+    [
+     "arkale-argia-fisicos>Arkale - Argia",
+     3
+    ],
+    [
+     "arkale-argia-fisicos>saldo",
+     3
+    ],
+    [
+     "hernani-argia-fisicos>Hernani - Argia",
+     3
+    ],
+    [
+     "hernani-argia-fisicos>Hernani - Argia",
+     3
+    ],
+    [
+     "hernani-argia-fisicos>saldo",
+     3
+    ],
+    [
+     "biescas-pragneres-fisicos>Biescas - Pragnéres",
+     3
+    ],
+    [
+     "biescas-pragneres-fisicos>Biescas - Pragnéres",
+     3
+    ],
+    [
+     "biescas-pragneres-fisicos>saldo",
+     3
+    ],
+    [
+     "Benos-Lac-DOo-fisicos>Benós - Lac D'Oo",
+     3
+    ],
+    [
+     "Benos-Lac-DOo-fisicos>Benós - Lac D'Oo",
+     3
+    ],
+    [
+     "Benos-Lac-DOo-fisicos>saldo",
+     3
+    ],
+    [
+     "vic-baixas-fisicos>Vic - Baixas",
+     3
+    ],
+    [
+     "vic-baixas-fisicos>Vic - Baixas",
+     3
+    ],
+    [
+     "vic-baixas-fisicos>saldo",
+     3
+    ],
+    [
+     "santa-llogaia-braixas-fisicos>Santa Llogaia - Baixas",
+     3
+    ],
+    [
+     "santa-llogaia-braixas-fisicos>Santa Llogaia - Braixas",
+     3
+    ],
+    [
+     "santa-llogaia-braixas-fisicos>saldo",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "intercambios",
+  "w": "lineas-portugal",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 24563,
+   "ind": [
+    [
+     "cartelle-lindoso-fisicos>Cartelle - Lindoso",
+     7
+    ],
+    [
+     "cartelle-lindoso-fisicos>Cartelle - Lindoso",
+     7
+    ],
+    [
+     "cartelle-lindoso-fisicos>saldo",
+     7
+    ],
+    [
+     "conchas-lindoso-fisicos",
+     0
+    ],
+    [
+     "aldeadavila-lagoaca-fisicos>Aldeadávila - Lagoaça",
+     7
+    ],
+    [
+     "aldeadavila-lagoaca-fisicos>Aldeadávila - Lagoaça",
+     7
+    ],
+    [
+     "aldeadavila-lagoaca-fisicos>saldo",
+     7
+    ],
+    [
+     "aldeadavila-pocinho1-fisicos>Aldeadávila - Pocinho1",
+     7
+    ],
+    [
+     "aldeadavila-pocinho1-fisicos>Aldeadávila - Pocinho1",
+     7
+    ],
+    [
+     "aldeadavila-pocinho1-fisicos>saldo",
+     7
+    ],
+    [
+     "aldeadavila-pocinho2-fisicos>Aldeadávila - Pocinho2",
+     7
+    ],
+    [
+     "aldeadavila-pocinho2-fisicos>Aldeadávila - Pocinho2",
+     7
+    ],
+    [
+     "aldeadavila-pocinho2-fisicos>saldo",
+     7
+    ],
+    [
+     "saucelle-pocinho-fisicos>Saucelle - Pocinho",
+     7
+    ],
+    [
+     "saucelle-pocinho-fisicos>Saucelle - Pocinho",
+     7
+    ],
+    [
+     "saucelle-pocinho-fisicos>saldo",
+     7
+    ],
+    [
+     "cedillo-falagueira-fisicos>Cedillo - Falagueira",
+     7
+    ],
+    [
+     "cedillo-falagueira-fisicos>Cedillo - Falagueira",
+     7
+    ],
+    [
+     "cedillo-falagueira-fisicos>saldo",
+     7
+    ],
+    [
+     "badajoz-alcacovas-fisicos",
+     0
+    ],
+    [
+     "brovales-alqueva-fisicos>Brovales - Alqueva",
+     7
+    ],
+    [
+     "brovales-alqueva-fisicos>Brovales - Alqueva",
+     7
+    ],
+    [
+     "brovales-alqueva-fisicos>saldo",
+     7
+    ],
+    [
+     "encinasola-barrancos-fisicos",
+     0
+    ],
+    [
+     "rosal-ficalho-fisicos",
+     0
+    ],
+    [
+     "puebla-de-guzman-tavira-fisicos>Puebla de Guzmán - Tavira",
+     7
+    ],
+    [
+     "puebla-de-guzman-tavira-fisicos>Puebla de Guzmán - Tavira",
+     7
+    ],
+    [
+     "puebla-de-guzman-tavira-fisicos>saldo",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 29950,
+   "ind": [
+    [
+     "cartelle-lindoso-fisicos>Cartelle - Lindoso",
+     8
+    ],
+    [
+     "cartelle-lindoso-fisicos>Cartelle - Lindoso",
+     8
+    ],
+    [
+     "cartelle-lindoso-fisicos>saldo",
+     8
+    ],
+    [
+     "conchas-lindoso-fisicos>Conchas - Lindoso",
+     5
+    ],
+    [
+     "conchas-lindoso-fisicos>Conchas - Lindoso",
+     5
+    ],
+    [
+     "conchas-lindoso-fisicos>saldo",
+     5
+    ],
+    [
+     "aldeadavila-lagoaca-fisicos>Aldeadávila - Lagoaça",
+     8
+    ],
+    [
+     "aldeadavila-lagoaca-fisicos>Aldeadávila - Lagoaça",
+     8
+    ],
+    [
+     "aldeadavila-lagoaca-fisicos>saldo",
+     8
+    ],
+    [
+     "aldeadavila-pocinho1-fisicos>Aldeadávila - Pocinho1",
+     8
+    ],
+    [
+     "aldeadavila-pocinho1-fisicos>Aldeadávila - Pocinho1",
+     8
+    ],
+    [
+     "aldeadavila-pocinho1-fisicos>saldo",
+     8
+    ],
+    [
+     "aldeadavila-pocinho2-fisicos>Aldeadávila - Pocinho2",
+     8
+    ],
+    [
+     "aldeadavila-pocinho2-fisicos>Aldeadávila - Pocinho2",
+     8
+    ],
+    [
+     "aldeadavila-pocinho2-fisicos>saldo",
+     8
+    ],
+    [
+     "saucelle-pocinho-fisicos>Saucelle - Pocinho",
+     8
+    ],
+    [
+     "saucelle-pocinho-fisicos>Saucelle - Pocinho",
+     8
+    ],
+    [
+     "saucelle-pocinho-fisicos>saldo",
+     8
+    ],
+    [
+     "cedillo-falagueira-fisicos>Cedillo - Falagueira",
+     8
+    ],
+    [
+     "cedillo-falagueira-fisicos>Cedillo - Falagueira",
+     8
+    ],
+    [
+     "cedillo-falagueira-fisicos>saldo",
+     8
+    ],
+    [
+     "badajoz-alcacovas-fisicos",
+     0
+    ],
+    [
+     "brovales-alqueva-fisicos>Brovales - Alqueva",
+     8
+    ],
+    [
+     "brovales-alqueva-fisicos>Brovales - Alqueva",
+     8
+    ],
+    [
+     "brovales-alqueva-fisicos>saldo",
+     8
+    ],
+    [
+     "encinasola-barrancos-fisicos",
+     0
+    ],
+    [
+     "rosal-ficalho-fisicos",
+     0
+    ],
+    [
+     "puebla-de-guzman-tavira-fisicos>Puebla de Guzmán - Tavira",
+     8
+    ],
+    [
+     "puebla-de-guzman-tavira-fisicos>Puebla de Guzmán - Tavira",
+     8
+    ],
+    [
+     "puebla-de-guzman-tavira-fisicos>saldo",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 18797,
+   "ind": [
+    [
+     "cartelle-lindoso-fisicos>Cartelle - Lindoso",
+     3
+    ],
+    [
+     "cartelle-lindoso-fisicos>Cartelle - Lindoso",
+     3
+    ],
+    [
+     "cartelle-lindoso-fisicos>saldo",
+     3
+    ],
+    [
+     "conchas-lindoso-fisicos>Conchas - Lindoso",
+     3
+    ],
+    [
+     "conchas-lindoso-fisicos>Conchas - Lindoso",
+     3
+    ],
+    [
+     "conchas-lindoso-fisicos>saldo",
+     3
+    ],
+    [
+     "aldeadavila-lagoaca-fisicos>Aldeadávila - Lagoaça",
+     3
+    ],
+    [
+     "aldeadavila-lagoaca-fisicos>Aldeadávila - Lagoaça",
+     3
+    ],
+    [
+     "aldeadavila-lagoaca-fisicos>saldo",
+     3
+    ],
+    [
+     "aldeadavila-pocinho1-fisicos>Aldeadávila - Pocinho1",
+     3
+    ],
+    [
+     "aldeadavila-pocinho1-fisicos>Aldeadávila - Pocinho1",
+     3
+    ],
+    [
+     "aldeadavila-pocinho1-fisicos>saldo",
+     3
+    ],
+    [
+     "aldeadavila-pocinho2-fisicos>Aldeadávila - Pocinho2",
+     3
+    ],
+    [
+     "aldeadavila-pocinho2-fisicos>Aldeadávila - Pocinho2",
+     3
+    ],
+    [
+     "aldeadavila-pocinho2-fisicos>saldo",
+     3
+    ],
+    [
+     "saucelle-pocinho-fisicos>Saucelle - Pocinho",
+     3
+    ],
+    [
+     "saucelle-pocinho-fisicos>Saucelle - Pocinho",
+     3
+    ],
+    [
+     "saucelle-pocinho-fisicos>saldo",
+     3
+    ],
+    [
+     "cedillo-falagueira-fisicos>Cedillo - Falagueira",
+     3
+    ],
+    [
+     "cedillo-falagueira-fisicos>Cedillo - Falagueira",
+     3
+    ],
+    [
+     "cedillo-falagueira-fisicos>saldo",
+     3
+    ],
+    [
+     "badajoz-alcacovas-fisicos",
+     0
+    ],
+    [
+     "brovales-alqueva-fisicos>Brovales - Alqueva",
+     3
+    ],
+    [
+     "brovales-alqueva-fisicos>Brovales - Alqueva",
+     3
+    ],
+    [
+     "brovales-alqueva-fisicos>saldo",
+     3
+    ],
+    [
+     "encinasola-barrancos-fisicos",
+     0
+    ],
+    [
+     "rosal-ficalho-fisicos",
+     0
+    ],
+    [
+     "puebla-de-guzman-tavira-fisicos>Puebla de Guzmán - Tavira",
+     3
+    ],
+    [
+     "puebla-de-guzman-tavira-fisicos>Puebla de Guzmán - Tavira",
+     3
+    ],
+    [
+     "puebla-de-guzman-tavira-fisicos>saldo",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "intercambios",
+  "w": "lineas-marruecos",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 3210,
+   "ind": [
+    [
+     "p-de-la-cruz-melloussa-fisicos>P. de la Cruz - Melloussa",
+     7
+    ],
+    [
+     "p-de-la-cruz-melloussa-fisicos>P. de la Cruz - Melloussa",
+     7
+    ],
+    [
+     "p-de-la-cruz-melloussa-fisicos>saldo",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 3688,
+   "ind": [
+    [
+     "p-de-la-cruz-melloussa-fisicos>P. de la Cruz - Melloussa",
+     8
+    ],
+    [
+     "p-de-la-cruz-melloussa-fisicos>P. de la Cruz - Melloussa",
+     8
+    ],
+    [
+     "p-de-la-cruz-melloussa-fisicos>saldo",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 2305,
+   "ind": [
+    [
+     "p-de-la-cruz-melloussa-fisicos>P. de la Cruz - Melloussa",
+     3
+    ],
+    [
+     "p-de-la-cruz-melloussa-fisicos>P. de la Cruz - Melloussa",
+     3
+    ],
+    [
+     "p-de-la-cruz-melloussa-fisicos>saldo",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "intercambios",
+  "w": "lineas-andorra",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 2932,
+   "ind": [
+    [
+     "adrall-margineda-fisicos>Adrall - Margineda",
+     7
+    ],
+    [
+     "adrall-margineda-fisicos>Adrall - Margineda",
+     7
+    ],
+    [
+     "adrall-margineda-fisicos>saldo",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 3444,
+   "ind": [
+    [
+     "adrall-margineda-fisicos>Adrall - Margineda",
+     8
+    ],
+    [
+     "adrall-margineda-fisicos>Adrall - Margineda",
+     8
+    ],
+    [
+     "adrall-margineda-fisicos>saldo",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 2205,
+   "ind": [
+    [
+     "adrall-margineda-fisicos>Adrall - Margineda",
+     3
+    ],
+    [
+     "adrall-margineda-fisicos>Adrall - Margineda",
+     3
+    ],
+    [
+     "adrall-margineda-fisicos>saldo",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "intercambios",
+  "w": "francia-frontera-programado",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 2903,
+   "ind": [
+    [
+     "Exportación",
+     7
+    ],
+    [
+     "Importación",
+     7
+    ],
+    [
+     "saldo",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 3240,
+   "ind": [
+    [
+     "Exportación",
+     8
+    ],
+    [
+     "Importación",
+     8
+    ],
+    [
+     "saldo",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1882,
+   "ind": [
+    [
+     "Exportación",
+     3
+    ],
+    [
+     "Importación",
+     3
+    ],
+    [
+     "saldo",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "intercambios",
+  "w": "portugal-frontera-programado",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 2927,
+   "ind": [
+    [
+     "Exportación",
+     7
+    ],
+    [
+     "Importación",
+     7
+    ],
+    [
+     "saldo",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 3255,
+   "ind": [
+    [
+     "Exportación",
+     8
+    ],
+    [
+     "Importación",
+     8
+    ],
+    [
+     "saldo",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1865,
+   "ind": [
+    [
+     "Exportación",
+     3
+    ],
+    [
+     "Importación",
+     3
+    ],
+    [
+     "saldo",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "intercambios",
+  "w": "marruecos-frontera-programado",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 1848,
+   "ind": [
+    [
+     "Exportación",
+     7
+    ],
+    [
+     "saldo",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 3116,
+   "ind": [
+    [
+     "Exportación",
+     8
+    ],
+    [
+     "Importación",
+     7
+    ],
+    [
+     "saldo",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1867,
+   "ind": [
+    [
+     "Exportación",
+     3
+    ],
+    [
+     "Importación",
+     3
+    ],
+    [
+     "saldo",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "intercambios",
+  "w": "andorra-frontera-programado",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 1820,
+   "ind": [
+    [
+     "Exportación",
+     7
+    ],
+    [
+     "saldo",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 2000,
+   "ind": [
+    [
+     "Exportación",
+     8
+    ],
+    [
+     "saldo",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1244,
+   "ind": [
+    [
+     "Exportación",
+     3
+    ],
+    [
+     "saldo",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "intercambios",
+  "w": "enlace-baleares",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 1062,
+   "ind": [
+    [
+     "Sentido Península-Baleares",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 1151,
+   "ind": [
+    [
+     "Sentido Península-Baleares",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 766,
+   "ind": [
+    [
+     "Sentido Península-Baleares",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "intercambios",
+  "w": "frontera-fisicos",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 2959,
+   "ind": [
+    [
+     "Exportación",
+     7
+    ],
+    [
+     "Importación",
+     7
+    ],
+    [
+     "saldo",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 3270,
+   "ind": [
+    [
+     "Exportación",
+     8
+    ],
+    [
+     "Importación",
+     8
+    ],
+    [
+     "saldo",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1888,
+   "ind": [
+    [
+     "Exportación",
+     3
+    ],
+    [
+     "Importación",
+     3
+    ],
+    [
+     "saldo",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "intercambios",
+  "w": "todas-fronteras-fisicos",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 11542,
+   "ind": [
+    [
+     "francia>Exportación",
+     7
+    ],
+    [
+     "francia>Importación",
+     7
+    ],
+    [
+     "francia>saldo",
+     7
+    ],
+    [
+     "portugal>Exportación",
+     7
+    ],
+    [
+     "portugal>Importación",
+     7
+    ],
+    [
+     "portugal>saldo",
+     7
+    ],
+    [
+     "marruecos>Exportación",
+     7
+    ],
+    [
+     "marruecos>Importación",
+     7
+    ],
+    [
+     "marruecos>saldo",
+     7
+    ],
+    [
+     "andorra>Exportación",
+     7
+    ],
+    [
+     "andorra>Importación",
+     7
+    ],
+    [
+     "andorra>saldo",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 13169,
+   "ind": [
+    [
+     "francia>Exportación",
+     8
+    ],
+    [
+     "francia>Importación",
+     8
+    ],
+    [
+     "francia>saldo",
+     8
+    ],
+    [
+     "portugal>Exportación",
+     8
+    ],
+    [
+     "portugal>Importación",
+     8
+    ],
+    [
+     "portugal>saldo",
+     8
+    ],
+    [
+     "marruecos>Exportación",
+     8
+    ],
+    [
+     "marruecos>Importación",
+     8
+    ],
+    [
+     "marruecos>saldo",
+     8
+    ],
+    [
+     "andorra>Exportación",
+     8
+    ],
+    [
+     "andorra>Importación",
+     8
+    ],
+    [
+     "andorra>saldo",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 7811,
+   "ind": [
+    [
+     "francia>Exportación",
+     3
+    ],
+    [
+     "francia>Importación",
+     3
+    ],
+    [
+     "francia>saldo",
+     3
+    ],
+    [
+     "portugal>Exportación",
+     3
+    ],
+    [
+     "portugal>Importación",
+     3
+    ],
+    [
+     "portugal>saldo",
+     3
+    ],
+    [
+     "marruecos>Exportación",
+     3
+    ],
+    [
+     "marruecos>Importación",
+     3
+    ],
+    [
+     "marruecos>saldo",
+     3
+    ],
+    [
+     "andorra>Exportación",
+     3
+    ],
+    [
+     "andorra>Importación",
+     3
+    ],
+    [
+     "andorra>saldo",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "intercambios",
+  "w": "frontera-programados",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 2976,
+   "ind": [
+    [
+     "Exportación",
+     7
+    ],
+    [
+     "Importación",
+     7
+    ],
+    [
+     "saldo",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 3258,
+   "ind": [
+    [
+     "Exportación",
+     8
+    ],
+    [
+     "Importación",
+     8
+    ],
+    [
+     "saldo",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1907,
+   "ind": [
+    [
+     "Exportación",
+     3
+    ],
+    [
+     "Importación",
+     3
+    ],
+    [
+     "saldo",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "intercambios",
+  "w": "todas-fronteras-programados",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 200,
+   "bytes": 9723,
+   "ind": [
+    [
+     "francia>Exportación",
+     7
+    ],
+    [
+     "francia>Importación",
+     7
+    ],
+    [
+     "francia>saldo",
+     7
+    ],
+    [
+     "portugal>Exportación",
+     7
+    ],
+    [
+     "portugal>Importación",
+     7
+    ],
+    [
+     "portugal>saldo",
+     7
+    ],
+    [
+     "marruecos>Exportación",
+     7
+    ],
+    [
+     "marruecos>saldo",
+     7
+    ],
+    [
+     "andorra>Exportación",
+     7
+    ],
+    [
+     "andorra>saldo",
+     7
+    ]
+   ]
+  },
+  "month": {
+   "st": 200,
+   "bytes": 11906,
+   "ind": [
+    [
+     "francia>Exportación",
+     8
+    ],
+    [
+     "francia>Importación",
+     8
+    ],
+    [
+     "francia>saldo",
+     8
+    ],
+    [
+     "portugal>Exportación",
+     8
+    ],
+    [
+     "portugal>Importación",
+     8
+    ],
+    [
+     "portugal>saldo",
+     8
+    ],
+    [
+     "marruecos>Exportación",
+     8
+    ],
+    [
+     "marruecos>Importación",
+     7
+    ],
+    [
+     "marruecos>saldo",
+     8
+    ],
+    [
+     "andorra>Exportación",
+     8
+    ],
+    [
+     "andorra>saldo",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 7149,
+   "ind": [
+    [
+     "francia>Exportación",
+     3
+    ],
+    [
+     "francia>Importación",
+     3
+    ],
+    [
+     "francia>saldo",
+     3
+    ],
+    [
+     "portugal>Exportación",
+     3
+    ],
+    [
+     "portugal>Importación",
+     3
+    ],
+    [
+     "portugal>saldo",
+     3
+    ],
+    [
+     "marruecos>Exportación",
+     3
+    ],
+    [
+     "marruecos>Importación",
+     3
+    ],
+    [
+     "marruecos>saldo",
+     3
+    ],
+    [
+     "andorra>Exportación",
+     3
+    ],
+    [
+     "andorra>saldo",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "transporte",
+  "w": "energia-no-suministrada-ens",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 1272,
+   "ind": [
+    [
+     "Energía no suministrada",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 911,
+   "ind": [
+    [
+     "Energía no suministrada",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "transporte",
+  "w": "indice-indisponibilidad",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 7732,
+   "ind": [
+    [
+     "Programada por mantenimiento preventivo y predictivo",
+     8
+    ],
+    [
+     "Programada por causas ajenas al mantenimiento",
+     8
+    ],
+    [
+     "No programada debida a mantenimiento correctivo",
+     8
+    ],
+    [
+     "No programada debida a circunstancias fortuitas",
+     8
+    ],
+    [
+     "Causa de fuerza mayor o acciones de terceros",
+     8
+    ],
+    [
+     "Sin clasificar",
+     8
+    ],
+    [
+     "Indisponibilidad mensual total de la red de transporte",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 4673,
+   "ind": [
+    [
+     "Programada por mantenimiento preventivo y predictivo",
+     3
+    ],
+    [
+     "Programada por causas ajenas al mantenimiento",
+     3
+    ],
+    [
+     "No programada debida a mantenimiento correctivo",
+     3
+    ],
+    [
+     "No programada debida a circunstancias fortuitas",
+     3
+    ],
+    [
+     "Causa de fuerza mayor o acciones de terceros",
+     3
+    ],
+    [
+     "Sin clasificar",
+     3
+    ],
+    [
+     "Indisponibilidad anual total de la red de transporte",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "transporte",
+  "w": "tiempo-interrupcion-medio-tim",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 1368,
+   "ind": [
+    [
+     "Tiempo de interrupción medio mensual",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 947,
+   "ind": [
+    [
+     "Tiempo de interrupción medio anual",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "transporte",
+  "w": "kilometros-lineas",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 2766,
+   "ind": [
+    [
+     "km de circuito a 400 kV",
+     8
+    ],
+    [
+     "km de circuito a 220 kV",
+     8
+    ],
+    [
+     "km de circuito hasta 132 kV",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1826,
+   "ind": [
+    [
+     "km de circuito a 400 kV",
+     3
+    ],
+    [
+     "km de circuito a 220 kV",
+     3
+    ],
+    [
+     "km de circuito hasta 132 kV",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "transporte",
+  "w": "indice-disponibilidad",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 1400,
+   "ind": [
+    [
+     "Disponibilidad mensual total de la red de transporte",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1027,
+   "ind": [
+    [
+     "Disponibilidad anual total de la red de transporte",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "transporte",
+  "w": "numero-cortes",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 1514,
+   "ind": [
+    [
+     "Número de cortes>Número de cortes",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1173,
+   "ind": [
+    [
+     "Número de cortes>Número de cortes",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "transporte",
+  "w": "ens-tim",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 9164,
+   "ind": [
+    [
+     "Nacional>Energía no suministrada (Nacional)",
+     8
+    ],
+    [
+     "Nacional>Tiempo de interrupción medio (National)",
+     8
+    ],
+    [
+     "Peninsular>Energía no suministrada (Peninsular)",
+     8
+    ],
+    [
+     "Peninsular>Tiempo de interrupción medio (Peninsular)",
+     8
+    ],
+    [
+     "Baleares>Energía no suministrada (Baleares)",
+     8
+    ],
+    [
+     "Baleares>Tiempo de interrupción medio (Baleares)",
+     8
+    ],
+    [
+     "Canarias>Energía no suministrada (Canarias)",
+     8
+    ],
+    [
+     "Canarias>Tiempo de interrupción medio (Canarias)",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 6123,
+   "ind": [
+    [
+     "Nacional>Energía no suministrada (Nacional)",
+     3
+    ],
+    [
+     "Nacional>Tiempo de interrupción medio (National)",
+     3
+    ],
+    [
+     "Peninsular>Energía no suministrada (Peninsular)",
+     3
+    ],
+    [
+     "Peninsular>Tiempo de interrupción medio (Peninsular)",
+     3
+    ],
+    [
+     "Baleares>Energía no suministrada (Baleares)",
+     3
+    ],
+    [
+     "Baleares>Tiempo de interrupción medio (Baleares)",
+     3
+    ],
+    [
+     "Canarias>Energía no suministrada (Canarias)",
+     3
+    ],
+    [
+     "Canarias>Tiempo de interrupción medio (Canarias)",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "transporte",
+  "w": "indice-disponibilidad-total",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 1281,
+   "ind": [
+    [
+     "Índice de disponibilidad",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 502,
+   "bytes": 169
+  }
+ },
+ {
+  "cat": "mercados",
+  "w": "componentes-precio-energia-cierre-desglose",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 15722,
+   "ind": [
+    [
+     "Mercados>Mercado diario",
+     8
+    ],
+    [
+     "Mercados>Mercado intradiario (subastas MIBEL y continuo)",
+     8
+    ],
+    [
+     "Servicios-ajuste>Restricciones técnicas PDBF",
+     8
+    ],
+    [
+     "Servicios-ajuste>Banda de regulación secundaria",
+     8
+    ],
+    [
+     "Servicios-ajuste>Restricciones técnicas en tiempo real",
+     8
+    ],
+    [
+     "Servicios-ajuste>Incumplimiento de energía de balance",
+     8
+    ],
+    [
+     "Servicios-ajuste>Coste desvíos",
+     8
+    ],
+    [
+     "Servicios-ajuste>Saldo desvíos",
+     8
+    ],
+    [
+     "Servicios-ajuste>Control del factor de potencia",
+     8
+    ],
+    [
+     "Servicios-ajuste>Saldo PO 14.6",
+     8
+    ],
+    [
+     "Servicios-ajuste>Servicios de ajuste",
+     8
+    ],
+    [
+     "Servicios-pagos>Pagos por capacidad",
+     8
+    ],
+    [
+     "Precio total>Precio total (€/MWh)",
+     8
+    ],
+    [
+     "Energia>Energía de cierre (MWh)",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 10117,
+   "ind": [
+    [
+     "Mercados>Mercado diario",
+     3
+    ],
+    [
+     "Mercados>Mercado intradiario (subastas MIBEL y continuo)",
+     3
+    ],
+    [
+     "Servicios-ajuste>Restricciones técnicas PDBF",
+     3
+    ],
+    [
+     "Servicios-ajuste>Banda de regulación secundaria",
+     3
+    ],
+    [
+     "Servicios-ajuste>Restricciones técnicas en tiempo real",
+     3
+    ],
+    [
+     "Servicios-ajuste>Incumplimiento de energía de balance",
+     3
+    ],
+    [
+     "Servicios-ajuste>Coste desvíos",
+     3
+    ],
+    [
+     "Servicios-ajuste>Saldo desvíos",
+     3
+    ],
+    [
+     "Servicios-ajuste>Control del factor de potencia",
+     3
+    ],
+    [
+     "Servicios-ajuste>Saldo PO 14.6",
+     3
+    ],
+    [
+     "Servicios-ajuste>Servicios de ajuste",
+     3
+    ],
+    [
+     "Servicios-pagos>Pagos por capacidad",
+     3
+    ],
+    [
+     "Servicios-pagos>Mecanismo ajuste RD-L 10/2022",
+     2
+    ],
+    [
+     "Precio total>Precio total (€/MWh)",
+     3
+    ],
+    [
+     "Energia>Energía de cierre (MWh)",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "mercados",
+  "w": "componentes-precio",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 500,
+   "bytes": 169
+  },
+  "year": {
+   "st": 502,
+   "bytes": 169
+  }
+ },
+ {
+  "cat": "mercados",
+  "w": "energia-gestionada-servicios-ajuste",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 4090,
+   "ind": [
+    [
+     "Energía programada por seguridad a subir",
+     8
+    ],
+    [
+     "Energía programada por seguridad a bajar",
+     8
+    ],
+    [
+     "Energía de balance a subir",
+     8
+    ],
+    [
+     "Energía de balance a bajar",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 2549,
+   "ind": [
+    [
+     "Energía programada por seguridad a subir",
+     3
+    ],
+    [
+     "Energía programada por seguridad a bajar",
+     3
+    ],
+    [
+     "Energía de balance a subir",
+     3
+    ],
+    [
+     "Energía de balance a bajar",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "mercados",
+  "w": "energia-restricciones",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 4657,
+   "ind": [
+    [
+     "Energía a subir restricciones técnicas al PDBF (fase I)",
+     8
+    ],
+    [
+     "Energía a bajar restricciones técnicas al PDBF (fase I)",
+     8
+    ],
+    [
+     "Energía a subir restricciones en tiempo real",
+     8
+    ],
+    [
+     "Energía a bajar restricciones en tiempo real",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 2769,
+   "ind": [
+    [
+     "Energía a subir restricciones técnicas al PDBF (fase I)",
+     3
+    ],
+    [
+     "Energía a bajar restricciones técnicas al PDBF (fase I)",
+     3
+    ],
+    [
+     "Energía a subir restricciones en tiempo real",
+     3
+    ],
+    [
+     "Energía a bajar restricciones en tiempo real",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "mercados",
+  "w": "precios-restricciones",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 5286,
+   "ind": [
+    [
+     "Precios PDBF>Precio PDBF a subir",
+     8
+    ],
+    [
+     "Precios PDBF>Precio PDBF a bajar",
+     8
+    ],
+    [
+     "Precios TR>Precio tiempo real a subir",
+     8
+    ],
+    [
+     "Precios TR>Precio tiempo real a bajar",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 3207,
+   "ind": [
+    [
+     "Precios PDBF>Precio PDBF a subir",
+     3
+    ],
+    [
+     "Precios PDBF>Precio PDBF a bajar",
+     3
+    ],
+    [
+     "Precios TR>Precio tiempo real a subir",
+     3
+    ],
+    [
+     "Precios TR>Precio tiempo real a bajar",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "mercados",
+  "w": "reserva-potencia-adicional",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 502,
+   "bytes": 169
+  },
+  "year": {
+   "st": 502,
+   "bytes": 169
+  }
+ },
+ {
+  "cat": "mercados",
+  "w": "banda-regulacion-secundaria",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 3379,
+   "ind": [
+    [
+     "Potencia a subir",
+     8
+    ],
+    [
+     "Potencia a bajar",
+     8
+    ],
+    [
+     "Precio medio (€/MWh)",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1927,
+   "ind": [
+    [
+     "Potencia a subir",
+     3
+    ],
+    [
+     "Potencia a bajar",
+     3
+    ],
+    [
+     "Precio medio (€/MWh)",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "mercados",
+  "w": "energia-precios-regulacion-secundaria",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 4299,
+   "ind": [
+    [
+     "Energía de regulación secundaria subir",
+     8
+    ],
+    [
+     "Energía de regulación secundaria bajar",
+     8
+    ],
+    [
+     "Precio a subir regulación secundaria (€/MWh)",
+     8
+    ],
+    [
+     "Precio a bajar regulación secundaria (€/MWh)",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 2682,
+   "ind": [
+    [
+     "Energía de regulación secundaria subir",
+     3
+    ],
+    [
+     "Energía de regulación secundaria bajar",
+     3
+    ],
+    [
+     "Precio a subir regulación secundaria (€/MWh)",
+     3
+    ],
+    [
+     "Precio a bajar regulación secundaria (€/MWh)",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "mercados",
+  "w": "energia-precios-regulacion-terciaria",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 4341,
+   "ind": [
+    [
+     "Energía de regulación terciaria subir",
+     8
+    ],
+    [
+     "Energía de regulación terciaria bajar",
+     8
+    ],
+    [
+     "Precio a subir regulación terciaria (€/MWh)",
+     8
+    ],
+    [
+     "Precio a bajar regulación terciaria (€/MWh)",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 2718,
+   "ind": [
+    [
+     "Energía de regulación terciaria subir",
+     3
+    ],
+    [
+     "Energía de regulación terciaria bajar",
+     3
+    ],
+    [
+     "Precio a subir regulación terciaria (€/MWh)",
+     3
+    ],
+    [
+     "Precio a bajar regulación terciaria (€/MWh)",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "mercados",
+  "w": "energia-precios-gestion-desvios",
+  "hour": {
+   "st": 500,
+   "bytes": 841
+  },
+  "day": {
+   "st": 500,
+   "bytes": 841
+  },
+  "month": {
+   "st": 500,
+   "bytes": 841
+  },
+  "year": {
+   "st": 500,
+   "bytes": 841
+  }
+ },
+ {
+  "cat": "mercados",
+  "w": "coste-servicios-ajuste",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 1305,
+   "ind": [
+    [
+     "Coste de servicios de ajuste (€)",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 873,
+   "ind": [
+    [
+     "Coste de servicios de ajuste (€)",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "mercados",
+  "w": "volumen-energia-servicios-ajuste-variacion",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 2304,
+   "ind": [
+    [
+     "Volumen de energía de servicios de ajuste",
+     8
+    ],
+    [
+     "Variación volumen de energía de servicios de ajuste",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1482,
+   "ind": [
+    [
+     "Volumen de energía de servicios de ajuste",
+     3
+    ],
+    [
+     "Variación volumen de energía de servicios de ajuste",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "mercados",
+  "w": "precios-mercados-tiempo-real",
+  "hour": {
+   "st": 200,
+   "bytes": 10485,
+   "ind": [
+    [
+     "PVPC",
+     24
+    ],
+    [
+     "Precio mercado spot",
+     96
+    ]
+   ]
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 400,
+   "bytes": 169
+  },
+  "year": {
+   "st": 400,
+   "bytes": 169
+  }
+ },
+ {
+  "cat": "mercados",
+  "w": "energia-precios-ponderados-gestion-desvios-before",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 2896,
+   "ind": [
+    [
+     "Before Balance RR",
+     0
+    ],
+    [
+     "Precio a subir gestión desvíos>Precio a subir gestión desvíos",
+     8
+    ],
+    [
+     "Valores div 2",
+     0
+    ],
+    [
+     "Precio a bajar gestión desvíos>Precio a bajar gestión desvíos",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 2355,
+   "ind": [
+    [
+     "Before Balance RR",
+     0
+    ],
+    [
+     "Precio a subir gestión desvíos>Precio a subir gestión desvíos",
+     3
+    ],
+    [
+     "Valores div 2",
+     0
+    ],
+    [
+     "Precio a bajar gestión desvíos>Precio a bajar gestión desvíos",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "mercados",
+  "w": "energia-precios-ponderados-gestion-desvios",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 4030,
+   "ind": [
+    [
+     "Balance RR",
+     0
+    ],
+    [
+     "Precio a subir gestión desvíos>Precio a subir gestión desvíos",
+     8
+    ],
+    [
+     "Valores div 2",
+     0
+    ],
+    [
+     "Precio a bajar gestión desvíos>Precio a bajar gestión desvíos",
+     8
+    ],
+    [
+     "714+715",
+     0
+    ],
+    [
+     "666+667>Divisor",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 3824,
+   "ind": [
+    [
+     "Balance RR",
+     0
+    ],
+    [
+     "Precio a subir gestión desvíos>Precio a subir gestión desvíos",
+     3
+    ],
+    [
+     "Valores div 2",
+     0
+    ],
+    [
+     "Precio a bajar gestión desvíos>Precio a bajar gestión desvíos",
+     3
+    ],
+    [
+     "714+715>Precio energías de balance RR",
+     3
+    ],
+    [
+     "666+667>Divisor",
+     3
+    ]
+   ]
+  }
+ },
+ {
+  "cat": "mercados",
+  "w": "energia-precios-ponderados-gestion-desvios-after",
+  "hour": {
+   "st": 400,
+   "bytes": 169
+  },
+  "day": {
+   "st": 400,
+   "bytes": 169
+  },
+  "month": {
+   "st": 200,
+   "bytes": 1408,
+   "ind": [
+    [
+     "Balance RR",
+     0
+    ],
+    [
+     "666+667>Divisor",
+     8
+    ]
+   ]
+  },
+  "year": {
+   "st": 200,
+   "bytes": 1770,
+   "ind": [
+    [
+     "Balance RR>Precio energías de balance RR",
+     3
+    ],
+    [
+     "666+667>Divisor",
+     3
+    ]
+   ]
+  }
+ }
+]

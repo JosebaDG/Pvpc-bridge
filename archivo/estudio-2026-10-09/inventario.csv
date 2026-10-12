@@ -1,0 +1,47 @@
+ruta,tipo,bytes,sha256,procedencia
+README.md,documento,4691,e7feccf4ad3c9850a8a766895a5c2cb5730ed2d1d3ddee77a1e1b25dc4e84c06,escrito para el repositorio el 12-10-2026
+fuentes.md,documento,1960,801d2f09f69d7962c7265e3c161e5485ac15b3abd9f0530be4aa07d1d791e05b,escrito para el repositorio el 12-10-2026
+graficas/pvpc_2026-10-09_eje_cada_2h.png,derivado,58354,d0a3ea5e784bc8103f8a2c7f8d1ae7c7088f795cd25d19a5bf01d30e7240725a,gráfica de puente_luz.py del 9-10-2026 (antes de corregir el eje)
+graficas/pvpc_2026-10-09_eje_cada_hora.png,derivado,101453,6d5f223f0466a2eadc07606f4dac3a2240cce1ffa1aa549676d5ab75cbc9e29e,gráfica de puente_luz.py del 9-10-2026 (después de corregir el eje)
+informe_api_redata.md,documento,11528,1a1d847fa3c1c78f075b4cde2e2721a325b11cb55c21ae69ea66e4d2639b2062,"informe del 9-10-2026 (tarea 'Históricos y volumen de datos de REData'), con una nota añadida el 12-10-2026"
+registros/sondeo_widgets/log.txt,registro,9142,06a6d5277b4a577d5ab902b16ae9abdbbd4c6a1e257d2f8fe3114cc8d85fde65,salida de sondeo_widgets.py (estado y número de valores por widget)
+registros/sondeo_widgets/results.json,registro,69325,19d4e90b406ce7a520f01dd4bf844f1b6cc132b580f17d79de6887366ab92f4c,salida de sondeo_widgets.py (estado y número de valores por widget)
+respuestas/errores/bal_hour_recent.json,respuesta de error,169,8d56fd5824bddb5af3adf703bbc377209e00bdfa24759077e6ff51b3570f673e,respuesta de error de REData del estudio (400/502 en JSON o 500 en HTML); prueba de límites
+respuestas/errores/balance_hour.json,respuesta de error,169,8d56fd5824bddb5af3adf703bbc377209e00bdfa24759077e6ff51b3570f673e,respuesta de error de REData del estudio (400/502 en JSON o 500 en HTML); prueba de límites
+respuestas/errores/comp_precio.json,respuesta de error,169,8d56fd5824bddb5af3adf703bbc377209e00bdfa24759077e6ff51b3570f673e,respuesta de error de REData del estudio (400/502 en JSON o 500 en HTML); prueba de límites
+respuestas/errores/dem_evol_hour.json,respuesta de error,169,8d56fd5824bddb5af3adf703bbc377209e00bdfa24759077e6ff51b3570f673e,respuesta de error de REData del estudio (400/502 en JSON o 500 en HTML); prueba de límites
+respuestas/errores/evol_ren_hour_recent.json,respuesta de error,169,8d56fd5824bddb5af3adf703bbc377209e00bdfa24759077e6ff51b3570f673e,respuesta de error de REData del estudio (400/502 en JSON o 500 en HTML); prueba de límites
+respuestas/errores/g.json,respuesta de error,169,8d56fd5824bddb5af3adf703bbc377209e00bdfa24759077e6ff51b3570f673e,respuesta de error de REData del estudio (400/502 en JSON o 500 en HTML); prueba de límites
+respuestas/errores/gen_1d.json,respuesta de error,169,8d56fd5824bddb5af3adf703bbc377209e00bdfa24759077e6ff51b3570f673e,respuesta de error de REData del estudio (400/502 en JSON o 500 en HTML); prueba de límites
+respuestas/errores/gen_hour_1d.json,respuesta de error,169,8d56fd5824bddb5af3adf703bbc377209e00bdfa24759077e6ff51b3570f673e,respuesta de error de REData del estudio (400/502 en JSON o 500 en HTML); prueba de límites
+respuestas/errores/gen_hour_recent.json,respuesta de error,169,8d56fd5824bddb5af3adf703bbc377209e00bdfa24759077e6ff51b3570f673e,respuesta de error de REData del estudio (400/502 en JSON o 500 en HTML); prueba de límites
+respuestas/errores/gen_hour_recent_pen.json,respuesta de error,169,8d56fd5824bddb5af3adf703bbc377209e00bdfa24759077e6ff51b3570f673e,respuesta de error de REData del estudio (400/502 en JSON o 500 en HTML); prueba de límites
+respuestas/errores/gen_ren_hour.json,respuesta de error,169,8d56fd5824bddb5af3adf703bbc377209e00bdfa24759077e6ff51b3570f673e,respuesta de error de REData del estudio (400/502 en JSON o 500 en HTML); prueba de límites
+respuestas/errores/gen_rt.json,respuesta de error,975,7040afb967661220d0c67433c737ebbd255094f89bcdd7ab8c84bc30466f427a,respuesta de error de REData del estudio (400/502 en JSON o 500 en HTML); prueba de límites
+respuestas/errores/gen_rt2.json,respuesta de error,974,aa0da464a13b3699d4981f70dfc09764cbeecef1366e16a03a0b0994b485753f,respuesta de error de REData del estudio (400/502 en JSON o 500 en HTML); prueba de límites
+respuestas/errores/h.json,respuesta de error,169,755fe5a97ad78ca7ca59028f95b5a6a918882901229b93761481b4c38bb65369,respuesta de error de REData del estudio (400/502 en JSON o 500 en HTML); prueba de límites
+respuestas/errores/inst.json,respuesta de error,976,cc32986eee4ecb8d197b603351f8cd01e909b6a94e8329abed350d747d5aa524,respuesta de error de REData del estudio (400/502 en JSON o 500 en HTML); prueba de límites
+respuestas/errores/ren_hour_recent.json,respuesta de error,169,8d56fd5824bddb5af3adf703bbc377209e00bdfa24759077e6ff51b3570f673e,respuesta de error de REData del estudio (400/502 en JSON o 500 en HTML); prueba de límites
+respuestas/esios/archivo70/arch70_2021-06-01.json,respuesta real,9498,b0364f000a4bd3b1ed5f4890aa7b555b5f2a6c0b4f84463a7976af729ac39b81,"archivo 70 de ESIOS (PVPC desglosado), descargado sin token el 9-10-2026"
+respuestas/esios/archivo70/arch70_2025-12-08.json,respuesta real,10226,d427cc64e25155311f0df77c23625e5f79581fe9e8cce97c308887e7875caf39,"archivo 70 de ESIOS (PVPC desglosado), descargado sin token el 9-10-2026"
+respuestas/esios/archivo70/arch70_2026-01-06.json,respuesta real,10276,b79d54ef21fa2b10d3e5109e37e949735cff62410dd9e95aa1128a4aa8ca8b5e,"archivo 70 de ESIOS (PVPC desglosado), descargado sin token el 9-10-2026"
+respuestas/esios/archivo70/arch70_2026-04-03.json,respuesta real,10292,55e47495dd137db35ebc0e0cb0adf4037937b3066e018be4442124e2f09ad44c,"archivo 70 de ESIOS (PVPC desglosado), descargado sin token el 9-10-2026"
+respuestas/esios/archivo70/arch70_2026-05-01.json,respuesta real,10282,f68c2c87727221491714c537091ff728b66ae0c2c659702e8aa197ab84d2d825,"archivo 70 de ESIOS (PVPC desglosado), descargado sin token el 9-10-2026"
+respuestas/esios/archivo70/arch70_2026-09-26.json,respuesta real,10346,384232571457e30649f8f095ca6b50c5fe9fa7f85ba44cee2ac92e2101f31a44,"archivo 70 de ESIOS (PVPC desglosado), descargado sin token el 9-10-2026"
+respuestas/esios/archivo70/arch70_2026-10-08.json,respuesta real,10372,bfa8b61c70ef380607c2afb8e399a8cf977079ea1124cbdb4666cd12a203ded3,"archivo 70 de ESIOS (PVPC desglosado), descargado sin token el 9-10-2026"
+respuestas/esios/archivo70/arch70_2026-10-09.json,respuesta real,10388,a582a614a348f90350c9c1d247e31c07395b3119152fcb62d707249d1b1cc2c9,"archivo 70 de ESIOS (PVPC desglosado), descargado sin token el 9-10-2026"
+respuestas/esios/e2_403.json,respuesta de error,36,cc83fff97ae19555d8daa797e8f30ba190c6bf289c74de154a1edc615f7d99e1,403 Forbidden de ESIOS al pedir fechas sin token
+respuestas/esios/e_403.json,respuesta de error,36,cc83fff97ae19555d8daa797e8f30ba190c6bf289c74de154a1edc615f7d99e1,403 Forbidden de ESIOS al pedir fechas sin token
+respuestas/esios/indicadores_sin_token.json,respuesta real,1773350,a3b6fcb205751adda1bcbe94abfbf166ac0e8ec476ebc35197935352d1f42cf6,lista de indicadores de ESIOS pedida sin token
+respuestas/redata/balance_day.json,respuesta real,24619,32a44a63092405ce2a92ad427a6c032fb168bd4b7d7c7f7ce28bf382961e602e,respuesta real de REData del estudio; URL deducida (semilla_inferida en datos/consultas/indice.json)
+respuestas/redata/co2_2026-09.json,respuesta real,142715,8a7663fead082ca1ad8fb1d1aaf87971eedc753ee0927bae672a269bec1963f5,respuesta real de REData del estudio; URL deducida (semilla_inferida en datos/consultas/indice.json)
+respuestas/redata/comp_precio_h.json,respuesta real,7107,6e6671e5a3b91ae758fe018220d95c093f98790b315e6c6574fe1758d7831c22,"respuesta real de REData del estudio; URL exacta desconocida (componentes del precio, 1-9-2026)"
+respuestas/redata/dem_1d.json,respuesta real,79966,f26ad7649650c0b61c58d21f9089cdf781970b9decd4f56ee29ded1e9b0f5f50,respuesta real de REData del estudio; URL deducida (semilla_inferida en datos/consultas/indice.json)
+respuestas/redata/dem_rt_recent.json,respuesta real,106607,af2613e1afccb003fc06e18dc43261f2274fe84d521d42b7a4919330b5eb28d7,respuesta real de REData del estudio; URL deducida (semilla_inferida en datos/consultas/indice.json)
+respuestas/redata/gen_2025_day.json,respuesta real,559704,181d8ff0adfecfa5bcfcdcd15a39475f98398bf5859229d2789cf2fe0b0b79e5,respuesta real de REData del estudio; URL deducida (semilla_inferida en datos/consultas/indice.json)
+respuestas/redata/gen_day.json,respuesta real,15021,34a3e1613f35fd034dcaf73819d348377b071e4338bdc5d8cf651b295153c860,respuesta real de REData del estudio; URL deducida (semilla_inferida en datos/consultas/indice.json)
+respuestas/redata/pvpc_1d.json,respuesta real,10467,c5acd4aa9965f0fe10e973b1c506654ae0895d135d6c385ee4a57b01cda88b8b,respuesta real de REData del estudio; URL deducida (semilla_inferida en datos/consultas/indice.json)
+respuestas/redata/pvpc_2026-09.json,respuesta real,291393,ab6a99faaeef1cda8f9da2eac16bc6b84afa662dd35c1952d24578bb215efb5b,respuesta real de REData del estudio; URL deducida (semilla_inferida en datos/consultas/indice.json)
+scripts/comprobar_fechas_inicio.py,script,1767,58fb2f1c3dbf5ba85a5228c0d8dc1f84a66bfc468be817ea7d53d20a8544bd31,"comprobación de desde cuándo hay PVPC, spot y generación"
+scripts/ejemplo_guia.py,script,1526,b7560d5b787b2b775936cbf1270862a0fbacc7fc53730554fea5d4e25b3ccdc8,ejemplo probado de la guía
+scripts/sondeo_widgets.py,script,3774,7f8804274133a5337b05b121ae2ab561b962ced3d09b59739ec9e408617ed02c,sondeo de todos los widgets en 4 pasos de tiempo; ruta de salida cambiada a la carpeta actual

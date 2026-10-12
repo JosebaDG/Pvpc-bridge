@@ -1,0 +1,508 @@
+{
+ "generado_en": "2026-10-12T13:02:02+00:00",
+ "aviso_fuente": "Fuente de los datos de precios y generación: Red Eléctrica (REE), REData, https://www.ree.es/es/datos/apidatos. Uso informativo y no comercial según el aviso legal de REE (https://www.ree.es/es/aviso-legal). Datos meteorológicos: Open-Meteo.com, CC BY 4.0.",
+ "generado_por": "datos/herramientas/actualizar_historico.py",
+ "indice_de_consultas": "datos/consultas/indice.json",
+ "series": [
+  {
+   "id": "pvpc_peninsula_horario",
+   "descripcion": "PVPC 2.0TD, península, por horas (indicador 1001)",
+   "primer_dato_disponible": "2021-06-01",
+   "paso": "1 hora",
+   "fuente": "Red Eléctrica (REE), REData",
+   "fuente_url": "https://www.ree.es/es/datos/apidatos",
+   "endpoint": "https://apidatos.ree.es/es/datos/mercados/precios-mercados-tiempo-real",
+   "parametros": {
+    "time_trunc": "hour",
+    "start_date": "AAAA-MM-01T00:00",
+    "end_date": "último día del mes T23:59"
+   },
+   "troceo": "una petición por mes natural (tope de REData: 31 días)",
+   "unidad": "EUR/MWh, sin impuestos",
+   "consultas_en_cache": 154,
+   "consultas_semilla_inferida": 1,
+   "descargado_entre": [
+    "2026-10-09T11:13:06+00:00",
+    "2026-10-12T12:55:51+00:00"
+   ],
+   "bytes_json_descargados": 16860754,
+   "ultima_actualizacion_declarada_por_ree": "2026-10-12T14:11:43.000+02:00",
+   "archivos": [
+    {
+     "ruta": "datos/historico/pvpc_peninsula_horario/2021.csv",
+     "registros": 5137,
+     "bytes": 276591,
+     "sha256": "1c932e8eecce7247850fcb5c9e2796d310613556abc232be774772d8f77542f9",
+     "desde": "2021-06-01T00:00:00+02:00",
+     "hasta": "2021-12-31T23:00:00+01:00"
+    },
+    {
+     "ruta": "datos/historico/pvpc_peninsula_horario/2022.csv",
+     "registros": 8760,
+     "bytes": 471735,
+     "sha256": "501fefddbb668fe7247e36822859e4082ddd2503982ee3619fbe8e627d1eefd9",
+     "desde": "2022-01-01T00:00:00+01:00",
+     "hasta": "2022-12-31T23:00:00+01:00"
+    },
+    {
+     "ruta": "datos/historico/pvpc_peninsula_horario/2023.csv",
+     "registros": 8760,
+     "bytes": 470328,
+     "sha256": "8115674676c6c3681285dcf8fd1fb98add41edd375778d5d89ef52f207f56c70",
+     "desde": "2023-01-01T00:00:00+01:00",
+     "hasta": "2023-12-31T23:00:00+01:00"
+    },
+    {
+     "ruta": "datos/historico/pvpc_peninsula_horario/2024.csv",
+     "registros": 8784,
+     "bytes": 470524,
+     "sha256": "6cfe1ef6ab1db1c6ae7fc3c4f058e424a70803c0a2ba5e675635a7fb85b724cb",
+     "desde": "2024-01-01T00:00:00+01:00",
+     "hasta": "2024-12-31T23:00:00+01:00"
+    },
+    {
+     "ruta": "datos/historico/pvpc_peninsula_horario/2025.csv",
+     "registros": 8760,
+     "bytes": 469712,
+     "sha256": "33a5f4ce5164b0d322c158584022df1b3c14645d6ebaeed0044994f89c6be8f4",
+     "desde": "2025-01-01T00:00:00+01:00",
+     "hasta": "2025-12-31T23:00:00+01:00"
+    },
+    {
+     "ruta": "datos/historico/pvpc_peninsula_horario/2026.csv",
+     "registros": 6839,
+     "bytes": 366461,
+     "sha256": "82b2600889a902653ab2f26a5a8006c12c2f346815f50fb8fa4e97de62eb2d91",
+     "desde": "2026-01-01T00:00:00+01:00",
+     "hasta": "2026-10-12T23:00:00+02:00"
+    }
+   ],
+   "registros": 47040,
+   "rango": [
+    "2021-06-01T00:00:00+02:00",
+    "2026-10-12T23:00:00+02:00"
+   ]
+  },
+  {
+   "id": "spot_mercado_diario",
+   "descripcion": "Precio del mercado diario (spot), indicador 600",
+   "primer_dato_disponible": "2014-01-01",
+   "paso": "1 hora hasta 2024; 15 minutos desde el 1-1-2025",
+   "fuente": "Red Eléctrica (REE), REData",
+   "fuente_url": "https://www.ree.es/es/datos/apidatos",
+   "endpoint": "https://apidatos.ree.es/es/datos/mercados/precios-mercados-tiempo-real",
+   "parametros": {
+    "time_trunc": "hour",
+    "start_date": "AAAA-MM-01T00:00",
+    "end_date": "último día del mes T23:59"
+   },
+   "troceo": "una petición por mes natural (tope de REData: 31 días)",
+   "unidad": "EUR/MWh, sin impuestos",
+   "consultas_en_cache": 154,
+   "consultas_semilla_inferida": 1,
+   "descargado_entre": [
+    "2026-10-09T11:13:06+00:00",
+    "2026-10-12T12:55:51+00:00"
+   ],
+   "bytes_json_descargados": 16860754,
+   "ultima_actualizacion_declarada_por_ree": "2026-10-12T14:11:43.000+02:00",
+   "archivos": [
+    {
+     "ruta": "datos/historico/spot_mercado_diario/2014.csv",
+     "registros": 8760,
+     "bytes": 456144,
+     "sha256": "32a35711cfbc78fdc6795fdd89af3cb40a507f30422eb9ae19995f766b41f9b6",
+     "desde": "2014-01-01T00:00:00+01:00",
+     "hasta": "2014-12-31T23:00:00+01:00"
+    },
+    {
+     "ruta": "datos/historico/spot_mercado_diario/2015.csv",
+     "registros": 8760,
+     "bytes": 458815,
+     "sha256": "6ab9ecd26f3a14401d5a082cdeaecdcaab8c598117b598c741a2b8170907ad03",
+     "desde": "2015-01-01T00:00:00+01:00",
+     "hasta": "2015-12-31T23:00:00+01:00"
+    },
+    {
+     "ruta": "datos/historico/spot_mercado_diario/2016.csv",
+     "registros": 8784,
+     "bytes": 460031,
+     "sha256": "eb13ecef72b6c12eccab02becf9b8390b65fa35146f688fc12380b8b9001e765",
+     "desde": "2016-01-01T00:00:00+01:00",
+     "hasta": "2016-12-31T23:00:00+01:00"
+    },
+    {
+     "ruta": "datos/historico/spot_mercado_diario/2017.csv",
+     "registros": 8760,
+     "bytes": 460975,
+     "sha256": "1d477bd75c09b5309302dfd0c60499cfd2cf590fe08ead12cacf7bafe5cbb548",
+     "desde": "2017-01-01T00:00:00+01:00",
+     "hasta": "2017-12-31T23:00:00+01:00"
+    },
+    {
+     "ruta": "datos/historico/spot_mercado_diario/2018.csv",
+     "registros": 8760,
+     "bytes": 460762,
+     "sha256": "542eb55e37dea66c1fe0334d8a65e4cb50f0c420cae9c50678de9d3d8eb24a66",
+     "desde": "2018-01-01T00:00:00+01:00",
+     "hasta": "2018-12-31T23:00:00+01:00"
+    },
+    {
+     "ruta": "datos/historico/spot_mercado_diario/2019.csv",
+     "registros": 8760,
+     "bytes": 460367,
+     "sha256": "49e4c3dee347782210e9e9b3b4fae42381b950b0c1286f806b099244f8387543",
+     "desde": "2019-01-01T00:00:00+01:00",
+     "hasta": "2019-12-31T23:00:00+01:00"
+    },
+    {
+     "ruta": "datos/historico/spot_mercado_diario/2020.csv",
+     "registros": 8784,
+     "bytes": 461205,
+     "sha256": "f2e0c54e75bec59a348b3cea092fe10f6e7763a3b3086c1c7e4ac997932d0a47",
+     "desde": "2020-01-01T00:00:00+01:00",
+     "hasta": "2020-12-31T23:00:00+01:00"
+    },
+    {
+     "ruta": "datos/historico/spot_mercado_diario/2021.csv",
+     "registros": 8760,
+     "bytes": 462638,
+     "sha256": "2f7535a9096ce4fc592aecfb264f1a0c74dc676727a863273230b92f2f13cf93",
+     "desde": "2021-01-01T00:00:00+01:00",
+     "hasta": "2021-12-31T23:00:00+01:00"
+    },
+    {
+     "ruta": "datos/historico/spot_mercado_diario/2022.csv",
+     "registros": 8760,
+     "bytes": 465226,
+     "sha256": "137e86f8667ca6455cd715eceb5d0c85adebe241cc1c62019c61932013191a8f",
+     "desde": "2022-01-01T00:00:00+01:00",
+     "hasta": "2022-12-31T23:00:00+01:00"
+    },
+    {
+     "ruta": "datos/historico/spot_mercado_diario/2023.csv",
+     "registros": 8760,
+     "bytes": 460619,
+     "sha256": "1c1e8c454617b35ff3f8e3fb13b6b13e3b6d58c0040f5c8486bfa197153b897a",
+     "desde": "2023-01-01T00:00:00+01:00",
+     "hasta": "2023-12-31T23:00:00+01:00"
+    },
+    {
+     "ruta": "datos/historico/spot_mercado_diario/2024.csv",
+     "registros": 8784,
+     "bytes": 459170,
+     "sha256": "9cd31a175f48762ced47784d46ff9704af38eb2c5aff87847394b99c95a5e42b",
+     "desde": "2024-01-01T00:00:00+01:00",
+     "hasta": "2024-12-31T23:00:00+01:00"
+    },
+    {
+     "ruta": "datos/historico/spot_mercado_diario/2025.csv",
+     "registros": 35040,
+     "bytes": 1837082,
+     "sha256": "3e3a622fbb819242674c4a070aa064be86a102460d9ad95d2081b2e4b31e12eb",
+     "desde": "2025-01-01T00:00:00+01:00",
+     "hasta": "2025-12-31T23:45:00+01:00"
+    },
+    {
+     "ruta": "datos/historico/spot_mercado_diario/2026.csv",
+     "registros": 27452,
+     "bytes": 1437463,
+     "sha256": "162922fe87baa92f59429b75bd0e0a0f43471be1e2249e09a4b7c963ad3deddb",
+     "desde": "2026-01-01T00:00:00+01:00",
+     "hasta": "2026-10-13T23:45:00+02:00"
+    }
+   ],
+   "nota": "Sale de la misma respuesta que el PVPC: no cuesta peticiones extra.",
+   "registros": 158924,
+   "rango": [
+    "2014-01-01T00:00:00+01:00",
+    "2026-10-13T23:45:00+02:00"
+   ]
+  },
+  {
+   "id": "generacion_diaria",
+   "descripcion": "Generación diaria por tecnología, ámbito nacional",
+   "primer_dato_disponible": "2011-01-01",
+   "paso": "1 día",
+   "fuente": "Red Eléctrica (REE), REData",
+   "fuente_url": "https://www.ree.es/es/datos/apidatos",
+   "endpoint": "https://apidatos.ree.es/es/datos/generacion/estructura-generacion",
+   "parametros": {
+    "time_trunc": "day",
+    "start_date": "AAAA-01-01T00:00",
+    "end_date": "AAAA-12-31T23:59"
+   },
+   "troceo": "una petición por año natural",
+   "unidad": "MWh",
+   "consultas_en_cache": 16,
+   "consultas_semilla_inferida": 1,
+   "descargado_entre": [
+    "2026-10-09T11:13:24+00:00",
+    "2026-10-12T13:00:37+00:00"
+   ],
+   "bytes_json_descargados": 8840085,
+   "ultima_actualizacion_declarada_por_ree": "2026-10-12T06:51:27.000+02:00",
+   "archivos": [
+    {
+     "ruta": "datos/historico/generacion_diaria/2011.csv",
+     "registros": 365,
+     "bytes": 61346,
+     "sha256": "2efee16ab6229462ce7f1fe9c9b62da0d79344a64ff4d277daca385e71e7bcf7",
+     "desde": "2011-01-01",
+     "hasta": "2011-12-31"
+    },
+    {
+     "ruta": "datos/historico/generacion_diaria/2012.csv",
+     "registros": 366,
+     "bytes": 61494,
+     "sha256": "c31b3cebe3f67d10a95dbfbafb31d5f9c1115266463e6e1f4af4b955dbd3b8d8",
+     "desde": "2012-01-01",
+     "hasta": "2012-12-31"
+    },
+    {
+     "ruta": "datos/historico/generacion_diaria/2013.csv",
+     "registros": 365,
+     "bytes": 61073,
+     "sha256": "b0bdf0dc3bea9d3eb3aa2e81c03ae6a6875a7914ead4646bbdd1302129d7bdb6",
+     "desde": "2013-01-01",
+     "hasta": "2013-12-31"
+    },
+    {
+     "ruta": "datos/historico/generacion_diaria/2014.csv",
+     "registros": 365,
+     "bytes": 61403,
+     "sha256": "57a4334ce92bebabbabdcd5182102696fbae59b1b6ca1ae883e7c1bacdaac1bb",
+     "desde": "2014-01-01",
+     "hasta": "2014-12-31"
+    },
+    {
+     "ruta": "datos/historico/generacion_diaria/2015.csv",
+     "registros": 365,
+     "bytes": 60787,
+     "sha256": "b1e4347d1ee6d701424f393250d94441f2c693cb30037045fa7e9ca1fd87b54c",
+     "desde": "2015-01-01",
+     "hasta": "2015-12-31"
+    },
+    {
+     "ruta": "datos/historico/generacion_diaria/2016.csv",
+     "registros": 366,
+     "bytes": 61041,
+     "sha256": "8c71c4bf339a7f4efa71e87d948b56bb9ea54e348e5769531a488cadd0555297",
+     "desde": "2016-01-01",
+     "hasta": "2016-12-31"
+    },
+    {
+     "ruta": "datos/historico/generacion_diaria/2017.csv",
+     "registros": 365,
+     "bytes": 61003,
+     "sha256": "30600045284f52ce5c5b7a6f46025b68453bb5d935a48274a0c16dc2dbb27c44",
+     "desde": "2017-01-01",
+     "hasta": "2017-12-31"
+    },
+    {
+     "ruta": "datos/historico/generacion_diaria/2018.csv",
+     "registros": 365,
+     "bytes": 60954,
+     "sha256": "3ca235934985051b29043cef9a7d8cc0c4adba298fd641b24ac5d50242fd7193",
+     "desde": "2018-01-01",
+     "hasta": "2018-12-31"
+    },
+    {
+     "ruta": "datos/historico/generacion_diaria/2019.csv",
+     "registros": 365,
+     "bytes": 60875,
+     "sha256": "dc00e90b6b71aa2d6d71c783584168a450a3fc336eb4afc2c8d3125f354595f9",
+     "desde": "2019-01-01",
+     "hasta": "2019-12-31"
+    },
+    {
+     "ruta": "datos/historico/generacion_diaria/2020.csv",
+     "registros": 366,
+     "bytes": 60871,
+     "sha256": "20663f4ad3900444cab5da3adb82dcce2224d8c79953c3b374f2b1a2aceb1d5c",
+     "desde": "2020-01-01",
+     "hasta": "2020-12-31"
+    },
+    {
+     "ruta": "datos/historico/generacion_diaria/2021.csv",
+     "registros": 365,
+     "bytes": 60724,
+     "sha256": "a280553df10012f7583423f02aaeeadb83d61205f1c10a4094cae59347023caf",
+     "desde": "2021-01-01",
+     "hasta": "2021-12-31"
+    },
+    {
+     "ruta": "datos/historico/generacion_diaria/2022.csv",
+     "registros": 365,
+     "bytes": 61129,
+     "sha256": "d95f1631d361f4b45b93651689f9b8ff054144ddd9d99baf7ba5dd194a769aca",
+     "desde": "2022-01-01",
+     "hasta": "2022-12-31"
+    },
+    {
+     "ruta": "datos/historico/generacion_diaria/2023.csv",
+     "registros": 365,
+     "bytes": 60775,
+     "sha256": "0381c5362653938fb4adc88d5f0743834a25e6ab9152c8e38c7c2ce03b92ffb7",
+     "desde": "2023-01-01",
+     "hasta": "2023-12-31"
+    },
+    {
+     "ruta": "datos/historico/generacion_diaria/2024.csv",
+     "registros": 366,
+     "bytes": 60853,
+     "sha256": "441a65a637aff1238c04bebe3b9fea3fb3c735c560db3efd44ea5139b7146dd3",
+     "desde": "2024-01-01",
+     "hasta": "2024-12-31"
+    },
+    {
+     "ruta": "datos/historico/generacion_diaria/2025.csv",
+     "registros": 365,
+     "bytes": 60513,
+     "sha256": "1dd3e4171b1dca0afde203405038dc756c8c95bca97eb27a0005c1c26689ff7d",
+     "desde": "2025-01-01",
+     "hasta": "2025-12-31"
+    },
+    {
+     "ruta": "datos/historico/generacion_diaria/2026.csv",
+     "registros": 285,
+     "bytes": 41955,
+     "sha256": "e32d206e2383e019c506b4baad297bc6348966c5fe2744891314badaecef9b59",
+     "desde": "2026-01-01",
+     "hasta": "2026-10-12"
+    }
+   ],
+   "registros": 5764,
+   "rango": [
+    "2011-01-01",
+    "2026-10-12"
+   ]
+  },
+  {
+   "id": "meteo_diaria_open_meteo",
+   "descripcion": "Tiempo observado diario en seis puntos (viento, rachas, radiación, temperatura, lluvia)",
+   "fuente": "Open-Meteo, Historical Weather API (no es de REE)",
+   "fuente_url": "https://open-meteo.com/en/docs/historical-weather-api",
+   "licencia": "CC BY 4.0 (https://open-meteo.com/en/licence)",
+   "endpoint": "https://archive-api.open-meteo.com/v1/archive",
+   "parametros": {
+    "daily": "wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant,shortwave_radiation_sum,temperature_2m_mean,precipitation_sum",
+    "timezone": "Europe/Madrid"
+   },
+   "puntos": {
+    "galicia_lugo": {
+     "latitud": 43.01,
+     "longitud": -7.56,
+     "motivo": "zona eólica del interior de Galicia"
+    },
+    "castilla_leon_burgos": {
+     "latitud": 42.34,
+     "longitud": -3.7,
+     "motivo": "páramos eólicos de Burgos"
+    },
+    "aragon_zaragoza": {
+     "latitud": 41.65,
+     "longitud": -0.88,
+     "motivo": "valle del Ebro, cierzo y mucha eólica"
+    },
+    "castilla_la_mancha_albacete": {
+     "latitud": 38.99,
+     "longitud": -1.86,
+     "motivo": "eólica y fotovoltaica de La Mancha"
+    },
+    "extremadura_badajoz": {
+     "latitud": 38.88,
+     "longitud": -6.97,
+     "motivo": "mucha fotovoltaica"
+    },
+    "pais_vasco_bilbao": {
+     "latitud": 43.26,
+     "longitud": -2.93,
+     "motivo": "punto de referencia del estudio inicial"
+    }
+   },
+   "unidades": "km/h, grados, MJ/m², °C, mm",
+   "crudos": [
+    {
+     "ruta": "datos/consultas/open_meteo/galicia_lugo_2014-01-01_2026-10-05.json.gz",
+     "sha256_json": "25eebbffa8c3f7dc6c38f73eac0564b6c2efff76466905d71fdd0228c4202a21"
+    },
+    {
+     "ruta": "datos/consultas/open_meteo/castilla_leon_burgos_2014-01-01_2026-10-05.json.gz",
+     "sha256_json": "a916a13aca97f96036dcf1514984309b59cafe4207f86716a7f68ccc57795cf5"
+    },
+    {
+     "ruta": "datos/consultas/open_meteo/aragon_zaragoza_2014-01-01_2026-10-05.json.gz",
+     "sha256_json": "ca0210b18155230e0b0903881b5ed3cac3dbaf31125408efc1ab6c4e4248d8f3"
+    },
+    {
+     "ruta": "datos/consultas/open_meteo/castilla_la_mancha_albacete_2014-01-01_2026-10-05.json.gz",
+     "sha256_json": "a32aa614634c7fe016b0de76ca8dd0d565120dab575dd9588d43149c5bf17cad"
+    },
+    {
+     "ruta": "datos/consultas/open_meteo/extremadura_badajoz_2014-01-01_2026-10-05.json.gz",
+     "sha256_json": "00473b9e770b7e3449395b32b38c5f6e25ded1b4c2e3789ef42e236a8275a041"
+    },
+    {
+     "ruta": "datos/consultas/open_meteo/pais_vasco_bilbao_2014-01-01_2026-10-05.json.gz",
+     "sha256_json": "7ea351c3281e20837faea980f99acfbd43cfb1c356380fa81a5530b15f4c9ce2"
+    }
+   ],
+   "archivos": [
+    {
+     "ruta": "datos/historico/meteo_diaria_open_meteo/galicia_lugo.csv",
+     "registros": 4661,
+     "bytes": 180897,
+     "sha256": "5125dcde05d6c947abb6368aa9f703e67b7c869d047d99cf00b34e132ed957f9",
+     "desde": "2014-01-01",
+     "hasta": "2026-10-05"
+    },
+    {
+     "ruta": "datos/historico/meteo_diaria_open_meteo/castilla_leon_burgos.csv",
+     "registros": 4661,
+     "bytes": 180335,
+     "sha256": "9698e311ca1a4b2de0c3863b62ec4cf2425db144282ffc51b8473117e5044745",
+     "desde": "2014-01-01",
+     "hasta": "2026-10-05"
+    },
+    {
+     "ruta": "datos/historico/meteo_diaria_open_meteo/aragon_zaragoza.csv",
+     "registros": 4661,
+     "bytes": 183358,
+     "sha256": "5272ecacab0d1dfba2b850a5a6cea7300ac04e8b526ad3262ed82d0277d05117",
+     "desde": "2014-01-01",
+     "hasta": "2026-10-05"
+    },
+    {
+     "ruta": "datos/historico/meteo_diaria_open_meteo/castilla_la_mancha_albacete.csv",
+     "registros": 4661,
+     "bytes": 183116,
+     "sha256": "14b56cc75f6b7db0a38abedc0516777ae7f1660f48c5ecceaecedd665d530b1b",
+     "desde": "2014-01-01",
+     "hasta": "2026-10-05"
+    },
+    {
+     "ruta": "datos/historico/meteo_diaria_open_meteo/extremadura_badajoz.csv",
+     "registros": 4661,
+     "bytes": 182617,
+     "sha256": "918c42146ebaac078fc2794539f547f7c218d8de1ef262d0ade273cce428727e",
+     "desde": "2014-01-01",
+     "hasta": "2026-10-05"
+    },
+    {
+     "ruta": "datos/historico/meteo_diaria_open_meteo/pais_vasco_bilbao.csv",
+     "registros": 4661,
+     "bytes": 182535,
+     "sha256": "259631f8a224df7baf94723a6e3e961fa69f258523c9db9431c006de82f41a3b",
+     "desde": "2014-01-01",
+     "hasta": "2026-10-05"
+    }
+   ],
+   "registros": 27966,
+   "rango": [
+    "2014-01-01",
+    "2026-10-05"
+   ]
+  }
+ ]
+}
