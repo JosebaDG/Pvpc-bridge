@@ -49,7 +49,7 @@ publicado, 1 otro error):
   # Mejor bloque seguido de 6 h con el equipo a 750 W, desde ahora
   python3 puente_luz.py bloque --horas 6 --potencia 750
 
-  # Repartir un entrenamiento de 16 h mañana en trozos de 2 a 4 h, con al
+  # Repartir un trabajo largo de 16 h mañana en trozos de 2 a 4 h, con al
   # menos 1 h de pausa entre trozos (sin --pausa, dos trozos pueden quedar
   # pegados y el JSON lo marca con "pegado_al_anterior")
   python3 puente_luz.py repartir --horas 16 --dia manana --min 2 --max 4 --pausa 1 --potencia 750
@@ -57,7 +57,7 @@ publicado, 1 otro error):
   # Todas las franjas por debajo de 10 céntimos/kWh de hoy
   python3 puente_luz.py umbral --max-precio 0.10 --dia hoy
 
-  # Gráfica PNG del día (necesita matplotlib)
+  # Gráfica PNG del día, lista para mandar a un chat (necesita matplotlib)
   python3 puente_luz.py grafica --dia hoy --salida pvpc_hoy.png
 
   # Contrato cargado, factor de impuestos, costes fijos y comprobación de la
@@ -68,9 +68,10 @@ publicado, 1 otro error):
   # de futuros... y aviso si los peajes no cuadran con el contrato
   python3 puente_luz.py desglose --dia 2026-09-26
 
-  Potencia: --potencia es el consumo TOTAL del equipo en vatios. Si solo
-  sabes el de la tarjeta, usa --gpu-w 600 --resto-w 150 (resto = CPU, placa,
-  discos, pérdidas de la fuente); el JSON avisa si el resto queda en 0.
+  Potencia: --potencia es el consumo TOTAL del aparato o del equipo en vatios.
+  En un ordenador, si solo sabes lo que gasta la tarjeta gráfica, usa
+  --gpu-w y --resto-w (resto = CPU, placa, discos, pérdidas de la fuente);
+  el JSON avisa si el resto queda en 0.
   Ventana: --dia hoy|manana|AAAA-MM-DD y/o --desde/--hasta ("ahora", "HH:MM"
   del --dia, o fecha ISO). Sin ventana: desde ahora hasta el último precio
   publicado (hoy y, si ya está, mañana).

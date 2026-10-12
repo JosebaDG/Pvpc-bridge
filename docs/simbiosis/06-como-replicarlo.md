@@ -4,9 +4,9 @@ Si quieres montar algo parecido (una persona con uno o varios agentes de IA saca
 
 ## Antes de empezar
 
-1. **Empieza por una molestia real y pequeña.** Aquí fue mirar una gráfica cada noche. Un problema concreto da requisitos concretos y una forma clara de comprobar el resultado.
+1. **Empieza por una molestia real y pequeña.** Aquí fue consultar a mano el precio de la luz cada noche. Un problema concreto da requisitos concretos y una forma clara de comprobar el resultado.
 2. **Dicta requisitos, no soluciones.** Joseba dijo qué quería (JSON, filtro por precio, repartir tareas, gráfica para validar) y dejó al agente decidir cómo.
-3. **Pide desde el principio una forma de validar.** La gráfica diaria no era un adorno: era la manera de comparar con la fuente oficial.
+3. **Pide desde el principio una forma de validar.** La gráfica diaria no era un adorno: era la manera de comparar con la fuente oficial. Y de paso se convirtió en una de las salidas más útiles del proyecto, porque una persona la entiende de un vistazo en un chat.
 
 ## Durante el trabajo
 

@@ -2,7 +2,7 @@
 
 > Este documento era el README principal hasta la rama `docs/simbiosis`. Ahora el README de la raíz presenta el proyecto y la forma de trabajar; aquí queda la parte técnica completa. Las rutas de archivo que aparecen abajo son relativas a la raíz del repositorio.
 
-Este proyecto descarga el precio de la luz de cada hora desde la API abierta de Red Eléctrica (REE), lo pasa por un script puente que devuelve JSON y responde preguntas prácticas: cuáles son las horas más baratas, cuándo conviene lanzar un trabajo largo (por ejemplo, entrenar un modelo en una GPU de 600 W) y cuánto cuesta en euros de factura. También quiere servir para entender el mercado eléctrico español: de qué está hecho el precio de cada hora, por qué salta a las 8, a las 10 o a las 14, qué impuestos se pagan y cómo se lee una factura.
+Este proyecto descarga el precio de la luz de cada hora desde la API abierta de Red Eléctrica (REE), lo pasa por un script puente que devuelve JSON y responde preguntas prácticas: cuáles son las horas más baratas, cuándo conviene poner un consumo grande o flexible (la lavadora, el lavavajillas, el termo, la carga del coche o un equipo que trabaja durante horas) y cuánto cuesta en euros de factura. También quiere servir para entender el mercado eléctrico español: de qué está hecho el precio de cada hora, por qué salta a las 8, a las 10 o a las 14, qué impuestos se pagan y cómo se lee una factura.
 
 El punto de partida es un contrato doméstico real: PVPC con peaje 2.0TD en la península y 5,75 kW de potencia. Todo lo que depende del contrato está en un archivo de configuración, para que otra persona, o su agente de IA, lo adapte a su caso sin tocar el código.
 
@@ -29,7 +29,7 @@ Cómo leer este documento: cada afirmación lleva una de estas tres marcas.
 
 ```
 REData (REE, sin token)  ──►  puente_luz.py  ──►  JSON por stdout  ──►  otros scripts, agentes, cron
-ESIOS archivo 70 (sin token) ─┘      ▲                                    (lanzar un entreno, avisar, graficar)
+ESIOS archivo 70 (sin token) ─┘      ▲                                    (programar consumos, avisar, mandar la gráfica a un chat)
                                     │
                               contrato.json
            (tarifa, potencia, peajes y cargos, impuestos, festivos)
@@ -44,13 +44,13 @@ ESIOS archivo 70 (sin token) ─┘      ▲                                    
 
 ```bash
 python3 puente_luz.py resumen --dia hoy              # horas más baratas y más caras, media con y sin impuestos
-python3 puente_luz.py bloque --horas 4 --gpu-w 600   # mejor bloque seguido desde ahora, en euros de factura
-python3 puente_luz.py bloque --horas 4 --gpu-w 600 --sin-impuestos   # lo mismo, precio limpio
+python3 puente_luz.py bloque --horas 2 --potencia 2000   # mejor bloque seguido para un aparato de 2 kW, en euros de factura
+python3 puente_luz.py bloque --horas 2 --potencia 2000 --sin-impuestos   # lo mismo, precio limpio
 python3 puente_luz.py repartir --horas 10 --min 2 --max 4 --pausa 1 --potencia 750
 python3 puente_luz.py umbral --max-precio 0.10       # franjas por debajo de 10 céntimos (precio publicado)
 python3 puente_luz.py umbral --max-precio 0.10 --umbral-factura   # 10 céntimos ya con impuestos
 python3 puente_luz.py precios --dia manana           # precio de cada hora, con periodo P1/P2/P3
-python3 puente_luz.py grafica --dia hoy --salida pvpc.png
+python3 puente_luz.py grafica --dia hoy --salida pvpc.png   # PNG del día, pensado para mandarlo a un chat
 python3 puente_luz.py desglose --dia 2026-09-26      # de qué está hecho el precio de cada hora (ESIOS)
 python3 puente_luz.py contrato --comprobar-factura   # factor de impuestos, fijos y la factura recalculada
 ```
@@ -67,7 +67,7 @@ Una factura de luz tiene dos partes de verdad y varios añadidos:
 - **Término de energía (variable).** Pagas por cada kWh consumido. Aquí están el coste de producir la energía y, otra vez, peajes y cargos, ahora por kWh.
 - **Añadidos.** La financiación del bono social (un importe por día), el alquiler del contador (por día), el impuesto especial sobre la electricidad y el IVA.
 
-Mover el consumo de hora solo cambia el término de energía. Por eso el coste de un entreno que calcula el script no incluye potencia, bono social ni contador: esos importes se pagan igual hagas lo que hagas. [Supuesto, coherente con la factura]
+Mover el consumo de hora solo cambia el término de energía. Por eso el coste de un consumo que calcula el script no incluye potencia, bono social ni contador: esos importes se pagan igual hagas lo que hagas. [Supuesto, coherente con la factura]
 
 ### PVPC y mercado libre
 
@@ -240,8 +240,8 @@ Esta sección es para el asistente que tenga que mantener o adaptar el proyecto.
 **Supuestos del código:**
 
 - El precio de REE ya lleva peajes y cargos; nunca se suman encima en PVPC.
-- Los costes de entreno son marginales: sin potencia, bono social ni contador.
-- El consumo se trata como constante durante el trabajo: `--potencia` (vatios del equipo entero) o `--gpu-w` más `--resto-w`. Con solo `--gpu-w`, el coste real será algo mayor y el JSON lo avisa.
+- Los costes que calcula el script son marginales: sin potencia, bono social ni contador.
+- El consumo se trata como constante durante todo el bloque: `--potencia` son los vatios del aparato o del equipo entero. Un aparato con ciclos (lavadora, bomba de calor) gasta de forma variable, así que el resultado es una aproximación. Para un ordenador se puede dar la tarjeta gráfica y el resto por separado con `--gpu-w` y `--resto-w`; con solo `--gpu-w`, el coste real será algo mayor y el JSON lo avisa.
 - El mínimo del impuesto eléctrico (1 €/MWh) solo se aplica en `estimar_factura()`, no hora a hora.
 - Horas en hora peninsular (Europe/Madrid), con los días de 23 y 25 horas resueltos.
 

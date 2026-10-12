@@ -1,12 +1,12 @@
-# Historia del proyecto: de una gráfica mirada a mano a un repositorio público
+# Historia del proyecto: de mirar el precio a mano a un repositorio público
 
-En cuatro días, del viernes 9 al lunes 12 de octubre de 2026, una costumbre manual (mirar la gráfica del precio de la luz cada noche) se convirtió en un script, una guía práctica de la API de Red Eléctrica y un repositorio en GitHub. Esta es la cronología, con lo que hizo cada uno.
+En cuatro días, del viernes 9 al lunes 12 de octubre de 2026, una costumbre manual (consultar cada noche el precio de la luz del día siguiente) se convirtió en un script, una guía práctica de la API de Red Eléctrica y un repositorio en GitHub. Esta es la cronología, con lo que hizo cada uno.
 
 ## Punto de partida
 
-Joseba tiene contratado el PVPC, la tarifa regulada cuyo precio cambia cada hora. Cada noche, después de las 20:00, cuando Red Eléctrica publica los precios del día siguiente, miraba la gráfica a mano para decidir cuándo consumir.
+Joseba tiene contratado el PVPC, la tarifa regulada cuyo precio cambia cada hora. Cada noche, después de las 20:00, cuando Red Eléctrica publica los precios del día siguiente, miraba los precios a mano para decidir cuándo consumir.
 
-Tiene además una RTX 5090 con refrigeración líquida (unos 600 W solo la GPU) con la que trabaja con modelos de IA. En invierno, en el norte de España, ese calor no se pierde: la GPU hace de "radiador inteligente". Lanzar los entrenos en las horas baratas tiene sentido doble.
+La idea es sencilla y vale para cualquier hogar con PVPC: mover los consumos grandes que admiten espera (la lavadora, el lavavajillas, el termo, la carga del coche o un equipo que trabaja durante horas) a las horas más baratas. Con el precio cambiando cada hora, la diferencia dentro de un mismo día es enorme: el domingo 11 de octubre de 2026 el PVPC fue de prácticamente 0 a casi 29 céntimos el kWh, sin impuestos, según los datos de REData.
 
 ## Viernes 9 de octubre, mañana: la primera llamada
 
