@@ -260,6 +260,13 @@ Esta sección es para el asistente que tenga que mantener o adaptar el proyecto.
 - `informe_api_redata.md` es el informe largo de la exploración de la API. Se conserva tal cual, como registro.
 - `archivo_redata/` guarda las pruebas: respuestas de REData, el archivo 70 de ESIOS de los días usados en este README (`respuestas/esios/archivo70/`) y las páginas del BOE consultadas (`paginas/`). Tiene su propio README.
 
+## Datos históricos y archivo del estudio
+
+- [`datos/`](datos/README.md): el histórico ya descargado de REData (PVPC por horas desde junio de 2021, mercado diario desde 2014 y generación diaria desde 2011, más meteorología de Open-Meteo) en CSV, con las respuestas crudas, la caché de consultas, un manifiesto y un script que solo descarga lo que falta. Antes de pedir nada a REE, mira ahí. Las limitaciones y problemas encontrados están en [`datos/LIMITACIONES.md`](datos/LIMITACIONES.md).
+- [`archivo/estudio-2026-10-09/`](archivo/estudio-2026-10-09/README.md): las pruebas del estudio de la API (respuestas reales, errores, archivo 70 de ESIOS, scripts y el informe original). Es la versión publicable de `archivo_redata/` y de `informe_api_redata.md`.
+
+`datos/consultas/` solo guarda respuestas públicas de REE y Open-Meteo; la caché local de `puente_luz.py` sigue sin publicarse.
+
 ## Qué se publica y qué no
 
 Para un repositorio público: `README.md`, `puente_luz.py`, `precios_luz_ree.py`, `contrato.ejemplo.json` y la guía de la API. No publiques `contrato.json` (añádelo a `.gitignore`) ni la caché. Las facturas nunca: llevan CUPS, nombre y dirección. Los importes de la factura de ejemplo de este README no identifican a nadie.
