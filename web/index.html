@@ -12,8 +12,24 @@
   <!-- Esqueleto de Miles. Cada sección la rellena su dueño (ver web/README.md). -->
   <header id="portada"><!-- Maya (look) + Simone (texto) --></header>
   <main>
-    <section id="precio-hoy"><!-- Charlie: precio de hoy por horas --></section>
-    <section id="historico"><!-- Charlie: histórico desde 2022 --></section>
+    <section id="precio-hoy">
+      <!-- Charlie: precio de hoy por horas. Lo dibuja web/js/graficas.js dentro de data-grafica="hoy". -->
+      <h2 class="seccion__titulo">El precio de la luz, hoy</h2>
+      <p class="seccion__entrada">Cada barra es una hora: así ves de un vistazo cuándo conviene encender lo que más gasta.</p>
+      <div class="tarjeta grafica" data-grafica="hoy">
+        <p class="grafica-cargando">Cargando los precios de hoy…</p>
+        <noscript><p>Esta gráfica necesita JavaScript.</p></noscript>
+      </div>
+    </section>
+    <section id="historico">
+      <!-- Charlie: histórico desde 2022. Lo dibuja web/js/graficas.js dentro de data-grafica="historico". -->
+      <h2 class="seccion__titulo">Cómo ha ido el precio desde 2022</h2>
+      <p class="seccion__entrada">Cada columna es un día y cada fila, una hora (de las 00 h arriba a las 23 h abajo). Encima, la media de cada mes.</p>
+      <div class="tarjeta grafica" data-grafica="historico">
+        <p class="grafica-cargando">Cargando el histórico…</p>
+        <noscript><p>Esta gráfica necesita JavaScript.</p></noscript>
+      </div>
+    </section>
     <section id="como-funciona"><!-- Simone --></section>
     <section id="instalar"><!-- Simone --></section>
     <section id="preguntas"><!-- Simone --></section>
