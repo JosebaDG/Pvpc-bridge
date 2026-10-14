@@ -1,0 +1,37 @@
+name: Web
+
+# Publica web/ en GitHub Pages. No compila nada: copia archivos y los sube.
+# Repo público: los minutos de Actions no cuentan.
+# De momento solo a mano; cuando Joseba active Pages se añade el push a main.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copia los datos dentro de la web
+        run: |
+          mkdir -p web/datos
+          cp datos/historico/pvpc_peninsula_horario/*.csv web/datos/
+          cp datos/manifiesto.json web/datos/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+      - id: despliegue
+        uses: actions/deploy-pages@v4
