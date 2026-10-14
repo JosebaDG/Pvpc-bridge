@@ -1,3 +1,100 @@
-/* Dueña: Maya. Variables de diseño que usa toda la web. */
+/* Dueña: Maya. Variables de diseño que usa toda la web.
+   Por qué así (resumen; detalle en equipo-agentes #3):
+   - Claro y oscuro según el sistema (prefers-color-scheme), sin botón ni JS.
+   - El color del precio va en una escala de tres tramos (barato, medio, caro) que
+     también se distingue en escala de grises; siempre va acompañado de texto.
+   - Fuentes del sistema: cero descargas, cero dependencias, carga instantánea en móvil.
+   Regla para todos: no inventéis colores; si falta uno, pedídmelo en #3. */
+
 :root {
+  color-scheme: light dark;
+
+  /* Superficies y tinta (modo claro) */
+  --c-fondo: #f5f3ee;          /* papel cálido, menos duro que el blanco */
+  --c-superficie: #ffffff;     /* tarjetas */
+  --c-superficie-2: #ebe8e1;   /* zonas hundidas, pistas de gráficas */
+  --c-borde: #dcd8cf;
+  --c-tinta: #15171c;          /* texto principal */
+  --c-tinta-2: #565b66;        /* texto secundario, ejes */
+
+  /* Acento: «voltio» */
+  --c-acento: #3b5bfd;         /* enlaces, foco, botón principal */
+  --c-acento-tinta: #ffffff;   /* texto sobre el acento */
+  --c-chispa: #c8f03c;         /* brillo puntual: la hora actual, un dato destacado */
+
+  /* Escala del precio (de barato a caro) */
+  --c-barato: #0f9d76;
+  --c-medio: #e0a21b;
+  --c-caro: #e2474f;
+  --c-barato-suave: #d5f1e7;
+  --c-medio-suave: #fbeccb;
+  --c-caro-suave: #fadadc;
+  /* Texto sobre los fondos suaves: contraste AA (4.5:1 o más) */
+  --c-barato-tinta: #0a6e53;
+  --c-medio-tinta: #8a5a00;
+  --c-caro-tinta: #b4232b;
+
+  /* Tipografía */
+  --f-texto: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --f-cifras: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Menlo, monospace;
+  --t-xs: 0.8125rem;
+  --t-s: 0.9375rem;
+  --t-m: 1.0625rem;
+  --t-l: clamp(1.25rem, 1rem + 1vw, 1.5rem);
+  --t-xl: clamp(1.75rem, 1.2rem + 2.4vw, 2.75rem);
+  --t-xxl: clamp(2.75rem, 1.5rem + 6vw, 5.5rem);   /* titular de portada y precio de ahora */
+  --peso-normal: 400;
+  --peso-medio: 560;
+  --peso-fuerte: 760;
+  --interlineado: 1.55;
+  --interlineado-titulo: 1.05;
+
+  /* Espaciado (escala de 4 px) */
+  --e-1: 0.25rem;
+  --e-2: 0.5rem;
+  --e-3: 0.75rem;
+  --e-4: 1rem;
+  --e-5: 1.5rem;
+  --e-6: 2rem;
+  --e-7: 3rem;
+  --e-8: 4.5rem;
+
+  /* Formas */
+  --r-s: 8px;
+  --r-m: 14px;
+  --r-l: 22px;
+  --r-total: 999px;
+  --sombra: 0 1px 2px rgb(20 22 28 / 0.06), 0 8px 24px rgb(20 22 28 / 0.06);
+
+  /* Maquetación y movimiento */
+  --ancho-max: 72rem;
+  --ancho-texto: 40rem;
+  --transicion: 180ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --c-fondo: #0d1015;
+    --c-superficie: #161a21;
+    --c-superficie-2: #1f242d;
+    --c-borde: #2a303b;
+    --c-tinta: #eceef2;
+    --c-tinta-2: #9aa1ad;
+    --c-acento: #7b93ff;
+    --c-acento-tinta: #0d1015;
+    --c-barato: #2fd09e;
+    --c-medio: #f2bb3f;
+    --c-caro: #ff6b72;
+    --c-barato-suave: #10372c;
+    --c-medio-suave: #3a2e10;
+    --c-caro-suave: #3d1a1d;
+    --c-barato-tinta: #2fd09e;
+    --c-medio-tinta: #f2bb3f;
+    --c-caro-tinta: #ff6b72;
+    --sombra: 0 1px 2px rgb(0 0 0 / 0.4), 0 10px 30px rgb(0 0 0 / 0.35);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --transicion: 0ms; }
 }

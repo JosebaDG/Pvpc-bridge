@@ -1,1 +1,147 @@
-/* Dueña: Maya. Estilos base y componentes. */
+/* Dueña: Maya. Estilos base y componentes. Solo usa variables de tokens.css.
+   Componentes para los demás:
+   .rejilla + .tarjeta (.tarjeta--ancha, .tarjeta--destacada)  bloques tipo «bento»
+   .cifra (+ .cifra__unidad)                                     números grandes, p. ej. el precio de ahora
+   .tramo--barato | --medio | --caro                             etiqueta de precio con color y texto
+   .boton (.boton--secundario)                                   llamadas a la acción
+   .seccion__titulo, .seccion__entrada, .nota                    textos de sección
+   .codigo                                                       bloques de comandos (instalar) */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--c-fondo);
+  color: var(--c-tinta);
+  font-family: var(--f-texto);
+  font-size: var(--t-m);
+  line-height: var(--interlineado);
+  -webkit-font-smoothing: antialiased;
+}
+
+img, svg, canvas { display: block; max-width: 100%; }
+
+a { color: var(--c-acento); text-underline-offset: 0.18em; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 3px solid var(--c-acento); outline-offset: 3px; border-radius: var(--r-s); }
+
+h1, h2, h3 { line-height: var(--interlineado-titulo); letter-spacing: -0.02em; margin: 0 0 var(--e-4); }
+h1 { font-size: var(--t-xxl); font-weight: var(--peso-fuerte); letter-spacing: -0.04em; }
+h2 { font-size: var(--t-xl); font-weight: var(--peso-fuerte); }
+h3 { font-size: var(--t-l); font-weight: var(--peso-medio); }
+p { margin: 0 0 var(--e-4); max-width: var(--ancho-texto); }
+
+/* Maquetación general */
+#portada, main > section, #pie {
+  width: min(100% - 2 * var(--e-4), var(--ancho-max));
+  margin-inline: auto;
+}
+main > section { padding-block: var(--e-7); border-top: 1px solid var(--c-borde); }
+
+/* Portada */
+#portada {
+  position: relative;
+  padding-block: var(--e-8) var(--e-7);
+  isolation: isolate;
+}
+#portada::before {           /* resplandor de fondo: el único adorno de la página */
+  content: "";
+  position: absolute;
+  inset: -20% -10% auto auto;
+  width: min(38rem, 90vw);
+  aspect-ratio: 1;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--c-chispa) 45%, transparent), transparent 70%);
+  filter: blur(10px);
+  z-index: -1;
+  pointer-events: none;
+}
+#portada p { font-size: var(--t-l); color: var(--c-tinta-2); }
+
+.seccion__titulo { margin-bottom: var(--e-2); }
+.seccion__entrada { color: var(--c-tinta-2); font-size: var(--t-l); margin-bottom: var(--e-6); }
+.nota { color: var(--c-tinta-2); font-size: var(--t-s); }
+
+/* Rejilla tipo bento */
+.rejilla {
+  display: grid;
+  gap: var(--e-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+}
+.tarjeta {
+  background: var(--c-superficie);
+  border: 1px solid var(--c-borde);
+  border-radius: var(--r-l);
+  padding: var(--e-5);
+  box-shadow: var(--sombra);
+}
+.tarjeta--ancha { grid-column: 1 / -1; }
+.tarjeta--destacada { border-color: color-mix(in srgb, var(--c-acento) 45%, var(--c-borde)); }
+.tarjeta h3 { margin-bottom: var(--e-2); }
+
+/* Cifras */
+.cifra {
+  font-family: var(--f-cifras);
+  font-size: var(--t-xxl);
+  font-weight: var(--peso-fuerte);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+.cifra__unidad { font-size: 0.35em; font-weight: var(--peso-medio); color: var(--c-tinta-2); letter-spacing: 0; margin-left: var(--e-2); }
+
+/* Tramos de precio: color y texto siempre juntos */
+.tramo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  padding: var(--e-1) var(--e-3);
+  border-radius: var(--r-total);
+  font-size: var(--t-s);
+  font-weight: var(--peso-medio);
+}
+.tramo::before { content: ""; width: 0.6em; height: 0.6em; border-radius: 50%; background: currentColor; }
+.tramo--barato { color: var(--c-barato-tinta); background: var(--c-barato-suave); }
+.tramo--medio  { color: var(--c-medio-tinta);  background: var(--c-medio-suave); }
+.tramo--caro   { color: var(--c-caro-tinta);   background: var(--c-caro-suave); }
+.tramo--barato::before { background: var(--c-barato); }
+.tramo--medio::before  { background: var(--c-medio); }
+.tramo--caro::before   { background: var(--c-caro); }
+
+/* Botones */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  padding: var(--e-3) var(--e-5);
+  border-radius: var(--r-total);
+  border: 1px solid transparent;
+  background: var(--c-acento);
+  color: var(--c-acento-tinta);
+  font: inherit;
+  font-weight: var(--peso-medio);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform var(--transicion), background var(--transicion);
+}
+.boton:hover { transform: translateY(-1px); }
+.boton--secundario { background: transparent; color: var(--c-tinta); border-color: var(--c-borde); }
+
+/* Código (sección instalar) */
+.codigo, pre {
+  font-family: var(--f-cifras);
+  font-size: var(--t-s);
+  background: var(--c-superficie-2);
+  border-radius: var(--r-m);
+  padding: var(--e-4);
+  overflow-x: auto;
+}
+
+/* Preguntas con <details> */
+details { border-bottom: 1px solid var(--c-borde); padding-block: var(--e-4); }
+summary { cursor: pointer; font-weight: var(--peso-medio); }
+
+/* Pie */
+#pie { padding-block: var(--e-7); color: var(--c-tinta-2); font-size: var(--t-s); border-top: 1px solid var(--c-borde); }
