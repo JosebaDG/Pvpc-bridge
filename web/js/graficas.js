@@ -16,7 +16,8 @@ import {
 
 // ---------- Colores: solo variables CSS de Maya (web/css/tokens.css, equipo-agentes #3) ----------
 // Lo que ella pidió para las gráficas: --c-barato, --c-medio y --c-caro para el precio,
-// --c-tinta-2 para los ejes y --c-chispa para la hora actual. El resto sale de su misma paleta.
+// --c-tinta-2 para los ejes, --c-acento para marcar la hora actual y el mejor bloque, y
+// --c-chispa solo como halo detrás de la hora actual (el lima como línea apenas se ve en claro).
 // El segundo valor es una reserva con el color de Maya en modo claro: solo se usa si la variable
 // aún no existe (mientras su PR #16 no esté en main). Cuando lo esté, se puede quitar.
 const COLORES = {
@@ -26,8 +27,9 @@ const COLORES = {
   tinta: ['--c-tinta', '#15171c'], // texto principal y línea de la media mensual
   eje: ['--c-tinta-2', '#565b66'], // etiquetas de los ejes
   rejilla: ['--c-borde', '#dcd8cf'], // líneas guía
-  pista: ['--c-superficie-2', '#ebe8e1'], // fondo del mejor bloque y relleno bajo la línea
-  chispa: ['--c-chispa', '#c8f03c'], // hora actual
+  pista: ['--c-superficie-2', '#ebe8e1'], // relleno bajo la línea de la media mensual
+  acento: ['--c-acento', '#3b5bfd'], // contorno del mejor bloque y marca de la hora actual
+  chispa: ['--c-chispa', '#c8f03c'], // halo detrás de la hora actual
   superficie: ['--c-superficie', '#ffffff'], // celdas sin dato del mapa de calor
 };
 const color = (nombre) => `var(${COLORES[nombre][0]}, ${COLORES[nombre][1]})`;
@@ -165,8 +167,8 @@ export function pintarPrecioHoy(contenedor, dia) {
     el('li', {}, el('span', { class: 'tramo tramo--barato', texto: 'Las 8 más baratas' })),
     el('li', {}, el('span', { class: 'tramo tramo--medio', texto: 'Las 8 del medio' })),
     el('li', {}, el('span', { class: 'tramo tramo--caro', texto: 'Las 8 más caras' })),
-    el('li', {}, [muestra('pista', `outline:1px solid ${color('rejilla')}`), 'Mejor bloque de 3 h']),
-    iAhora >= 0 ? el('li', {}, [muestra('chispa'), 'Hora actual']) : null,
+    el('li', {}, [muestra('superficie', `outline:2px solid ${color('acento')};outline-offset:-2px`), 'Mejor bloque de 3 h']),
+    iAhora >= 0 ? el('li', {}, [muestra('chispa', `outline:2px solid ${color('acento')};outline-offset:-2px`), 'Hora actual']) : null,
   ]);
 
   // El precio de ahora, en grande (.cifra de Maya), con su tramo. Solo si el día es hoy.
@@ -219,11 +221,14 @@ export function pintarPrecioHoy(contenedor, dia) {
     const wb = hueco * (bloque.fin - bloque.inicio + 1);
     const cx = Math.min(Math.max(xb + wb / 2, m.izq + 60), W - m.der - 60);
     svg.append(
-      s('rect', { x: xb, y: m.arr - 6, width: wb, height: altoG + 6, rx: 4, fill: color('pista') }),
-      s('text', { x: cx, y: m.arr - 12, 'text-anchor': 'middle', 'font-weight': 600, fill: color('tinta'), texto: `Mejor bloque · ${f3.format(bloque.media)}` }),
+      s('rect', {
+        x: xb + 1, y: m.arr - 5, width: wb - 2, height: altoG + 4, rx: 4,
+        fill: 'none', stroke: color('acento'), 'stroke-width': 2, 'pointer-events': 'none',
+      }),
+      s('text', { x: cx, y: m.arr - 12, 'text-anchor': 'middle', 'font-weight': 600, fill: color('acento'), texto: `Mejor bloque · ${f3.format(bloque.media)}` }),
     );
 
-    // Hora actual: una franja con el color «chispa» detrás de su barra.
+    // Hora actual: un halo «chispa» detrás de su barra (la marca en acento va después).
     if (iAhora >= 0) {
       svg.append(s('rect', {
         x: x(iAhora) + 1, y: m.arr - 6, width: Math.max(2, hueco - 2), height: altoG + 6, rx: 4,
@@ -245,14 +250,22 @@ export function pintarPrecioHoy(contenedor, dia) {
       svg.append(barra);
     });
 
-    // Etiqueta «ahora» encima de la barra de la hora actual.
+    // Hora actual: contorno en acento sobre la barra y la etiqueta «ahora» encima.
     if (iAhora >= 0) {
+      const h = horas[iAhora];
       const xa = x(iAhora) + hueco / 2;
-      const ya = y(Math.max(horas[iAhora].precio, 0));
-      svg.append(s('text', {
-        x: Math.min(Math.max(xa, m.izq + 18), W - m.der - 18), y: ya - 8, 'text-anchor': 'middle',
-        'font-weight': 700, fill: color('tinta'), 'pointer-events': 'none', texto: 'ahora',
-      }));
+      const ya = y(Math.max(h.precio, 0));
+      svg.append(
+        s('rect', {
+          x: x(iAhora) + (hueco - anchoBarra) / 2 - 1.5, y: ya - 1.5, width: anchoBarra + 3,
+          height: Math.max(1, y(Math.min(h.precio, 0)) - ya) + 3, rx: 3, fill: 'none',
+          stroke: color('acento'), 'stroke-width': 2, 'pointer-events': 'none',
+        }),
+        s('text', {
+          x: Math.min(Math.max(xa, m.izq + 18), W - m.der - 18), y: ya - 8, 'text-anchor': 'middle',
+          'font-weight': 700, fill: color('acento'), 'pointer-events': 'none', texto: 'ahora',
+        }),
+      );
     }
 
     // Eje de horas: todas si caben, si no cada 3.
