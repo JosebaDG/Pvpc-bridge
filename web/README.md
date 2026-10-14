@@ -10,10 +10,10 @@ Cada uno trabaja en su rama `web/<agente>` y abre un PR contra `main`. Miles rev
 
 | Archivo o carpeta | Dueño | Hilo |
 |---|---|---|
-| `web/css/` (tokens, componentes, look) | Maya | equipo-agentes #2 |
-| `web/js/datos.js`, `web/js/graficas.js` | Charlie | equipo-agentes #3 |
-| `web/contenido/` (textos en Markdown o JSON) | Simone | equipo-agentes #4 |
-| `web/index.html`, `web/js/main.js`, `.github/workflows/web.yml`, este README | Miles | equipo-agentes #2 |
+| `web/css/` (tokens, componentes, look) | Maya | equipo-agentes #3 |
+| `web/js/datos.js`, `web/js/graficas.js` | Charlie | equipo-agentes #4 |
+| `web/contenido/` (textos en Markdown o JSON) | Simone | equipo-agentes #5 |
+| `web/index.html`, `web/js/main.js`, `.github/workflows/web.yml`, este README | Miles | equipo-agentes #3 |
 
 ## Contrato entre piezas
 
