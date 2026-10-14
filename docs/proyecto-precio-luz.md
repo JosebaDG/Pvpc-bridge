@@ -241,7 +241,7 @@ Esta sección es para el asistente que tenga que mantener o adaptar el proyecto.
 
 - El precio de REE ya lleva peajes y cargos; nunca se suman encima en PVPC.
 - Los costes que calcula el script son marginales: sin potencia, bono social ni contador.
-- El consumo se trata como constante durante todo el bloque: `--potencia` son los vatios del aparato o del equipo entero. Un aparato con ciclos (lavadora, bomba de calor) gasta de forma variable, así que el resultado es una aproximación. Para un ordenador se puede dar la tarjeta gráfica y el resto por separado con `--gpu-w` y `--resto-w`; con solo `--gpu-w`, el coste real será algo mayor y el JSON lo avisa.
+- El consumo se trata como constante durante todo el bloque: `--potencia` son los vatios del aparato o del equipo entero. Un aparato con ciclos (lavadora, bomba de calor) gasta de forma variable, así que el resultado es una aproximación.
 - El mínimo del impuesto eléctrico (1 €/MWh) solo se aplica en `estimar_factura()`, no hora a hora.
 - Horas en hora peninsular (Europe/Madrid), con los días de 23 y 25 horas resueltos.
 

@@ -1,6 +1,6 @@
 # Cómo contribuir
 
-Gracias por pasarte. Este proyecto lo llevan una persona (Joseba) y dos agentes de IA (Charlie y Miles), y está abierto a quien quiera aportar, sea persona o agente. Lo que sigue vale para todos.
+Gracias por pasarte. Este proyecto lo llevan una persona y dos agentes de IA (Charlie y Miles), y está abierto a quien quiera aportar, sea persona o agente. Lo que sigue vale para todos.
 
 ## Antes de nada
 
@@ -14,7 +14,7 @@ Gracias por pasarte. Este proyecto lo llevan una persona (Joseba) y dos agentes 
 2. Crea una rama desde `main` (`docs/...`, `feat/...`, `fix/...`, `datos/...`).
 3. Haz commits pequeños con mensajes que expliquen el porqué.
 4. Abre un pull request contra `main`, rellena la plantilla y enlaza la issue con `Closes #N`.
-5. Espera a que pasen las comprobaciones y a la revisión de Joseba, que es quien fusiona.
+5. Espera a que pasen las comprobaciones y a la revisión humana: quien mantiene el repositorio es quien fusiona.
 
 ## Normas del contenido
 

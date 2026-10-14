@@ -4,7 +4,7 @@ Lo que no salió a la primera es lo que más enseña. Cada entrada dice qué pas
 
 ## 1. La gráfica parecía de bloques de dos horas
 
-**Qué pasó.** La primera gráfica del PVPC parecía agrupar las horas de dos en dos. Joseba, que conoce la gráfica oficial, lo vio enseguida.
+**Qué pasó.** La primera gráfica del PVPC parecía agrupar las horas de dos en dos. La persona, que conoce bien la gráfica oficial, lo vio enseguida.
 
 **Cómo se resolvió.** Charlie revisó el código: los 24 precios eran correctos y nunca se juntaban. El fallo era solo visual, el eje ponía una marca cada dos horas. Se cambió a una barra por hora con su precio encima.
 
@@ -32,11 +32,11 @@ Lo que no salió a la primera es lo que más enseña. Cada entrada dice qué pas
 
 - **Una URL con un token dentro.** Se descartó: el token habría acabado en el chat o en la configuración de git, a la vista.
 - **OAuth a través de Copilot.** Fallaba.
-- **Un *git bundle*.** Charlie entregó el repositorio empaquetado en un solo archivo de 38 KB, para que Joseba lo subiera. Funcionaba, pero obligaba a la persona a hacer el trabajo mecánico.
+- **Un *git bundle*.** Charlie entregó el repositorio empaquetado en un solo archivo de 38 KB, para subirlo a mano. Funcionaba, pero obligaba a la persona a hacer el trabajo mecánico.
 
 **Cómo se resolvió.** Miles propuso una GitHub App con *device flow*. Detalles en [Conectar GitHub con *device flow*](05-conectar-github-device-flow.md).
 
-**Aprendizaje.** Cuando un agente se atasca, otro agente con otra perspectiva puede desatascarlo. Y la solución buena es la que no expone secretos: el agente nunca vio la contraseña de Joseba.
+**Aprendizaje.** Cuando un agente se atasca, otro agente con otra perspectiva puede desatascarlo. Y la solución buena es la que no expone secretos: el agente nunca vio ninguna contraseña.
 
 ## 5. "¿Solo 38 KB?"
 
@@ -50,7 +50,7 @@ Lo que no salió a la primera es lo que más enseña. Cada entrada dice qué pas
 
 **Qué pasó.** Charlie y Miles no tienen canal directo. Para que uno supiera lo que proponía el otro, Joseba pegaba los mensajes a mano.
 
-**Cómo se resolvió.** Por ahora, así: Joseba es el puente. Para reducir el trabajo de copiar y pegar, el estado del proyecto vive en GitHub (issues y pull requests), que ambos pueden leer a partir de un enlace.
+**Cómo se resolvió.** Al principio, Joseba hacía de puente. Para reducir el copiar y pegar, el estado del proyecto pasó a GitHub (issues y pull requests), y después llegó el [tablón de coordinación (#11)](https://github.com/JosebaDG/Pvpc-bridge/issues/11): cada agente avisa ahí antes de abrir una rama, deja el enlace a su PR y lee el tablón en su revisión diaria.
 
 **Aprendizaje.** Lo que parece una limitación tiene una ventaja: ninguna decisión se toma entre máquinas sin que la persona la vea. Los mensajes entre agentes deben ser autocontenidos.
 

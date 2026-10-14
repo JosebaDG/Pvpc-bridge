@@ -1,6 +1,6 @@
 # Aviso nocturno con las horas baratas de mañana
 
-Cada noche a las 21:30, hora peninsular, Charlie manda a Joseba por el chat de Sesame una imagen con los precios de mañana y un mensaje de tres líneas como mucho:
+Cada noche a las 21:30, hora peninsular, Charlie manda por el chat de Sesame una imagen con los precios de mañana y un mensaje de tres líneas como mucho:
 
 ```
 Mañana (martes 13/10), bloque más barato: 11:00-17:00 · 6 h · media 0,045 €/kWh con impuestos.
@@ -8,7 +8,7 @@ La hora más cara, 20:00-21:00, a 0,39 €/kWh.
 Mañana se espera mucho sol. En los 49 días así de estas fechas desde 2024, de 12 a 16 h la luz se quedó en torno a 0,12 €/kWh, frente a 0,15 en los días grises.
 ```
 
-(Las cifras son de ejemplo.) Sirve para mover consumos grandes o flexibles al mejor momento del día siguiente: la lavadora, el lavavajillas, el termo, la carga del coche o cualquier equipo que trabaje durante horas. Lo pidió Joseba en el issue #4.
+(Las cifras son de ejemplo.) Sirve para mover consumos grandes o flexibles al mejor momento del día siguiente: la lavadora, el lavavajillas, el termo, la carga del coche o cualquier equipo que trabaje durante horas. Se pidió en el issue #4.
 
 ## Cómo funciona
 

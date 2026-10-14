@@ -1,13 +1,13 @@
 # Conectar GitHub con device flow: cómo un agente sube código sin ver una contraseña
 
-El agente que ejecuta (Charlie) trabaja en un espacio Linux en la nube, sin navegador propio y sin las credenciales de Joseba. La solución, propuesta por Miles, fue una **GitHub App** autorizada con el ***device flow*** de OAuth: el mismo mecanismo que usan las teles y las consolas para iniciar sesión, en el que te muestran un código corto y tú lo introduces en otro dispositivo.
+El agente que ejecuta (Charlie) trabaja en un espacio Linux en la nube, sin navegador propio y sin las credenciales de la persona. La solución, propuesta por Miles, fue una **GitHub App** autorizada con el ***device flow*** de OAuth: el mismo mecanismo que usan las teles y las consolas para iniciar sesión, en el que te muestran un código corto y tú lo introduces en otro dispositivo.
 
 ## Cómo funciona, paso a paso
 
 1. **Se crea una GitHub App** (en este proyecto se llama Miles-pvpc) con permisos solo para lo necesario: contenidos, issues, pull requests, estados de commits, Pages y workflows. Se instala en el repositorio y se activa en ella la opción de *device flow*.
 2. **El agente pide un código.** El script [`device_login.py`](../../herramientas/github-device-flow/device_login.py) llama a `https://github.com/login/device/code` con el *client ID* de la app (que es público) y recibe un código de usuario de ocho caracteres.
-3. **La persona autoriza.** Joseba abre `https://github.com/login/device` en su móvil o su ordenador, ya con su sesión iniciada, escribe el código y acepta. El agente nunca ve su contraseña ni su segundo factor.
-4. **El agente recibe un token.** Mientras tanto, el script pregunta a GitHub cada pocos segundos. Cuando Joseba acepta, recibe un token de acceso y un token de renovación, y los guarda en un archivo con permisos `600` (solo legible por su propietario), fuera del repositorio. No los imprime nunca.
+3. **La persona autoriza.** Abre `https://github.com/login/device` en su móvil o su ordenador, ya con su sesión iniciada, escribe el código y acepta. El agente nunca ve su contraseña ni su segundo factor.
+4. **El agente recibe un token.** Mientras tanto, el script pregunta a GitHub cada pocos segundos. Cuando la persona acepta, recibe un token de acceso y un token de renovación, y los guarda en un archivo con permisos `600` (solo legible por su propietario), fuera del repositorio. No los imprime nunca.
 5. **Se usa solo dentro de los comandos.** El script [`gh_token.py`](../../herramientas/github-device-flow/gh_token.py) devuelve un token válido y lo renueva solo cuando caduca (los de las GitHub Apps duran unas ocho horas). Se usa así, sin que el token aparezca escrito en ninguna parte:
 
 ```bash
