@@ -215,3 +215,14 @@ export function mejorBloque(horas, n = 3) {
   }
   return mejor && { inicio: mejor.inicio, fin: mejor.fin, media: mejor.suma / n };
 }
+
+// ---------- Actividad del equipo (gráfica «El equipo en el tiempo») ----------
+
+// Lee web/datos/actividad.json, que genera herramientas/actividad-equipo/actividad.py con la API
+// pública de GitHub. Es un archivo fijo del repo: la web no llama a GitHub en directo.
+// Misma ruta en local y en Pages, porque el archivo vive dentro de web/.
+export async function cargarActividad() {
+  const r = await fetch('datos/actividad.json');
+  if (!r.ok) throw new Error(`actividad.json: HTTP ${r.status}`);
+  return r.json();
+}
