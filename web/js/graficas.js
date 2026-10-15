@@ -1,7 +1,10 @@
-// Dueño: Charlie (equipo-agentes #4).
+// Dueño: Charlie.
 // Dibuja las dos gráficas de la web sin librerías:
 // - precio-hoy: 24 barras en SVG hecho a mano (SVG = dibujo con formas que el navegador escala sin
 //   perder nitidez y que se puede inspeccionar como el resto de la página).
+//   Cada barra lleva su precio escrito (tres decimales), como en puente_luz.py y aviso_nocturno.py.
+//   En pantallas anchas, columnas con el precio encima; en móvil, filas con el precio al final.
+//   Si el día no es hoy, la cabecera lo dice en grande y no hay «ahora» ni cifra de ahora.
 // - historico: mapa de calor día × hora en canvas (canvas = un lienzo de píxeles; con unas 41.000
 //   celdas es mucho más rápido que crear 41.000 elementos SVG) y la media mensual como línea.
 //
@@ -14,7 +17,7 @@ import {
   precioDelDia, cargarHistorico, tercios, mejorBloque, PRIMER_AÑO,
 } from './datos.js';
 
-// ---------- Colores: solo variables CSS de Maya (web/css/tokens.css, equipo-agentes #3) ----------
+// ---------- Colores: solo variables CSS de Maya (web/css/tokens.css) ----------
 // Lo que ella pidió para las gráficas: --c-barato, --c-medio y --c-caro para el precio,
 // --c-tinta-2 para los ejes, --c-acento para marcar la hora actual y el mejor bloque, y
 // --c-chispa solo como halo detrás de la hora actual (el lima como línea apenas se ve en claro).
@@ -138,29 +141,55 @@ export function pintarPrecioHoy(contenedor, dia) {
   const precios = horas.map((h) => h.precio);
   const iMin = precios.indexOf(Math.min(...precios));
   const iMax = precios.indexOf(Math.max(...precios));
+  const media = precios.reduce((a, b) => a + b, 0) / precios.length;
+  const enBloque = (i) => i >= bloque.inicio && i <= bloque.fin;
+  const destacada = (i) => i === iMin || i === iMax || enBloque(i); // su precio va en negrita
   const ahora = Date.now();
+  // La hora actual solo existe si el día es hoy: con datos de otro día no hay «ahora».
   const iAhora = esHoy ? horas.findIndex((h) => ahora >= h.utc && ahora < h.utc + 3600e3) : -1;
+  const tramoBloque = `${dos(horas[bloque.inicio].hora)}–${dos((horas[bloque.fin].hora + 1) % 24)} h`;
 
-  // Cabecera con la fecha bien visible, y aviso si no es hoy.
+  // El título de la sección dice «hoy» solo cuando de verdad es hoy.
+  const titulo = contenedor.closest('section')?.querySelector('.seccion__titulo');
+  if (titulo) {
+    titulo.textContent = esHoy
+      ? 'El precio de la luz, hoy'
+      : `El precio de la luz del ${fechaLarga(fecha).replace(/ de \d{4}$/, '')}`;
+  }
+
+  // Cabecera: la fecha en grande. Si no es hoy, otra etiqueta, otro estilo y la explicación,
+  // para que de un vistazo nadie confunda el último día guardado con el de hoy.
   const cabecera = esHoy
-    ? el('p', { class: 'grafica-fecha', 'data-estado': 'hoy' }, [
-      el('strong', { texto: `Hoy, ${fechaLarga(fecha)}` }),
-      fuente === 'redata' ? ' · en directo de REData (REE)' : ' · datos del repositorio',
+    ? el('div', { class: 'grafica-fecha', 'data-estado': 'hoy', style: 'margin-bottom:1rem' }, [
+      el('p', {
+        style: 'margin:0;font-size:var(--t-l, 1.375rem);font-weight:var(--peso-fuerte, 760);line-height:1.15',
+        texto: `Hoy, ${fechaLarga(fecha)}`,
+      }),
+      el('p', { class: 'nota', style: 'margin:.25rem 0 0', texto: fuente === 'redata' ? 'En directo de Red Eléctrica (REData).' : 'Datos del repositorio.' }),
     ])
-    : el('p', { class: 'grafica-fecha', 'data-estado': 'atrasado', role: 'status' }, [
-      el('strong', { texto: `Datos del ${fechaLarga(fecha)}` }),
-      ' · aún no hay precios de hoy, así que se muestra el último día con datos.',
+    : el('div', {
+      class: 'grafica-fecha', 'data-estado': 'atrasado', role: 'status',
+      style: `margin-bottom:1rem;padding:.75rem 1rem;border-radius:var(--r-s, 8px);border:2px dashed ${color('eje')};background:${color('pista')}`,
+    }, [
+      el('p', {
+        style: 'margin:0 0 .35rem;font-size:var(--t-xs, .8125rem);font-weight:var(--peso-fuerte, 760);letter-spacing:.06em;text-transform:uppercase',
+        texto: 'Todavía no hay los de hoy',
+      }),
+      el('p', {
+        style: 'margin:0;font-size:var(--t-xl, 2rem);font-weight:var(--peso-fuerte, 760);line-height:1.1;letter-spacing:-.02em',
+        texto: `Datos del ${fechaLarga(fecha).replace(/ de \d{4}$/, '')}`,
+      }),
+      el('p', { class: 'nota', style: 'margin:.4rem 0 0', texto: 'No se ha podido leer el precio de hoy de Red Eléctrica, así que se muestra el último día guardado en el repositorio.' }),
     ]);
 
   const resumen = el('p', { class: 'grafica-resumen' }, [
     'Más barata: ', el('strong', { texto: tramo(horas[iMin].hora) }), `, ${euros(precios[iMin])}. `,
     'Más cara: ', el('strong', { texto: tramo(horas[iMax].hora) }), `, ${euros(precios[iMax])}. `,
-    'Mejor bloque de 3 horas seguidas: ',
-    el('strong', { texto: `${dos(horas[bloque.inicio].hora)}–${dos((horas[bloque.fin].hora + 1) % 24)} h` }),
-    `, media ${euros(bloque.media)}.`,
+    'Mejor bloque de 3 horas seguidas: ', el('strong', { texto: tramoBloque }), `, media ${euros(bloque.media)}. `,
+    `Media del día: ${euros(media)}.`,
   ]);
 
-  const detalle = el('p', { class: 'nota grafica-detalle', 'aria-live': 'polite', texto: 'Toca una barra para ver su precio.' });
+  const detalle = el('p', { class: 'nota grafica-detalle', 'aria-live': 'polite', texto: 'Toca una barra para ver su detalle.' });
 
   // Leyenda con las etiquetas .tramo de Maya: color y palabra siempre juntos (daltonismo).
   const leyenda = el('ul', { class: 'grafica-leyenda', style: 'list-style:none;padding:0;margin:0 0 1rem;display:flex;flex-wrap:wrap;align-items:center;gap:.5em 1em' }, [
@@ -168,6 +197,7 @@ export function pintarPrecioHoy(contenedor, dia) {
     el('li', {}, el('span', { class: 'tramo tramo--medio', texto: 'Las 8 del medio' })),
     el('li', {}, el('span', { class: 'tramo tramo--caro', texto: 'Las 8 más caras' })),
     el('li', {}, [muestra('superficie', `outline:2px solid ${color('acento')};outline-offset:-2px`), 'Mejor bloque de 3 h']),
+    el('li', {}, [el('span', { 'aria-hidden': 'true', style: `display:inline-block;width:1.4em;vertical-align:.25em;margin-right:.35em;border-top:2px dashed ${color('eje')}` }), `Media del día, ${f3.format(media)}`]),
     iAhora >= 0 ? el('li', {}, [muestra('chispa', `outline:2px solid ${color('acento')};outline-offset:-2px`), 'Hora actual']) : null,
   ]);
 
@@ -179,35 +209,68 @@ export function pintarPrecioHoy(contenedor, dia) {
     ])
     : null;
 
+  // Los mismos precios en una tabla, plegada: la alternativa accesible a la gráfica.
+  const tabla = el('details', { class: 'grafica-tabla', style: 'margin:0 0 1rem' }, [
+    el('summary', { texto: 'Ver los 24 precios en una tabla' }),
+    el('table', { style: 'border-collapse:collapse;margin-top:.5rem;font-variant-numeric:tabular-nums' }, [
+      el('caption', { class: 'nota', style: 'text-align:left', texto: `Precio por horas del ${fechaLarga(fecha)}, en €/kWh y sin impuestos` }),
+      el('thead', {}, el('tr', {}, ['Hora', '€/kWh', 'Tramo'].map((t) => el('th', { scope: 'col', style: 'text-align:left;padding:.2em 1em .2em 0', texto: t })))),
+      el('tbody', {}, horas.map((h, i) => el('tr', {}, [
+        el('th', { scope: 'row', style: 'text-align:left;padding:.15em 1em .15em 0;font-weight:inherit', texto: tramo(h.hora) }),
+        el('td', { style: 'text-align:right;padding:.15em 1em .15em 0', texto: f3.format(h.precio) }),
+        el('td', { texto: `${NOMBRE_TERCIO[grupo[i]]}${enBloque(i) ? ', mejor bloque' : ''}${i === iAhora ? ', ahora' : ''}` }),
+      ]))),
+    ]),
+  ]);
+
   const nota = el('p', { class: 'nota grafica-nota', texto: 'PVPC 2.0TD de la península, en €/kWh y sin impuestos. Fuente: Red Eléctrica (REE), REData.' });
 
   const lienzo = el('div', { class: 'grafica-lienzo' });
-  contenedor.replaceChildren(...[cabecera, ahoraBloque, lienzo, detalle, resumen, leyenda, nota].filter(Boolean));
+  contenedor.replaceChildren(...[cabecera, ahoraBloque, lienzo, detalle, resumen, leyenda, tabla, nota].filter(Boolean));
 
   const verDetalle = (i) => {
-    detalle.textContent = `${tramo(horas[i].hora)}: ${euros(horas[i].precio)} (${NOMBRE_TERCIO[grupo[i]]}${i >= bloque.inicio && i <= bloque.fin ? ', dentro del mejor bloque' : ''}${i === iAhora ? ', ahora' : ''})`;
+    detalle.textContent = `${tramo(horas[i].hora)}: ${euros(horas[i].precio)} (${NOMBRE_TERCIO[grupo[i]]}${enBloque(i) ? ', dentro del mejor bloque' : ''}${i === iAhora ? ', ahora' : ''})`;
   };
+  const barraInteractiva = (barra, i) => {
+    barra.append(s('title', { texto: `${tramo(horas[i].hora)}: ${euros(horas[i].precio)} (${NOMBRE_TERCIO[grupo[i]]})` }));
+    barra.addEventListener('pointerenter', () => verDetalle(i));
+    barra.addEventListener('click', () => verDetalle(i));
+    barra.addEventListener('focus', () => verDetalle(i));
+  };
+  const etiquetaSVG = `Precio por horas del ${fechaLarga(fecha)}${esHoy ? '' : ' (no es hoy: último día con datos)'}. ${resumen.textContent}`;
 
+  // Dos dibujos según el ancho, los dos con el precio escrito en cada barra (como las gráficas
+  // de puente_luz.py y aviso_nocturno.py), sin tener que tocarla:
+  // - ancho: columnas; el precio va encima, en horizontal si cabe y en vertical si no.
+  // - estrecho (móvil): las horas en filas y barras horizontales; el precio va al final de cada
+  //   barra con letra legible, sin girar la cabeza.
   alCambiarAncho(lienzo, (W) => {
-    const estrecho = W < 520;
-    const H = estrecho ? 250 : 300;
-    const m = { izq: 40, der: 6, arr: 34, aba: 26 };
+    const svg = W < 560 ? barrasEnFilas(W) : barrasEnColumnas(W);
+    lienzo.replaceChildren(svg);
+  });
+
+  function barrasEnColumnas(W) {
+    const fs = 12;
+    const hueco = (W - 46) / horas.length;
+    // ¿Cabe «0,123» en horizontal sobre la barra? Si no, se escribe en vertical, como en el aviso.
+    const vertical = hueco < 42;
+    const altoEtiqueta = vertical ? 44 : 18;
+    const m = { izq: 40, der: 6, arr: 26 + altoEtiqueta, aba: iAhora >= 0 ? 40 : 26 };
+    const H = 330 + (vertical ? 20 : 0);
     const anchoG = W - m.izq - m.der;
     const altoG = H - m.arr - m.aba;
     const yMin = Math.min(0, ...precios);
-    const yMax = Math.max(...precios, 0.001) * 1.1;
+    const yMax = Math.max(...precios, 0.001);
     const y = (v) => m.arr + altoG * (1 - (v - yMin) / (yMax - yMin));
-    const hueco = anchoG / horas.length;
-    const x = (i) => m.izq + i * hueco;
-    const anchoBarra = Math.max(2, hueco * 0.78);
+    const paso = anchoG / horas.length;
+    const x = (i) => m.izq + i * paso;
+    const anchoBarra = Math.max(2, paso * 0.78);
 
     const svg = s('svg', {
-      viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img',
-      'aria-label': `Precio por horas del ${fechaLarga(fecha)}. ${resumen.textContent}`,
-      style: `display:block;max-width:100%;height:auto;font-family:inherit;font-size:${estrecho ? 11 : 12}px;overflow:visible`,
+      viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': etiquetaSVG,
+      style: `display:block;max-width:100%;height:auto;font-family:inherit;font-size:${fs}px;overflow:visible`,
     });
 
-    // Rejilla horizontal con las etiquetas de precio.
     for (const v of marcas(yMin, yMax)) {
       svg.append(
         s('line', { x1: m.izq, x2: W - m.der, y1: y(v), y2: y(v), stroke: v === 0 ? color('eje') : color('rejilla') }),
@@ -216,69 +279,144 @@ export function pintarPrecioHoy(contenedor, dia) {
     }
     svg.append(s('text', { x: 0, y: 12, fill: color('eje'), texto: '€/kWh' }));
 
-    // Fondo del mejor bloque de 3 horas, con su etiqueta arriba.
+    // Mejor bloque de 3 horas: contorno en acento que abarca también los precios, y su rótulo.
     const xb = x(bloque.inicio);
-    const wb = hueco * (bloque.fin - bloque.inicio + 1);
-    const cx = Math.min(Math.max(xb + wb / 2, m.izq + 60), W - m.der - 60);
+    const wb = paso * (bloque.fin - bloque.inicio + 1);
+    const cx = Math.min(Math.max(xb + wb / 2, m.izq + 70), W - m.der - 70);
     svg.append(
       s('rect', {
-        x: xb + 1, y: m.arr - 5, width: wb - 2, height: altoG + 4, rx: 4,
+        x: xb + 1, y: 22, width: wb - 2, height: m.arr - 22 + altoG + 4, rx: 4,
         fill: 'none', stroke: color('acento'), 'stroke-width': 2, 'pointer-events': 'none',
       }),
-      s('text', { x: cx, y: m.arr - 12, 'text-anchor': 'middle', 'font-weight': 600, fill: color('acento'), texto: `Mejor bloque · ${f3.format(bloque.media)}` }),
+      s('text', { x: cx, y: 15, 'text-anchor': 'middle', 'font-weight': 700, fill: color('acento'), texto: `Mejor bloque · ${f3.format(bloque.media)}` }),
     );
 
-    // Hora actual: un halo «chispa» detrás de su barra (la marca en acento va después).
     if (iAhora >= 0) {
       svg.append(s('rect', {
-        x: x(iAhora) + 1, y: m.arr - 6, width: Math.max(2, hueco - 2), height: altoG + 6, rx: 4,
+        x: x(iAhora) + 1, y: 24, width: Math.max(2, paso - 2), height: m.arr - 24 + altoG + 2, rx: 4,
         fill: color('chispa'), 'pointer-events': 'none',
       }));
     }
 
-    // Las barras.
+    // Media del día: línea discontinua (como en el aviso nocturno).
+    svg.append(s('line', {
+      x1: m.izq, x2: W - m.der, y1: y(media), y2: y(media), stroke: color('eje'),
+      'stroke-width': 1.5, 'stroke-dasharray': '5 4', 'pointer-events': 'none',
+    }));
+
     horas.forEach((h, i) => {
       const y0 = y(Math.max(h.precio, 0));
       const y1 = y(Math.min(h.precio, 0));
       const barra = s('rect', {
-        x: x(i) + (hueco - anchoBarra) / 2, y: y0, width: anchoBarra, height: Math.max(1, y1 - y0),
+        x: x(i) + (paso - anchoBarra) / 2, y: y0, width: anchoBarra, height: Math.max(1, y1 - y0),
         rx: Math.min(3, anchoBarra / 4), fill: color(grupo[i]), tabindex: 0, style: 'cursor:pointer',
-      }, s('title', { texto: `${tramo(h.hora)}: ${euros(h.precio)} (${NOMBRE_TERCIO[grupo[i]]})` }));
-      barra.addEventListener('pointerenter', () => verDetalle(i));
-      barra.addEventListener('click', () => verDetalle(i));
-      barra.addEventListener('focus', () => verDetalle(i));
-      svg.append(barra);
+        stroke: i === iAhora ? color('acento') : null, 'stroke-width': i === iAhora ? 2 : null,
+      });
+      barraInteractiva(barra, i);
+      // El precio, encima de la barra (o encima del cero si es negativo). Tres decimales.
+      const xc = x(i) + paso / 2;
+      const yt = y(Math.max(h.precio, 0)) - 4;
+      const precio = s('text', {
+        x: xc, y: yt, fill: color('tinta'), 'pointer-events': 'none', 'aria-hidden': 'true',
+        'font-weight': destacada(i) ? 700 : 400, style: 'font-variant-numeric:tabular-nums',
+        ...(vertical
+          ? { transform: `rotate(-90 ${xc} ${yt})`, dy: '0.35em', 'text-anchor': 'start' }
+          : { 'text-anchor': 'middle' }),
+        texto: f3.format(h.precio),
+      });
+      svg.append(barra, precio);
     });
 
-    // Hora actual: contorno en acento sobre la barra y la etiqueta «ahora» encima.
-    if (iAhora >= 0) {
-      const h = horas[iAhora];
-      const xa = x(iAhora) + hueco / 2;
-      const ya = y(Math.max(h.precio, 0));
-      svg.append(
-        s('rect', {
-          x: x(iAhora) + (hueco - anchoBarra) / 2 - 1.5, y: ya - 1.5, width: anchoBarra + 3,
-          height: Math.max(1, y(Math.min(h.precio, 0)) - ya) + 3, rx: 3, fill: 'none',
-          stroke: color('acento'), 'stroke-width': 2, 'pointer-events': 'none',
-        }),
-        s('text', {
-          x: Math.min(Math.max(xa, m.izq + 18), W - m.der - 18), y: ya - 8, 'text-anchor': 'middle',
-          'font-weight': 700, fill: color('acento'), 'pointer-events': 'none', texto: 'ahora',
-        }),
-      );
-    }
-
-    // Eje de horas: todas si caben, si no cada 3.
-    const cada = hueco >= 24 ? 1 : 3;
+    // Eje de horas: todas si caben, si no cada 3 (y siempre la actual).
+    const cada = paso >= 24 ? 1 : 3;
     horas.forEach((h, i) => {
-      if (h.hora % cada !== 0 || (i > 0 && horas[i - 1].hora === h.hora)) return;
+      const esAhora = i === iAhora;
+      if (!esAhora && (h.hora % cada !== 0 || (i > 0 && horas[i - 1].hora === h.hora))) return;
+      if (!esAhora && iAhora >= 0 && Math.abs(i - iAhora) * paso < 22) return; // no pisar la actual
       svg.append(s('text', {
-        x: x(i) + hueco / 2, y: H - m.aba + 16, 'text-anchor': 'middle', fill: color('eje'), texto: dos(h.hora),
+        x: x(i) + paso / 2, y: H - m.aba + 16, 'text-anchor': 'middle',
+        fill: esAhora ? color('acento') : color('eje'), 'font-weight': esAhora ? 700 : null, texto: dos(h.hora),
       }));
     });
+    // «ahora», debajo de su hora: así no tapa el precio de la barra.
+    if (iAhora >= 0) {
+      const xa = Math.min(Math.max(x(iAhora) + paso / 2, m.izq + 18), W - m.der - 18);
+      svg.append(s('text', {
+        x: xa, y: H - m.aba + 32, 'text-anchor': 'middle', 'font-weight': 700, fill: color('acento'), texto: 'ahora',
+      }));
+    }
+    return svg;
+  }
 
-    lienzo.replaceChildren(svg);
-  });
+  function barrasEnFilas(W) {
+    const fs = 13;
+    const fila = 26;
+    const m = { izq: 50, der: iAhora >= 0 ? 96 : 52, arr: 26, aba: 8 };
+    const H = m.arr + fila * horas.length + m.aba;
+    const anchoG = W - m.izq - m.der;
+    const xMin = Math.min(0, ...precios);
+    const xMax = Math.max(...precios, 0.001);
+    const x = (v) => m.izq + anchoG * ((v - xMin) / (xMax - xMin));
+    const yF = (i) => m.arr + i * fila;
+    const altoBarra = fila * 0.7;
+
+    const svg = s('svg', {
+      viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': etiquetaSVG,
+      style: `display:block;max-width:100%;height:auto;font-family:inherit;font-size:${fs}px;overflow:visible`,
+    });
+
+    svg.append(s('text', {
+      x: 0, y: 15, 'font-weight': 700, fill: color('acento'),
+      texto: `▭ Mejor bloque ${tramoBloque} · ${f3.format(bloque.media)}`,
+    }));
+
+    if (iAhora >= 0) {
+      svg.append(s('rect', {
+        x: 1, y: yF(iAhora) + 1, width: W - 2, height: fila - 2, rx: 4, fill: color('chispa'), 'pointer-events': 'none',
+      }));
+    }
+    // El cero y la media del día (discontinua).
+    svg.append(
+      s('line', { x1: x(0), x2: x(0), y1: m.arr, y2: H - m.aba, stroke: color('eje') }),
+      s('line', {
+        x1: x(media), x2: x(media), y1: m.arr, y2: H - m.aba, stroke: color('eje'),
+        'stroke-width': 1.5, 'stroke-dasharray': '5 4', 'pointer-events': 'none',
+      }),
+    );
+
+    horas.forEach((h, i) => {
+      const esAhora = i === iAhora;
+      const yc = yF(i) + fila / 2;
+      const x0 = x(Math.min(h.precio, 0));
+      const x1 = x(Math.max(h.precio, 0));
+      const barra = s('rect', {
+        x: x0, y: yc - altoBarra / 2, width: Math.max(1, x1 - x0), height: altoBarra,
+        rx: 3, fill: color(grupo[i]), tabindex: 0, style: 'cursor:pointer',
+        stroke: esAhora ? color('acento') : null, 'stroke-width': esAhora ? 2 : null,
+      });
+      barraInteractiva(barra, i);
+      svg.append(
+        s('text', {
+          x: m.izq - 8, y: yc, dy: '0.35em', 'text-anchor': 'end', style: 'font-variant-numeric:tabular-nums',
+          fill: esAhora ? color('acento') : color('eje'), 'font-weight': esAhora ? 700 : null,
+          texto: `${dos(h.hora)}–${dos((h.hora + 1) % 24)}`,
+        }),
+        barra,
+        s('text', {
+          x: x(Math.max(h.precio, 0)) + 6, y: yc, dy: '0.35em', fill: color('tinta'), 'pointer-events': 'none',
+          'aria-hidden': 'true', 'font-weight': destacada(i) ? 700 : 400, style: 'font-variant-numeric:tabular-nums',
+          texto: f3.format(h.precio),
+        }, esAhora ? s('tspan', { fill: color('acento'), 'font-weight': 700, texto: '  ahora' }) : null),
+      );
+    });
+
+    // Contorno del mejor bloque: abarca las filas enteras, precios incluidos.
+    svg.append(s('rect', {
+      x: 1, y: yF(bloque.inicio) + 1, width: W - 2, height: fila * (bloque.fin - bloque.inicio + 1) - 2, rx: 6,
+      fill: 'none', stroke: color('acento'), 'stroke-width': 2, 'pointer-events': 'none',
+    }));
+    return svg;
+  }
 }
 
 // =====================================================================
