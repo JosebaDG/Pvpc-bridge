@@ -206,14 +206,19 @@ export function pintarPrecioHoy(contenedor, dia) {
   // Burbuja del gesto (móvil). En filas la gráfica mide unos 650 px y el párrafo del detalle
   // queda debajo, fuera de la pantalla o tapado por la barra de apartados, justo mientras el dedo
   // recorre las horas. Mientras dura el gesto con dedo o lápiz, y solo si ese párrafo no se ve
-  // entero, se enseña una copia de su frase fija en la pantalla: abajo, encima de la barra, o
-  // arriba, bajo el menú, en la mitad contraria al dedo para no taparlo. Al soltar se va sola.
+  // entero, se enseña una copia de su frase fija en la pantalla, cerca del dedo: justo encima,
+  // con su borde de abajo a 44 px del punto que toca (algo más de una fila), para leerla sin
+  // apartar la vista de la barra. Si arriba no cabe (dedo pegado al menú), pasa debajo, a 72 px:
+  // la yema tapa más hacia abajo que hacia arriba. Y si aun así no cabe, se corre lo justo para
+  // quedar entre el menú y la barra de apartados. Al soltar se va sola.
   // - Es solo para la vista (aria-hidden): el lector de pantalla sigue con el aria-live de siempre
   //   y no lo oye dos veces.
   // - Va en <body>, no en la tarjeta: así ningún antecesor con transform rompe el position:fixed.
   // - Estilos en línea con los tokens de Maya, sin tocar base.css; ella puede pasarlos a una clase.
   // Descartado: mover el propio párrafo a position:fixed (la página saltaría al sacarlo del flujo
-  // y el aria-live repetiría) y desplazar la página hasta la frase (el dedo perdería su hora).
+  // y el aria-live repetiría), desplazar la página hasta la frase (el dedo perdería su hora),
+  // fijarla arriba o abajo de la pantalla (primera versión: con el dedo en medio se iba lejos y
+  // tapaba la fecha) y dejarla a 3 o 4 filas (unos 110 px: el ojo tiene que saltar).
   document.querySelectorAll('.grafica-burbuja').forEach((b) => b.remove()); // si se vuelve a pintar
   const burbuja = el('div', {
     class: 'grafica-burbuja', 'aria-hidden': 'true', hidden: '',
@@ -248,15 +253,24 @@ export function pintarPrecioHoy(contenedor, dia) {
     burbuja.replaceChildren(...copia);
     burbuja.querySelectorAll('.solo-lector').forEach((n) => n.remove()); // el precio de hoy ya va en la barra
   };
+  const SEPARACION_ARRIBA = 44; // del punto del dedo al borde de abajo de la burbuja
+  const SEPARACION_ABAJO = 72; // del punto del dedo al borde de arriba, cuando va debajo
+  const VUELTA = 24; // margen para volver arriba: sin parpadeos en el límite
   const colocarBurbuja = (dedoY) => {
     const z = zonaLibre();
     const margen = 8;
-    // En la mitad contraria al dedo; solo cambia de lado si el dedo se le acerca (sin parpadeos).
-    const r = burbuja.hidden ? null : burbuja.getBoundingClientRect();
-    if (!r) burbujaArriba = dedoY > (z.arriba + z.abajo) / 2;
-    else if (dedoY > r.top - 24 && dedoY < r.bottom + 24) burbujaArriba = !burbujaArriba;
-    burbuja.style.top = burbujaArriba ? `${z.arriba + margen}px` : 'auto';
-    burbuja.style.bottom = burbujaArriba ? 'auto' : `${(window.visualViewport?.height ?? window.innerHeight) - z.abajo + margen}px`;
+    const h = burbuja.getBoundingClientRect().height;
+    const topArriba = dedoY - SEPARACION_ARRIBA - h;
+    const limite = z.arriba + margen;
+    // Encima del dedo siempre que quepa. Ya debajo, solo vuelve arriba con VUELTA px de sobra.
+    if (!burbujaArriba) burbujaArriba = topArriba >= limite + VUELTA;
+    else if (topArriba < limite) burbujaArriba = false;
+    const top = burbujaArriba ? topArriba : dedoY + SEPARACION_ABAJO;
+    // Dentro de la zona libre: sin pisar el menú ni la barra de apartados.
+    const minimo = z.arriba + margen;
+    const maximo = Math.max(minimo, z.abajo - margen - h);
+    burbuja.style.top = `${Math.round(Math.min(Math.max(top, minimo), maximo))}px`;
+    burbuja.style.bottom = 'auto';
   };
   const gestoBurbuja = (ev, fase) => {
     if (ev.pointerType === 'mouse') return; // con ratón la frase ya se ve: la gráfica es baja
@@ -268,8 +282,14 @@ export function pintarPrecioHoy(contenedor, dia) {
     if (fase === 'inicio' && detalleVisible()) return;
     if (fase === 'mueve' && burbuja.hidden) return;
     copiarFrase();
+    const nueva = burbuja.hidden;
+    if (nueva) {
+      burbujaArriba = true; // cada gesto empieza encima del dedo, si cabe
+      burbuja.style.visibility = 'hidden'; // medirla sin que se vea en un sitio provisional
+      burbuja.hidden = false;
+    }
     colocarBurbuja(ev.clientY);
-    burbuja.hidden = false;
+    burbuja.style.visibility = '';
   };
 
   // Comparación con el día anterior (ayer, si el día es hoy). El precio ya va escrito en cada
