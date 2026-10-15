@@ -38,7 +38,7 @@ portada                            (index.html)
   titular       texto
   entrada       texto (la frase de 10 segundos)
   detalle       texto, opcional (hoy no se usa)
-  botones[]     { texto, enlace }   (uno solo)
+  botones[]     { texto, enlace }   opcional (hoy no se usa: la entrada ya invita a bajar a la gráfica)
 
 puertas[]                          (index.html, tarjetas bajo la gráfica)
   { titulo, texto, enlace }         (enlace a otra página de la web)

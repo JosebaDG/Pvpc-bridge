@@ -3,10 +3,7 @@
 
   "portada": {
     "titular": "El precio de la luz, hora a hora",
-    "entrada": "Con la tarifa regulada (el <strong>PVPC</strong>), la luz no cuesta lo mismo a las tres de la madrugada que a las ocho de la tarde. Y la hora más barata no es siempre la misma.",
-    "botones": [
-      { "texto": "Descubre la de hoy", "enlace": "#precio-hoy" }
-    ]
+    "entrada": "Con la tarifa regulada (el <strong>PVPC</strong>), la luz no cuesta lo mismo a las tres de la madrugada que a las ocho de la tarde. Y la hora más barata no es siempre la misma."
   },
 
   "puertas": [
