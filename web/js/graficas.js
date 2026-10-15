@@ -5,6 +5,7 @@
 //   Cada barra lleva su precio escrito (tres decimales), como en puente_luz.py y aviso_nocturno.py.
 //   En pantallas anchas, columnas con el precio encima; en móvil, filas con el precio al final.
 //   Si el día no es hoy, la cabecera lo dice en grande y no hay «ahora» ni cifra de ahora.
+//   Al deslizar o con las flechas no se repite el precio: se compara con el día anterior a esa hora.
 // - historico: mapa de calor día × hora en canvas (canvas = un lienzo de píxeles; con unas 41.000
 //   celdas es mucho más rápido que crear 41.000 elementos SVG) y la media mensual como línea.
 //
@@ -14,7 +15,7 @@
 // Busca #precio-hoy [data-grafica="hoy"] y #historico [data-grafica="historico"] y los rellena.
 
 import {
-  precioDelDia, cargarHistorico, tercios, mejorBloque, PRIMER_AÑO,
+  precioDelDia, precioDelDiaAnterior, compararPrecio, cargarHistorico, tercios, mejorBloque, PRIMER_AÑO,
 } from './datos.js';
 
 // ---------- Colores: solo variables CSS de Maya (web/css/tokens.css) ----------
@@ -66,6 +67,7 @@ const aFecha = (f) => new Date(`${f}T12:00:00Z`);
 const fechaLarga = (f) => new Intl.DateTimeFormat('es-ES', {
   weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC',
 }).format(aFecha(f)).replace(',', ''); // «miércoles 14 de octubre de 2026», sin coma
+const diaSemana = (f) => new Intl.DateTimeFormat('es-ES', { weekday: 'long', timeZone: 'UTC' }).format(aFecha(f));
 const fechaCorta = (f) => new Intl.DateTimeFormat('es-ES', {
   day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC',
 }).format(aFecha(f));
@@ -190,8 +192,22 @@ export function pintarPrecioHoy(contenedor, dia) {
   ]);
 
   const detalle = el('p', {
-    class: 'nota grafica-detalle', 'aria-live': 'polite',
+    class: 'nota grafica-detalle', 'aria-live': 'polite', style: 'min-height:1.5em',
     texto: 'Toca una barra o desliza el dedo por la gráfica para ver el precio de cada hora. Con teclado, usa las flechas.',
+  });
+
+  // Comparación con el día anterior (ayer, si el día es hoy). El precio ya va escrito en cada
+  // barra, así que al deslizar no se repite: se dice cómo estaba el día antes a esa misma hora.
+  // Se carga después de dibujar (no retrasa la gráfica) y, si no hay datos, no se enseña nada.
+  let anterior = null; // { fecha, porHora: Map(hora -> precio) }
+  const nombreAnterior = esHoy ? 'ayer' : 'el día anterior';
+  const tactil = matchMedia('(hover: none), (pointer: coarse)').matches;
+  // Pista para descubrir el gesto, encima de la gráfica. Oculta hasta que haya datos del día antes.
+  const pista = el('p', {
+    class: 'nota grafica-pista', hidden: '', style: 'margin:0 0 .5rem',
+    texto: tactil
+      ? `Desliza por las barras para comparar con ${nombreAnterior}.`
+      : `Pasa el ratón o usa las flechas para comparar con ${nombreAnterior}.`,
   });
 
   // Leyenda con las etiquetas .tramo de Maya: color y palabra siempre juntos (daltonismo).
@@ -230,18 +246,53 @@ export function pintarPrecioHoy(contenedor, dia) {
 
   // position:relative para la franja táctil de las horas en el dibujo en filas (ver hacerDeslizable).
   const lienzo = el('div', { class: 'grafica-lienzo', style: 'position:relative' });
-  contenedor.replaceChildren(...[cabecera, ahoraBloque, lienzo, detalle, resumen, leyenda, tabla, nota].filter(Boolean));
+  contenedor.replaceChildren(...[cabecera, ahoraBloque, pista, lienzo, detalle, resumen, leyenda, tabla, nota].filter(Boolean));
 
   // Hora elegida (con el dedo, el ratón o el teclado). Vive fuera del SVG para que sobreviva
   // cuando se redibuja al cambiar el ancho. -1: todavía ninguna.
   let elegida = -1;
   let marcarEnDibujo = () => {}; // la pone el dibujo actual: mueve el marco y el foco
+  // Frase de la hora i. Con datos del día antes: «12–13 h · ayer 0,192 · ▼ hoy un 23 % más barato».
+  // El sentido va siempre en palabras (más barato, más caro, casi igual); la flecha y el color
+  // solo lo refuerzan. El precio de hoy no se ve (ya está en la barra), pero el lector de pantalla
+  // lo lee, porque en la barra va oculto para él. Sin datos del día antes, la frase de siempre.
+  const escribirDetalle = (i) => {
+    const h = horas[i];
+    const ref = anterior?.porHora.get(h.hora);
+    if (ref === undefined) {
+      detalle.textContent = `${tramo(h.hora)}: ${euros(h.precio)} (${NOMBRE_TERCIO[grupo[i]]}${enBloque(i) ? ', dentro del mejor bloque' : ''}${i === iAhora ? ', ahora' : ''})`;
+      return;
+    }
+    const cmp = compararPrecio(h.precio, ref);
+    const sujeto = esHoy ? 'hoy' : `el ${diaSemana(fecha)}`;
+    const quien = esHoy ? 'ayer' : diaSemana(anterior.fecha);
+    const flecha = { barato: '▼', caro: '▲', igual: '=' }[cmp.sentido];
+    const colorFlecha = { barato: color('barato'), caro: color('caro'), igual: color('eje') }[cmp.sentido];
+    detalle.replaceChildren(
+      `${tramo(h.hora)} · `,
+      el('span', { class: 'solo-lector', texto: `${sujeto} ${euros(h.precio)}, ` }),
+      `${quien} ${f3.format(ref)} · `,
+      el('strong', {}, [
+        el('span', { 'aria-hidden': 'true', style: `color:${colorFlecha};margin-right:.25em`, texto: flecha }),
+        cmp.sentido === 'igual' ? `${sujeto} casi igual` : `${sujeto} ${cmp.texto}`,
+      ]),
+    );
+  };
   const verDetalle = (i) => {
     if (i < 0 || i >= horas.length || i === elegida) return; // sin repetir el aviso de aria-live
     elegida = i;
-    detalle.textContent = `${tramo(horas[i].hora)}: ${euros(horas[i].precio)} (${NOMBRE_TERCIO[grupo[i]]}${enBloque(i) ? ', dentro del mejor bloque' : ''}${i === iAhora ? ', ahora' : ''})`;
+    escribirDetalle(i);
     marcarEnDibujo(i);
   };
+  precioDelDiaAnterior(fecha).then((dia) => {
+    if (!dia) return; // sin datos del día antes: ni pista ni comparación, y ningún error
+    const porHora = new Map();
+    for (const h of dia.horas) if (!porHora.has(h.hora)) porHora.set(h.hora, h.precio); // cambio de hora: la primera
+    anterior = { fecha: dia.fecha, porHora };
+    pista.hidden = false;
+    if (elegida >= 0) escribirDetalle(elegida);
+    else detalle.textContent = '';
+  }).catch((e) => console.warn('día anterior:', e));
   // Con el teclado solo se entra una vez en la gráfica (tabindex «itinerante»): la barra elegida,
   // o la actual, o la más barata. Dentro, las flechas mueven de hora en hora.
   const barraConFoco = () => (elegida >= 0 ? elegida : (iAhora >= 0 ? iAhora : iMin));
