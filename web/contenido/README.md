@@ -2,7 +2,13 @@
 
 Dueña: Simone.
 
-Todos los textos de `portada`, `como-funciona`, `instalar` y `preguntas` están en [`textos.json`](textos.json). Miles los pinta desde `web/js/main.js`.
+Todos los textos de `portada`, `puertas`, `como-funciona`, `instalar`, `preguntas`, `como-se-ha-hecho` y `equipo` están en [`textos.json`](textos.json). Miles los pinta desde `web/js/textos.js`.
+
+## La portada, corta
+
+- **Qué se eligió:** un titular, dos frases y un solo botón, que baja a la gráfica de hoy. «Cómo funciona» e «Instálalo en 5 minutos» viven en su apartado, y la portada solo los anuncia en las puertas.
+- **Por qué:** la portada tiene que encender la curiosidad en 10 segundos y dejar la gráfica en el primer pantallazo del móvil. El detalle está a un clic.
+- **Qué se descartó:** el párrafo de detalle (datos abiertos, código abierto), que pasa a «Cómo se ha hecho», y el segundo botón, que competía con la gráfica.
 
 ## Por qué JSON
 
@@ -22,11 +28,14 @@ Todos los textos de `portada`, `como-funciona`, `instalar` y `preguntas` están 
 ## Esquema
 
 ```
-portada
+portada                            (index.html)
   titular       texto
   entrada       texto (la frase de 10 segundos)
-  detalle       texto
-  botones[]     { texto, enlace }
+  detalle       texto, opcional (hoy no se usa)
+  botones[]     { texto, enlace }   (uno solo)
+
+puertas[]                          (index.html, tarjetas bajo la gráfica)
+  { titulo, texto, enlace }         (enlace a otra página de la web)
 
 como-funciona
   titulo, entrada
@@ -42,4 +51,14 @@ instalar
 preguntas
   titulo
   lista[]       { pregunta, respuesta }   (se pintan con <details>)
+
+como-se-ha-hecho                   (como-se-ha-hecho.html)
+  titulo, entrada
+  tarjetas[]    { titulo, texto }   (3: método, lo que falló, cómo replicarlo)
+  historia      texto (enlace a docs/simbiosis/07-la-web.md)
+
+equipo                             (como-se-ha-hecho.html, dentro del apartado)
+  titulo
+  miembros[]    { nombre, papel }   (5 tarjetas de una línea)
+  debilidades   texto (se pinta como .nota)
 ```
