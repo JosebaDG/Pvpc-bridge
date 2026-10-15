@@ -203,6 +203,75 @@ export function pintarPrecioHoy(contenedor, dia) {
     texto: 'Toca una barra o desliza el dedo por la gráfica para ver el precio de cada hora. Con teclado, usa las flechas.',
   });
 
+  // Burbuja del gesto (móvil). En filas la gráfica mide unos 650 px y el párrafo del detalle
+  // queda debajo, fuera de la pantalla o tapado por la barra de apartados, justo mientras el dedo
+  // recorre las horas. Mientras dura el gesto con dedo o lápiz, y solo si ese párrafo no se ve
+  // entero, se enseña una copia de su frase fija en la pantalla: abajo, encima de la barra, o
+  // arriba, bajo el menú, en la mitad contraria al dedo para no taparlo. Al soltar se va sola.
+  // - Es solo para la vista (aria-hidden): el lector de pantalla sigue con el aria-live de siempre
+  //   y no lo oye dos veces.
+  // - Va en <body>, no en la tarjeta: así ningún antecesor con transform rompe el position:fixed.
+  // - Estilos en línea con los tokens de Maya, sin tocar base.css; ella puede pasarlos a una clase.
+  // Descartado: mover el propio párrafo a position:fixed (la página saltaría al sacarlo del flujo
+  // y el aria-live repetiría) y desplazar la página hasta la frase (el dedo perdería su hora).
+  document.querySelectorAll('.grafica-burbuja').forEach((b) => b.remove()); // si se vuelve a pintar
+  const burbuja = el('div', {
+    class: 'grafica-burbuja', 'aria-hidden': 'true', hidden: '',
+    style: [
+      'position:fixed', 'left:max(var(--e-4, 1rem), env(safe-area-inset-left))',
+      'right:max(var(--e-4, 1rem), env(safe-area-inset-right))', 'z-index:11', 'max-width:32rem', 'margin-inline:auto',
+      'padding:.6rem .9rem', 'border-radius:var(--r-m, 14px)', 'border:1px solid var(--c-borde, #d9d5cc)',
+      'background:var(--c-superficie, #fff)', 'color:var(--c-tinta, #14161c)', 'box-shadow:var(--sombra, 0 8px 24px rgb(20 22 28 / .12))',
+      'font-size:var(--t-s, .9375rem)', 'line-height:1.35', 'font-variant-numeric:tabular-nums', 'pointer-events:none',
+    ].join(';'),
+  });
+  document.body.append(burbuja);
+  let burbujaArriba = false;
+  let soltarBurbuja = 0;
+  // Zona libre de la pantalla: entre el menú de arriba (sticky) y la barra de apartados de abajo
+  // (fija en el móvil). Si no hay barra abajo, hasta el borde de la ventana.
+  const zonaLibre = () => {
+    const alto = window.visualViewport?.height ?? window.innerHeight;
+    const menu = document.querySelector('.menu')?.getBoundingClientRect();
+    const barra = document.querySelector('.menu__lista')?.getBoundingClientRect();
+    const arriba = menu && menu.bottom > 0 && menu.top <= 0 ? menu.bottom : 0;
+    const abajo = barra && barra.top > alto / 2 && barra.height > 0 ? barra.top : alto;
+    return { arriba, abajo };
+  };
+  const detalleVisible = () => {
+    const r = detalle.getBoundingClientRect();
+    const z = zonaLibre();
+    return r.height > 0 && r.top >= z.arriba && r.bottom <= z.abajo;
+  };
+  const copiarFrase = () => {
+    const copia = [...detalle.childNodes].map((n) => n.cloneNode(true));
+    burbuja.replaceChildren(...copia);
+    burbuja.querySelectorAll('.solo-lector').forEach((n) => n.remove()); // el precio de hoy ya va en la barra
+  };
+  const colocarBurbuja = (dedoY) => {
+    const z = zonaLibre();
+    const margen = 8;
+    // En la mitad contraria al dedo; solo cambia de lado si el dedo se le acerca (sin parpadeos).
+    const r = burbuja.hidden ? null : burbuja.getBoundingClientRect();
+    if (!r) burbujaArriba = dedoY > (z.arriba + z.abajo) / 2;
+    else if (dedoY > r.top - 24 && dedoY < r.bottom + 24) burbujaArriba = !burbujaArriba;
+    burbuja.style.top = burbujaArriba ? `${z.arriba + margen}px` : 'auto';
+    burbuja.style.bottom = burbujaArriba ? 'auto' : `${(window.visualViewport?.height ?? window.innerHeight) - z.abajo + margen}px`;
+  };
+  const gestoBurbuja = (ev, fase) => {
+    if (ev.pointerType === 'mouse') return; // con ratón la frase ya se ve: la gráfica es baja
+    clearTimeout(soltarBurbuja);
+    if (fase === 'fin') {
+      soltarBurbuja = setTimeout(() => { burbuja.hidden = true; }, 1500); // un momento para leerla
+      return;
+    }
+    if (fase === 'inicio' && detalleVisible()) return;
+    if (fase === 'mueve' && burbuja.hidden) return;
+    copiarFrase();
+    colocarBurbuja(ev.clientY);
+    burbuja.hidden = false;
+  };
+
   // Comparación con el día anterior (ayer, si el día es hoy). El precio ya va escrito en cada
   // barra, así que al deslizar no se repite: se dice cómo estaba el día antes a esa misma hora.
   // Se carga después de dibujar (no retrasa la gráfica) y, si no hay datos, no se enseña nada.
@@ -289,6 +358,7 @@ export function pintarPrecioHoy(contenedor, dia) {
     if (i < 0 || i >= horas.length || i === elegida) return; // sin repetir el aviso de aria-live
     elegida = i;
     escribirDetalle(i);
+    if (!burbuja.hidden) copiarFrase();
     marcarEnDibujo(i);
   };
   precioDelDiaAnterior(fecha).then((dia) => {
@@ -299,6 +369,7 @@ export function pintarPrecioHoy(contenedor, dia) {
     pista.hidden = false;
     if (elegida >= 0) escribirDetalle(elegida);
     else detalle.textContent = '';
+    if (!burbuja.hidden) copiarFrase();
   }).catch((e) => console.warn('día anterior:', e));
   // Con el teclado solo se entra una vez en la gráfica (tabindex «itinerante»): la barra elegida,
   // o la actual, o la más barata. Dentro, las flechas mueven de hora en hora.
@@ -334,12 +405,19 @@ export function pintarPrecioHoy(contenedor, dia) {
         if (ev.pointerType === 'mouse' && ev.button !== 0) return;
         zona.setPointerCapture(ev.pointerId);
         verDetalle(aIndice(ev));
+        gestoBurbuja(ev, 'inicio');
       });
       zona.addEventListener('pointermove', (ev) => {
         // Con ratón basta pasar por encima; con dedo o lápiz, solo mientras se arrastra.
-        if (ev.pointerType === 'mouse' || zona.hasPointerCapture(ev.pointerId)) verDetalle(aIndice(ev));
+        if (ev.pointerType === 'mouse' || zona.hasPointerCapture(ev.pointerId)) {
+          verDetalle(aIndice(ev));
+          gestoBurbuja(ev, 'mueve');
+        }
       });
-      const soltar = (ev) => { if (zona.hasPointerCapture(ev.pointerId)) zona.releasePointerCapture(ev.pointerId); };
+      const soltar = (ev) => {
+        if (zona.hasPointerCapture(ev.pointerId)) zona.releasePointerCapture(ev.pointerId);
+        gestoBurbuja(ev, 'fin');
+      };
       zona.addEventListener('pointerup', soltar);
       zona.addEventListener('pointercancel', soltar);
     }
