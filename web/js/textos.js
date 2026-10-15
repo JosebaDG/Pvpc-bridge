@@ -1,5 +1,6 @@
 // Dueño: Miles. Pinta los textos de Simone (web/contenido/textos.json)
-// en las secciones portada, como-funciona, instalar y preguntas.
+// en las secciones portada, puertas, como-funciona, instalar, preguntas, como-se-ha-hecho y equipo.
+// Cada pintor busca su id en la página que esté abierta; si no está, no hace nada.
 //
 // Uso (desde main.js):
 //   import { iniciarTextos } from './textos.js';
@@ -104,11 +105,51 @@ function pintarPreguntas(seccion, d) {
   }
 }
 
+// Puertas de la portada: tarjetas que enteras son un enlace (.puerta de Maya). Sustituyen al texto
+// de respaldo de index.html, que se queda para quien navega sin JavaScript. La primera es la principal.
+// Solo enlaces a páginas de esta web o anclas: una puerta no saca al visitante fuera.
+function pintarPuertas(contenedor, lista) {
+  const puertas = lista
+    .filter((p) => /^([a-z0-9-]+\.html|#)/i.test(p.enlace ?? ''))
+    .map((p, i) => {
+      const a = el('a', i === 0 ? 'puerta puerta--principal' : 'puerta', el('h3', null, p.titulo), parrafo(p.texto));
+      a.href = p.enlace;
+      return a;
+    });
+  if (puertas.length) contenedor.replaceChildren(...puertas);
+}
+
+// «Cómo se ha hecho»: es el título de su página, así que va en h1. Sustituye al texto de respaldo.
+function pintarComoSeHaHecho(seccion, d) {
+  const rejilla = el('div', 'rejilla',
+    ...(d.tarjetas ?? []).map((t) => el('article', 'tarjeta', el('h3', null, t.titulo), parrafo(t.texto))));
+  seccion.replaceChildren(
+    el('h1', 'seccion__titulo', d.titulo),
+    parrafo(d.entrada, 'seccion__entrada'),
+    rejilla,
+    d.historia ? parrafo(d.historia) : null,
+  );
+}
+
+// «El equipo», dentro de «Cómo se ha hecho»: una tarjeta de una línea por miembro y las debilidades en .nota.
+function pintarEquipo(seccion, d) {
+  const rejilla = el('div', 'rejilla',
+    ...(d.miembros ?? []).map((m) => el('article', 'tarjeta', el('h3', null, m.nombre), parrafo(m.papel))));
+  seccion.replaceChildren(
+    el('h2', 'seccion__titulo', d.titulo),
+    rejilla,
+    d.debilidades ? parrafo(d.debilidades, 'nota') : null,
+  );
+}
+
 const PINTORES = {
   portada: pintarPortada,
+  puertas: pintarPuertas,
   'como-funciona': pintarComoFunciona,
   instalar: pintarInstalar,
   preguntas: pintarPreguntas,
+  'como-se-ha-hecho': pintarComoSeHaHecho,
+  equipo: pintarEquipo,
 };
 
 export async function iniciarTextos() {

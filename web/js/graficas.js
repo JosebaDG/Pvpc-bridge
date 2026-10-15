@@ -189,7 +189,10 @@ export function pintarPrecioHoy(contenedor, dia) {
     `Media del día: ${euros(media)}.`,
   ]);
 
-  const detalle = el('p', { class: 'nota grafica-detalle', 'aria-live': 'polite', texto: 'Toca una barra para ver su detalle.' });
+  const detalle = el('p', {
+    class: 'nota grafica-detalle', 'aria-live': 'polite',
+    texto: 'Toca una barra o desliza el dedo por la gráfica para ver el precio de cada hora. Con teclado, usa las flechas.',
+  });
 
   // Leyenda con las etiquetas .tramo de Maya: color y palabra siempre juntos (daltonismo).
   const leyenda = el('ul', { class: 'grafica-leyenda', style: 'list-style:none;padding:0;margin:0 0 1rem;display:flex;flex-wrap:wrap;align-items:center;gap:.5em 1em' }, [
@@ -225,18 +228,90 @@ export function pintarPrecioHoy(contenedor, dia) {
 
   const nota = el('p', { class: 'nota grafica-nota', texto: 'PVPC 2.0TD de la península, en €/kWh y sin impuestos. Fuente: Red Eléctrica (REE), REData.' });
 
-  const lienzo = el('div', { class: 'grafica-lienzo' });
+  // position:relative para la franja táctil de las horas en el dibujo en filas (ver hacerDeslizable).
+  const lienzo = el('div', { class: 'grafica-lienzo', style: 'position:relative' });
   contenedor.replaceChildren(...[cabecera, ahoraBloque, lienzo, detalle, resumen, leyenda, tabla, nota].filter(Boolean));
 
+  // Hora elegida (con el dedo, el ratón o el teclado). Vive fuera del SVG para que sobreviva
+  // cuando se redibuja al cambiar el ancho. -1: todavía ninguna.
+  let elegida = -1;
+  let marcarEnDibujo = () => {}; // la pone el dibujo actual: mueve el marco y el foco
   const verDetalle = (i) => {
+    if (i < 0 || i >= horas.length || i === elegida) return; // sin repetir el aviso de aria-live
+    elegida = i;
     detalle.textContent = `${tramo(horas[i].hora)}: ${euros(horas[i].precio)} (${NOMBRE_TERCIO[grupo[i]]}${enBloque(i) ? ', dentro del mejor bloque' : ''}${i === iAhora ? ', ahora' : ''})`;
+    marcarEnDibujo(i);
   };
+  // Con el teclado solo se entra una vez en la gráfica (tabindex «itinerante»): la barra elegida,
+  // o la actual, o la más barata. Dentro, las flechas mueven de hora en hora.
+  const barraConFoco = () => (elegida >= 0 ? elegida : (iAhora >= 0 ? iAhora : iMin));
   const barraInteractiva = (barra, i) => {
+    barra.setAttribute('tabindex', i === barraConFoco() ? '0' : '-1');
     barra.append(s('title', { texto: `${tramo(horas[i].hora)}: ${euros(horas[i].precio)} (${NOMBRE_TERCIO[grupo[i]]})` }));
-    barra.addEventListener('pointerenter', () => verDetalle(i));
     barra.addEventListener('click', () => verDetalle(i));
     barra.addEventListener('focus', () => verDetalle(i));
   };
+
+  // Deslizar para ver el precio de cada hora.
+  // - Pointer events: un solo código para ratón, dedo y lápiz. Al tocar, setPointerCapture hace
+  //   que el SVG siga recibiendo el movimiento aunque el dedo salga de la barra, y se elige la
+  //   hora más cercana al dedo (no hace falta acertar en la barra, que puede medir 1 px).
+  // - touch-action: pan-y. En columnas, deslizar en horizontal recorre las horas y en vertical
+  //   la página se desplaza como siempre. En filas (móvil) la gráfica mide unos 650 px: si se
+  //   quedara el gesto vertical, la página no se podría desplazar con el dedo encima. Por eso,
+  //   en filas, el gesto vertical solo se recoge en la franja de las horas, a la izquierda.
+  // - Teclado: flechas (izquierda y arriba, anterior; derecha y abajo, siguiente), Inicio y Fin.
+  //   El detalle se lee en el mismo párrafo aria-live de siempre.
+  // Descartado: touch-action: none en toda la gráfica (bloquea el desplazamiento en el móvil) y
+  // los eventos touch* (otro código aparte para el ratón).
+  function hacerDeslizable(svg, barras, indiceEn, colocarMarco, franja = null) {
+    const aIndice = (ev) => {
+      const r = svg.getBoundingClientRect();
+      const vb = svg.viewBox.baseVal;
+      const i = indiceEn((ev.clientX - r.left) * (vb.width / r.width), (ev.clientY - r.top) * (vb.height / r.height));
+      return Math.min(Math.max(i, 0), barras.length - 1); // fuera del dibujo, la hora del borde
+    };
+    for (const zona of [svg, franja].filter(Boolean)) {
+      zona.addEventListener('pointerdown', (ev) => {
+        if (ev.pointerType === 'mouse' && ev.button !== 0) return;
+        zona.setPointerCapture(ev.pointerId);
+        verDetalle(aIndice(ev));
+      });
+      zona.addEventListener('pointermove', (ev) => {
+        // Con ratón basta pasar por encima; con dedo o lápiz, solo mientras se arrastra.
+        if (ev.pointerType === 'mouse' || zona.hasPointerCapture(ev.pointerId)) verDetalle(aIndice(ev));
+      });
+      const soltar = (ev) => { if (zona.hasPointerCapture(ev.pointerId)) zona.releasePointerCapture(ev.pointerId); };
+      zona.addEventListener('pointerup', soltar);
+      zona.addEventListener('pointercancel', soltar);
+    }
+    svg.addEventListener('keydown', (ev) => {
+      const i = barras.indexOf(ev.target);
+      if (i < 0) return;
+      const ultimo = barras.length - 1;
+      const destino = {
+        ArrowLeft: i - 1, ArrowUp: i - 1, ArrowRight: i + 1, ArrowDown: i + 1, Home: 0, End: ultimo,
+      }[ev.key];
+      if (destino === undefined) return;
+      ev.preventDefault(); // que las flechas no desplacen la página
+      barras[Math.min(Math.max(destino, 0), ultimo)].focus(); // el foco llama a verDetalle
+    });
+    marcarEnDibujo = (i) => {
+      barras.forEach((b, j) => b.setAttribute('tabindex', j === i ? '0' : '-1'));
+      colocarMarco(i);
+      // Si el foco ya está en la gráfica, va con la hora elegida (sin mover la página).
+      if (barras.includes(document.activeElement) && document.activeElement !== barras[i]) {
+        barras[i].focus({ preventScroll: true });
+      }
+    };
+    if (elegida >= 0) colocarMarco(elegida); // tras redibujar, la hora elegida sigue marcada
+  }
+  // Marco de la hora elegida: contorno en tinta, distinto del acento (mejor bloque) y de la
+  // chispa (ahora). Va el último para quedar encima y no recoge el puntero.
+  const marcoElegida = () => s('rect', {
+    fill: 'none', stroke: color('tinta'), 'stroke-width': 2, rx: 4, 'pointer-events': 'none',
+    visibility: 'hidden', class: 'grafica-elegida',
+  });
   const etiquetaSVG = `Precio por horas del ${fechaLarga(fecha)}${esHoy ? '' : ' (no es hoy: último día con datos)'}. ${resumen.textContent}`;
 
   // Dos dibujos según el ancho, los dos con el precio escrito en cada barra (como las gráficas
@@ -245,8 +320,8 @@ export function pintarPrecioHoy(contenedor, dia) {
   // - estrecho (móvil): las horas en filas y barras horizontales; el precio va al final de cada
   //   barra con letra legible, sin girar la cabeza.
   alCambiarAncho(lienzo, (W) => {
-    const svg = W < 560 ? barrasEnFilas(W) : barrasEnColumnas(W);
-    lienzo.replaceChildren(svg);
+    const dibujo = W < 560 ? barrasEnFilas(W) : barrasEnColumnas(W);
+    lienzo.replaceChildren(...[].concat(dibujo));
   });
 
   function barrasEnColumnas(W) {
@@ -268,8 +343,9 @@ export function pintarPrecioHoy(contenedor, dia) {
 
     const svg = s('svg', {
       viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': etiquetaSVG,
-      style: `display:block;max-width:100%;height:auto;font-family:inherit;font-size:${fs}px;overflow:visible`,
+      style: `display:block;max-width:100%;height:auto;font-family:inherit;font-size:${fs}px;overflow:visible;touch-action:pan-y`,
     });
+    const barras = [];
 
     for (const v of marcas(yMin, yMax)) {
       svg.append(
@@ -313,6 +389,7 @@ export function pintarPrecioHoy(contenedor, dia) {
         stroke: i === iAhora ? color('acento') : null, 'stroke-width': i === iAhora ? 2 : null,
       });
       barraInteractiva(barra, i);
+      barras.push(barra);
       // El precio, encima de la barra (o encima del cero si es negativo). Tres decimales.
       const xc = x(i) + paso / 2;
       const yt = y(Math.max(h.precio, 0)) - 4;
@@ -345,6 +422,17 @@ export function pintarPrecioHoy(contenedor, dia) {
         x: xa, y: H - m.aba + 32, 'text-anchor': 'middle', 'font-weight': 700, fill: color('acento'), texto: 'ahora',
       }));
     }
+
+    // Deslizar: la columna más cercana a la x del puntero.
+    const marco = marcoElegida();
+    svg.append(marco);
+    hacerDeslizable(svg, barras, (xv) => Math.floor((xv - m.izq) / paso), (i) => {
+      marco.setAttribute('x', x(i) + 1);
+      marco.setAttribute('y', m.arr - altoEtiqueta - 2);
+      marco.setAttribute('width', Math.max(2, paso - 2));
+      marco.setAttribute('height', altoEtiqueta + altoG + 4);
+      marco.setAttribute('visibility', 'visible');
+    });
     return svg;
   }
 
@@ -362,8 +450,15 @@ export function pintarPrecioHoy(contenedor, dia) {
 
     const svg = s('svg', {
       viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': etiquetaSVG,
-      style: `display:block;max-width:100%;height:auto;font-family:inherit;font-size:${fs}px;overflow:visible`,
+      style: `display:block;max-width:100%;height:auto;font-family:inherit;font-size:${fs}px;overflow:visible;touch-action:pan-y`,
     });
+    const barras = [];
+
+    // Franja de las horas: aquí el dedo puede subir y bajar para recorrerlas sin mover la página.
+    // Un fondo suave la señala.
+    svg.append(s('rect', {
+      x: 2, y: m.arr, width: m.izq - 4, height: fila * horas.length, rx: 6, fill: color('pista'), 'pointer-events': 'none',
+    }));
 
     svg.append(s('text', {
       x: 0, y: 15, 'font-weight': 700, fill: color('acento'),
@@ -395,6 +490,7 @@ export function pintarPrecioHoy(contenedor, dia) {
         stroke: esAhora ? color('acento') : null, 'stroke-width': esAhora ? 2 : null,
       });
       barraInteractiva(barra, i);
+      barras.push(barra);
       svg.append(
         s('text', {
           x: m.izq - 8, y: yc, dy: '0.35em', 'text-anchor': 'end', style: 'font-variant-numeric:tabular-nums',
@@ -415,7 +511,25 @@ export function pintarPrecioHoy(contenedor, dia) {
       x: 1, y: yF(bloque.inicio) + 1, width: W - 2, height: fila * (bloque.fin - bloque.inicio + 1) - 2, rx: 6,
       fill: 'none', stroke: color('acento'), 'stroke-width': 2, 'pointer-events': 'none',
     }));
-    return svg;
+
+    // Deslizar: la fila más cercana a la y del puntero. Encima de la columna de las horas va una
+    // capa HTML con touch-action: none (en HTML es fiable; dentro del SVG no en todos los
+    // navegadores), que es la que recoge el gesto vertical.
+    const marco = marcoElegida();
+    svg.append(marco);
+    const franja = el('div', {
+      class: 'grafica-franja-horas', 'aria-hidden': 'true',
+      style: `position:absolute;left:0;top:${(100 * m.arr) / H}%;width:${(100 * m.izq) / W}%;`
+        + `height:${(100 * fila * horas.length) / H}%;touch-action:none;cursor:ns-resize`,
+    });
+    hacerDeslizable(svg, barras, (xv, yv) => Math.floor((yv - m.arr) / fila), (i) => {
+      marco.setAttribute('x', 1);
+      marco.setAttribute('y', yF(i) + 1);
+      marco.setAttribute('width', W - 2);
+      marco.setAttribute('height', fila - 2);
+      marco.setAttribute('visibility', 'visible');
+    }, franja);
+    return [svg, franja];
   }
 }
 
