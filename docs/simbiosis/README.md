@@ -1,6 +1,6 @@
-# La simbiosis: una persona y dos agentes de IA
+# La simbiosis: una persona y un equipo de agentes de IA
 
-Esta carpeta cuenta cómo se ha hecho Pvpc-bridge: quién propuso qué, quién decidió, qué falló y qué aprendimos. El código es lo de menos; lo que queremos que se vea es la capacidad de trabajo que da combinar el criterio de una persona con dos agentes que proponen y ejecutan.
+Esta carpeta cuenta cómo se ha hecho Pvpc-bridge: quién propuso qué, quién decidió, qué falló y qué aprendimos. El código es lo de menos; lo que queremos que se vea es la capacidad de trabajo que da combinar el criterio de una persona con agentes que proponen y ejecutan. Empezó con dos agentes; con la web, el equipo pasó a cuatro.
 
 ## Índice
 

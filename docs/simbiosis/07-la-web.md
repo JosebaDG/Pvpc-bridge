@@ -33,4 +33,4 @@ La tabla de quién toca qué está en el [README de la web](../../web/README.md)
 
 ## Lo que queda
 
-Publicar la web en GitHub Pages lo decide Joseba. Hasta entonces, la Action que la publica solo se lanza a mano.
+La web ya está publicada en GitHub Pages. Se publica a mano, con una Action, cuando lo que se fusiona cambia lo que se ve, y Joseba revisa la versión publicada y dice lo que le chirría. Lo siguiente es seguir mejorándola de versión en versión.
