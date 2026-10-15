@@ -103,7 +103,15 @@ export async function cargarHistorico() {
 // Pide a REData el PVPC de un día. Es una petición GET sin cabeceras extra a propósito:
 // REE contesta a GET con CORS abierto, pero rechaza (403) la «consulta previa» OPTIONS que
 // el navegador haría si añadiéramos cabeceras propias. Devuelve null si algo falla.
-export async function cargarDiaREData(fecha) {
+// Cada día se pide una sola vez por visita: la gráfica de hoy, «¿Acertó el mercado?» y la
+// apuesta comparten la misma respuesta (también si es null) y REE no recibe consultas repetidas.
+const diasPedidos = new Map();
+export function cargarDiaREData(fecha) {
+  if (!diasPedidos.has(fecha)) diasPedidos.set(fecha, pedirDiaREData(fecha));
+  return diasPedidos.get(fecha);
+}
+
+async function pedirDiaREData(fecha) {
   const url = `${REDATA}?start_date=${fecha}T00:00&end_date=${fecha}T23:59&time_trunc=hour`;
   const corte = new AbortController();
   const reloj = setTimeout(() => corte.abort(), ESPERA_REDATA_MS);
@@ -148,6 +156,13 @@ export async function precioDelDia() {
 export function diaAnterior(fecha) {
   const d = new Date(`${fecha}T12:00:00Z`);
   d.setUTCDate(d.getUTCDate() - 1);
+  return d.toISOString().slice(0, 10);
+}
+
+// Fecha siguiente a 'AAAA-MM-DD'.
+export function diaSiguiente(fecha) {
+  const d = new Date(`${fecha}T12:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + 1);
   return d.toISOString().slice(0, 10);
 }
 
@@ -242,6 +257,38 @@ export async function tiempoPrevistoYReal(fecha) {
     sol: { previsto: porPunto('shortwave_radiation_previous_day1', sol), real: porPunto('shortwave_radiation', sol) },
   };
   return Object.values(r).every((x) => Number.isFinite(x.previsto) && Number.isFinite(x.real)) ? r : null;
+}
+
+// API normal de previsión de Open-Meteo (gratis, sin clave, CORS abierto): para la apuesta.
+const OPEN_METEO_PREVISION = 'https://api.open-meteo.com/v1/forecast';
+
+// Viento a 100 m (km/h) y sol (W/m²) de media en unas horas de cada día, en los seis puntos.
+// Para mañana es la previsión; para hoy, la más reciente del modelo. Devuelve
+// Map(fecha -> { viento, sol }) o null si falta algo.
+export async function tiempoEnHoras(desde, hasta, horas) {
+  const url = `${OPEN_METEO_PREVISION}?latitude=${PUNTOS_METEO.map((p) => p[0]).join(',')}`
+    + `&longitude=${PUNTOS_METEO.map((p) => p[1]).join(',')}`
+    + '&hourly=wind_speed_100m,shortwave_radiation'
+    + `&start_date=${desde}&end_date=${hasta}&timezone=${encodeURIComponent(ZONA)}`;
+  const puntos = [].concat((await pedirJSON(url)) || []);
+  if (puntos.length !== PUNTOS_METEO.length) return null;
+  const m = new Map();
+  for (const p of puntos) {
+    const t = p.hourly?.time ?? [];
+    t.forEach((iso, k) => {
+      if (!horas.includes(Number(iso.slice(11, 13)))) return;
+      const f = iso.slice(0, 10);
+      if (!m.has(f)) m.set(f, { viento: [], sol: [] });
+      m.get(f).viento.push(p.hourly.wind_speed_100m?.[k]);
+      m.get(f).sol.push(p.hourly.shortwave_radiation?.[k]);
+    });
+  }
+  const r = new Map();
+  for (const [f, { viento, sol }] of m) {
+    const completo = (xs) => xs.length === horas.length * PUNTOS_METEO.length && xs.every(Number.isFinite);
+    if (completo(viento) && completo(sol)) r.set(f, { viento: mediaDe(viento), sol: mediaDe(sol) });
+  }
+  return r.size ? r : null;
 }
 
 // Eólica y fotovoltaica reales de España, en MWh por día, de `desde` a `hasta` (REData).
