@@ -8,18 +8,21 @@
 //   Al deslizar o con las flechas no se repite el precio: se compara con el día anterior a esa hora.
 // - historico: mapa de calor día × hora en canvas (canvas = un lienzo de píxeles; con unas 41.000
 //   celdas es mucho más rápido que crear 41.000 elementos SVG) y la media mensual como línea.
+// - acerto: tarjeta «¿Acertó el mercado?», debajo de la gráfica de hoy. Compara el tiempo que se
+//   preveía para ayer cuando se fijó su precio con el que hizo, y la luz de ayer con la de anteayer.
 // - equipo-tiempo: «El equipo en el tiempo», en SVG. Un carril por agente y una barra por PR,
 //   desde que se abre hasta que se fusiona. Lee web/datos/actividad.json (datos públicos de GitHub).
 //
 // Uso (desde main.js):
 //   import { iniciarGraficas } from './graficas.js';
 //   iniciarGraficas();
-// Busca #precio-hoy [data-grafica="hoy"], #historico [data-grafica="historico"] y
-// #equipo-tiempo [data-grafica="equipo"], y rellena los que haya en la página.
+// Busca #precio-hoy [data-grafica="hoy"], #precio-hoy [data-grafica="acerto"],
+// #historico [data-grafica="historico"] y #equipo-tiempo [data-grafica="equipo"], y rellena los
+// que haya en la página.
 
 import {
   precioDelDia, precioDelDiaAnterior, compararPrecio, cargarHistorico, tercios, mejorBloque, PRIMER_AÑO,
-  cargarActividad, ZONA,
+  cargarActividad, ZONA, diaDeHoy, diaAnterior, tiempoPrevistoYReal, generacionDiaria,
 } from './datos.js';
 
 // ---------- Colores: solo variables CSS de Maya (web/css/tokens.css) ----------
@@ -1091,15 +1094,126 @@ export function pintarEquipo(contenedor, datos) {
 // Arranque
 // =====================================================================
 
+// =====================================================================
+// «¿Acertó el mercado?»: ayer frente a lo que se esperaba
+// =====================================================================
+// El precio de cada día se decide el día antes a mediodía, con la previsión del tiempo de
+// entonces (ficha 1 de «Cómo se forma el precio»). La tarjeta mira ayer, que ya ha pasado entero:
+// - Tiempo: viento a 100 m y sol, previstos un día antes frente a lo que hubo (Open-Meteo,
+//   media de los seis puntos del histórico). Por debajo del 10 % de diferencia, «acertó»; hasta
+//   el 25 %, «casi»; más, «falló».
+// - Generación real de eólica y fotovoltaica en España (REData), ayer frente a anteayer.
+// - La luz de ayer frente a la de anteayer (media del día, sin impuestos).
+// Son coincidencias, nunca causas: la tarjeta no dice «por eso». Si falta el tiempo o el precio,
+// la tarjeta no se enseña y no sale ningún error. Va fuera de la gráfica, en su propia tarjeta.
+// Se descartó comparar la tarde de hoy: el precio de hoy ya está fijado y la tarde aún no ha pasado.
+const UMBRAL_ACIERTO = 0.10;
+const UMBRAL_CASI = 0.25;
+const f0 = num(0);
+const f1 = num(1);
+
+function veredicto(previsto, real) {
+  const dif = previsto > 0 ? (real - previsto) / previsto : 0;
+  const abs = Math.abs(dif);
+  return { dif, pct: Math.round(abs * 100), nota: abs < UMBRAL_ACIERTO ? 'acerto' : abs < UMBRAL_CASI ? 'casi' : 'fallo' };
+}
+const PALABRA_NOTA = { acerto: 'Acertó', casi: 'Casi', fallo: 'Falló' };
+
+export async function pintarAcerto(contenedor) {
+  const hoy = diaDeHoy();
+  const ayer = diaAnterior(hoy);
+  const anteayer = diaAnterior(ayer);
+  const [tiempo, precioAyer, precioAnteayer, gen] = await Promise.all([
+    tiempoPrevistoYReal(ayer).catch(() => null),
+    precioDelDiaAnterior(hoy).catch(() => null),
+    precioDelDiaAnterior(ayer).catch(() => null),
+    generacionDiaria(anteayer, ayer).catch(() => null),
+  ]);
+  if (!tiempo || !precioAyer || !precioAnteayer) {
+    contenedor.hidden = true; // sin datos no hay juego, y tampoco error
+    return;
+  }
+
+  const v = veredicto(tiempo.viento.previsto, tiempo.viento.real);
+  const so = veredicto(tiempo.sol.previsto, tiempo.sol.real);
+  const nombreAyer = `ayer, ${diaSemana(ayer)}`;
+  const fraseViento = v.nota === 'acerto'
+    ? 'el viento fue el previsto'
+    : `sopló un ${v.pct} % ${v.dif < 0 ? 'menos' : 'más'} de lo previsto`;
+  const fraseSol = so.nota === 'acerto'
+    ? 'el sol fue el previsto'
+    : `hubo un ${so.pct} % ${so.dif < 0 ? 'menos' : 'más'} de sol de lo previsto`;
+  // Respuesta corta y su porqué, sin causas: «Sí», «A medias» o «No».
+  const notas = [v.nota, so.nota];
+  const respuesta = notas.every((n) => n === 'acerto') ? 'Sí'
+    : notas.every((n) => n === 'fallo') ? 'No' : 'A medias';
+  const porque = respuesta === 'Sí'
+    ? `${nombreAyer[0].toUpperCase()}${nombreAyer.slice(1)}, el viento y el sol fueron los previstos.`
+    : `${nombreAyer[0].toUpperCase()}${nombreAyer.slice(1)}, ${fraseViento} y ${fraseSol}.`;
+
+  const media = (d) => d.horas.reduce((a, h) => a + h.precio, 0) / d.horas.length;
+  const mAyer = media(precioAyer);
+  const mAnteayer = media(precioAnteayer);
+  const cmp = compararPrecio(mAyer, mAnteayer);
+  const flecha = { barato: '▼', caro: '▲', igual: '=' }[cmp.sentido];
+  const colorFlecha = { barato: color('barato'), caro: color('caro'), igual: color('eje') }[cmp.sentido];
+
+  const fila = (titulo, previsto, real, unidad, ver, formato) => el('li', { class: 'juego__pista', 'data-nota': ver.nota }, [
+    el('span', { class: 'juego__pista-titulo', texto: titulo }),
+    ` previsto ${formato.format(previsto)} ${unidad} · hubo ${formato.format(real)} ${unidad} `,
+    el('span', { class: 'tramo', 'data-nota': ver.nota, texto: ver.nota === 'acerto' ? PALABRA_NOTA.acerto : `${PALABRA_NOTA[ver.nota]} · ${ver.dif < 0 ? '−' : '+'}${ver.pct} %` }),
+  ]);
+
+  const gAyer = gen?.get(ayer);
+  const gAnte = gen?.get(anteayer);
+  const gwh = (mwh) => `${f0.format(mwh / 1000)} GWh`;
+  const generacion = gAyer?.eolica != null && gAyer?.solar != null && gAnte?.eolica != null && gAnte?.solar != null
+    ? el('p', { class: 'nota juego__generacion', style: 'margin:.75rem 0 0' }, [
+      'Lo que produjeron en España (REData): eólica ', el('strong', { texto: gwh(gAyer.eolica) }), ` (anteayer ${gwh(gAnte.eolica)}), `,
+      'fotovoltaica ', el('strong', { texto: gwh(gAyer.solar) }), ` (anteayer ${gwh(gAnte.solar)}).`,
+    ])
+    : null;
+
+  contenedor.hidden = false;
+  contenedor.replaceChildren(...[
+    el('h3', { class: 'juego__titulo', texto: '¿Acertó el mercado?' }),
+    el('p', { class: 'juego__respuesta', style: 'margin:0 0 .25rem;font-size:var(--t-l, 1.375rem);font-weight:var(--peso-fuerte, 760);line-height:1.2' }, [
+      `${respuesta}. `,
+      el('span', { style: 'font-weight:var(--peso-medio, 560)', texto: porque }),
+    ]),
+    el('p', { class: 'nota', style: 'margin:0 0 .75rem', texto: 'El precio de ayer se fijó anteayer a mediodía, con la previsión del tiempo de entonces. Así salió esa previsión:' }),
+    el('ul', { class: 'juego__pistas', style: 'list-style:none;padding:0;margin:0;display:grid;gap:.5rem' }, [
+      fila('Viento:', tiempo.viento.previsto, tiempo.viento.real, 'km/h', v, f0),
+      fila('Sol:', tiempo.sol.previsto, tiempo.sol.real, 'kWh/m²', so, f1),
+    ]),
+    generacion,
+    el('p', { class: 'juego__precio', style: 'margin:.75rem 0 0' }, [
+      'La luz de ayer: media ', el('strong', { texto: euros(mAyer) }), ', ',
+      el('span', { 'aria-hidden': 'true', style: `color:${colorFlecha};margin-right:.2em`, texto: flecha }),
+      cmp.sentido === 'igual' ? 'casi igual que anteayer.' : `${cmp.texto.replace(/o$/, 'a')} que anteayer.` // «la luz», en femenino,
+    ]),
+    el('p', { class: 'nota juego__nota', style: 'margin:.75rem 0 0' }, [
+      'Son coincidencias, no causas: cuando llega el día, el precio ya está fijado. ',
+      Object.assign(el('a', { texto: 'Por qué el precio se decide el día antes' }), { href: 'como-se-forma-el-precio.html' }),
+      '. Viento a 100 m de altura y sol de media en seis puntos de la península (Lugo, Burgos, Zaragoza, Albacete, Badajoz y Bilbao), de Open-Meteo: la previsión de un día antes frente a su análisis más reciente.',
+    ]),
+  ].filter(Boolean));
+}
+
 export async function iniciarGraficas() {
   const hoy = document.querySelector('#precio-hoy [data-grafica="hoy"]');
   const historico = document.querySelector('#historico [data-grafica="historico"]');
   const equipo = document.querySelector('#equipo-tiempo [data-grafica="equipo"]');
+  const acerto = document.querySelector('#precio-hoy [data-grafica="acerto"]');
   const tareas = [];
   if (hoy) {
     tareas.push(precioDelDia()
       .then((dia) => (dia ? pintarPrecioHoy(hoy, dia) : mostrarError(hoy, 'No hay precios disponibles ahora mismo.')))
       .catch((e) => { console.warn('precio-hoy:', e); mostrarError(hoy, 'No se ha podido dibujar el precio de hoy.'); }));
+  }
+  if (acerto) {
+    tareas.push(pintarAcerto(acerto)
+      .catch((e) => { console.warn('acerto:', e); acerto.hidden = true; }));
   }
   if (historico) {
     tareas.push(cargarHistorico()

@@ -33,6 +33,9 @@
         <p class="grafica-cargando">Cargando los precios de hoy…</p>
         <noscript><p>Esta gráfica necesita JavaScript.</p></noscript>
       </div>
+      <!-- Charlie: juego «¿Acertó el mercado?», en su propia tarjeta debajo de la gráfica (nunca dentro).
+           Lo rellena web/js/graficas.js; si no hay datos se queda oculto. -->
+      <div class="tarjeta juego" data-grafica="acerto" style="margin-top:var(--e-4)" hidden></div>
     </section>
     <section aria-labelledby="puertas-titulo">
       <!-- Puertas a los apartados. textos.js las pinta desde la clave «puertas» de textos.json (Simone);
