@@ -1,5 +1,5 @@
 /* Dueña: Maya. Variables de diseño que usa toda la web.
-   Por qué así (resumen; detalle en equipo-agentes #3):
+   Por qué así (resumen):
    - Claro y oscuro según el sistema (prefers-color-scheme), sin botón ni JS.
    - El color del precio va en una escala de tres tramos (barato, medio, caro) que
      también se distingue en escala de grises; siempre va acompañado de texto.

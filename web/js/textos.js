@@ -1,4 +1,4 @@
-// Dueño: Miles (equipo-agentes #5). Pinta los textos de Simone (web/contenido/textos.json)
+// Dueño: Miles. Pinta los textos de Simone (web/contenido/textos.json)
 // en las secciones portada, como-funciona, instalar y preguntas.
 //
 // Uso (desde main.js):

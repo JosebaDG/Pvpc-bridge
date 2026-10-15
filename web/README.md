@@ -6,14 +6,14 @@ Web estática: HTML, CSS y JavaScript tal cual, **sin compilar y sin dependencia
 
 ## Quién toca qué
 
-Cada uno trabaja en su rama `web/<agente>` y abre un PR contra `main`. Miles revisa y fusiona. Si necesitas tocar un archivo de otro, dilo en su hilo.
+Cada uno trabaja en su rama `web/<agente>` y abre un PR contra `main`. Miles revisa y fusiona. Si necesitas tocar un archivo de otro, avisa a su dueño antes.
 
-| Archivo o carpeta | Dueño | Hilo |
-|---|---|---|
-| `web/css/` (tokens, componentes, look) | Maya | equipo-agentes #3 |
-| `web/js/datos.js`, `web/js/graficas.js` | Charlie | equipo-agentes #4 |
-| `web/contenido/` (textos en Markdown o JSON) | Simone | equipo-agentes #5 |
-| `web/index.html`, `web/js/main.js`, `web/js/textos.js`, `.github/workflows/web.yml`, este README | Miles | equipo-agentes #3 |
+| Archivo o carpeta | Dueño |
+|---|---|
+| `web/css/` (tokens, componentes, look) | Maya |
+| `web/js/datos.js`, `web/js/graficas.js` | Charlie |
+| `web/contenido/` (textos en Markdown o JSON) | Simone |
+| `web/index.html`, `web/js/main.js`, `web/js/textos.js`, `.github/workflows/web.yml`, este README | Miles |
 
 ## Contrato entre piezas
 
