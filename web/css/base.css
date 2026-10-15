@@ -6,7 +6,7 @@
    .boton (.boton--secundario)                                   llamadas a la acción
    .seccion__titulo, .seccion__entrada, .nota                    textos de sección
    .codigo                                                       bloques de comandos (instalar)
-   .menu (+ __marca, __lista, __repo)                            menú de apartados (equipo-agentes #7)
+   .menu (+ __marca, __lista, __repo)                            menú de apartados
    .portada__gancho, .portada__botones                           portada corta, con gancho
    .puertas + .puerta (.puerta--principal)                       tarjetas-enlace a los apartados
    .solo-lector                                                  texto oculto a la vista pero leído por lectores de pantalla */
@@ -55,7 +55,7 @@ main > section { padding-block: var(--e-7); border-top: 1px solid var(--c-borde)
   isolation: isolate;
 }
 /* Resplandor de fondo: el único adorno de la página.
-   Antes iba con right: -10% y width: 90vw, y asomaba unos 50 px por la derecha (equipo-agentes #3 y #4).
+   Antes iba con right: -10% y width: 90vw, y asomaba unos 50 px por la derecha.
    Ahora no sale de la caja de la portada (right: 0, width: 100% como máximo), así que no puede
    ensanchar la página. Se descartó overflow-x: hidden/clip en body: tapa el síntoma, oculta
    cualquier otro desbordamiento futuro y puede romper position: sticky (el menú). El blur sobraba:
@@ -72,7 +72,7 @@ main > section { padding-block: var(--e-7); border-top: 1px solid var(--c-borde)
 }
 #portada p { font-size: var(--t-l); color: var(--c-tinta-2); }
 
-/* Portada con gancho (#7): titular, una frase y la gráfica de hoy justo debajo.
+/* Portada con gancho: titular, una frase y la gráfica de hoy justo debajo.
    Lo largo (cómo funciona, instalar) vive en su apartado; la portada solo despierta la curiosidad. */
 #portada:has(+ main) { padding-block: var(--e-7) var(--e-5); }
 .portada__gancho { max-width: 34rem; }
@@ -81,7 +81,7 @@ main > section { padding-block: var(--e-7); border-top: 1px solid var(--c-borde)
 #portada + main > #precio-hoy:first-child { border-top: 0; padding-top: 0; }
 
 /* Puertas: tarjetas que enteras son un enlace a un apartado («Cómo funciona», «Cómo se ha hecho»).
-   La herramienta va primero y más grande; «Cómo se ha hecho» es la segunda puerta (#6). */
+   La herramienta va primero y más grande; «Cómo se ha hecho» es la segunda puerta. */
 .puertas {
   display: grid;
   gap: var(--e-4);
@@ -107,7 +107,7 @@ main > section { padding-block: var(--e-7); border-top: 1px solid var(--c-borde)
 .puerta:hover h3::after, .puerta:focus-visible h3::after { transform: translateX(4px); }
 .puerta--principal { border-color: color-mix(in srgb, var(--c-acento) 45%, var(--c-borde)); }
 
-/* Menú de apartados (#7): Inicio · Cómo funciona · Histórico · Cómo se ha hecho, y el repo aparte.
+/* Menú de apartados: Inicio · Cómo funciona · Histórico · Cómo se ha hecho, y el repo aparte.
    - Escritorio: barra arriba, fija al hacer scroll.
    - Móvil (menos de 48rem): los cuatro apartados bajan a una barra inferior, al alcance del pulgar,
      con zonas de toque de 3.5rem (WCAG 2.2 pide 24 px como mínimo; 44 px es lo cómodo).
