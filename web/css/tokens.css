@@ -95,6 +95,21 @@
   }
 }
 
+/* Dentro de las gráficas ([data-grafica]) dos colores cambian de valor, no de nombre:
+   graficas.js pinta con var(--c-chispa) y var(--c-superficie-2), así que basta con redefinirlos aquí.
+   - --c-chispa es el halo de la hora actual, y encima van la hora y «ahora» en acento y el precio
+     en tinta. Con el lima vivo, en oscuro el precio quedaba a 1,1:1 (no se leía) y la hora a 2,1:1;
+     en claro, la hora a 3,9:1. Con estos tonos: claro 4,5:1 y 15,8:1; oscuro 4,6:1 y 11,2:1.
+   - --c-superficie-2 es la franja de las horas (donde el dedo recorre las filas). En oscuro casi no
+     se veía sobre la tarjeta (1,12:1); ahora 1,23:1, como en claro. Es una pista suave: la hora
+     escrita sigue siendo lo que se lee.
+   Se descartó cambiar los tokens globales: el lima vivo es el brillo de la portada y el gris del
+   menú ya funciona. */
+[data-grafica] { --c-chispa: #eaf7b8; }
+@media (prefers-color-scheme: dark) {
+  [data-grafica] { --c-chispa: #29350b; --c-superficie-2: #262c37; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   :root { --transicion: 0ms; }
 }

@@ -2,13 +2,19 @@
 
 Dueña: Simone.
 
-Todos los textos de `portada`, `puertas`, `como-funciona`, `instalar`, `preguntas`, `como-se-ha-hecho` y `equipo` están en [`textos.json`](textos.json). Miles los pinta desde `web/js/textos.js`.
+Todos los textos de `portada`, `puertas`, `como-funciona`, `instalar`, `preguntas`, `como-se-forma-el-precio`, `como-se-ha-hecho` y `equipo` están en [`textos.json`](textos.json). Miles los pinta desde `web/js/textos.js`.
 
 ## La portada, corta
 
 - **Qué se eligió:** un titular, dos frases y un solo botón, que baja a la gráfica de hoy. «Cómo funciona» e «Instálalo en 5 minutos» viven en su apartado, y la portada solo los anuncia en las puertas.
 - **Por qué:** la portada tiene que encender la curiosidad en 10 segundos y dejar la gráfica en el primer pantallazo del móvil. El detalle está a un clic.
 - **Qué se descartó:** el párrafo de detalle (datos abiertos, código abierto), que pasa a «Cómo se ha hecho», y el segundo botón, que competía con la gráfica.
+
+## «Cómo se forma el precio», en fichas
+
+- **Qué se eligió:** cuatro pasos cortos (de la subasta de mediodía a la factura) y la sección «El mercado por dentro»: seis fichas con un título, un gancho de una o dos frases y el detalle a un clic, cada una con su fuente.
+- **Por qué:** Joseba pidió una idea por ficha y el detalle escondido. El gancho se entiende solo; quien quiera más abre la ficha.
+- **Qué se descartó:** cifras que no están comprobadas en el repo o en la fuente oficial (por ejemplo, qué tecnología marcó el precio de cada hora: el repo aún no tiene esos datos) y cualquier relación de causa entre el tiempo y el precio que no salga de la fórmula.
 
 ## Por qué JSON
 
@@ -56,6 +62,14 @@ como-se-ha-hecho                   (como-se-ha-hecho.html)
   titulo, entrada
   tarjetas[]    { titulo, texto }   (3: método, lo que falló, cómo replicarlo)
   historia      texto (enlace a docs/simbiosis/07-la-web.md)
+
+como-se-forma-el-precio            (página nueva; Miles decide el HTML)
+  titulo, entrada
+  pasos[]       { titulo, texto }   (4 pasos)
+  mercado-por-dentro
+    titulo, entrada
+    fichas[]    { titulo, gancho, detalle, fuente: { texto, href } }
+                (gancho visible; detalle y fuente dentro de <details>)
 
 equipo                             (como-se-ha-hecho.html, dentro del apartado)
   titulo

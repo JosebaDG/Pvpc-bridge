@@ -137,7 +137,7 @@ Los peajes y cargos cambian normalmente cada año: el componente de peajes y car
 
 Hasta 2023, la energía del PVPC seguía solo al mercado diario. El Real Decreto 446/2023 metió una parte de mercados a plazo (futuros) para suavizar el precio: el 25 % en 2024, el 40 % en 2025 y el 55 % a partir de 2026. El resto sigue al mercado diario e intradiario. [Verificado en el BOE]
 
-En la fórmula del real decreto, el término de ajuste es TaE = (A − 1) · Pma + B · Ft, donde Pma es la media del mercado diario e intradiario del día, Ft el precio de los futuros, y en 2026 A = 0,45 y B = 0,55. En la práctica, cada día se resta el 55 % de la media diaria del mercado y se suma el 55 % del precio de futuros, casi la misma cantidad en todas las horas del día. [Verificado en el BOE y en ESIOS: el ajuste fue -0,0157 a -0,0164 €/kWh en todas las horas del 9 de octubre.]
+En la fórmula del real decreto, el término de ajuste es TaE = (A − 1) · Pma + B · Ft, donde Pma es la media del mercado diario e intradiario del día, Ft el precio de los futuros, y en 2026 A = 0,45 y B = 0,55. En la práctica, cada día se resta el 55 % de la media diaria del mercado y se suma el 55 % del precio de futuros, casi la misma cantidad en todas las horas del día. [Verificado en el BOE y en ESIOS: el ajuste fue de -0,0156 a -0,0164 €/kWh en todas las horas del 9 de octubre.]
 
 Dos consecuencias prácticas:
 
