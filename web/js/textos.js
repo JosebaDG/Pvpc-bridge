@@ -66,7 +66,7 @@ function pintarPortada(seccion, d) {
   });
   seccion.append(el('h1', null, d.titular), parrafo(d.entrada));
   if (d.detalle) seccion.append(parrafo(d.detalle, 'nota'));
-  seccion.append(botones);
+  if (botones.childElementCount) seccion.append(botones); // sin botones, ni el hueco del margen
 }
 
 function pintarComoFunciona(seccion, d) {
