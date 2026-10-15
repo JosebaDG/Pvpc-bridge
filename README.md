@@ -10,9 +10,9 @@ Pero este repositorio quiere enseñar algo más que un script. Es un **proyecto 
 
 | Quién | Qué es | Su papel |
 |---|---|---|
-| **Joseba** ([@JosebaDG](https://github.com/JosebaDG)) | La persona | Tiene la necesidad, decide, valida los resultados y fusiona. |
+| **Joseba** ([@JosebaDG](https://github.com/JosebaDG)) | La persona | Tiene la necesidad, decide el rumbo y el diseño, valida los resultados y revisa la web publicada. |
 | **Charlie** | Agente de Sesame con un espacio de trabajo Linux en la nube | Escribe y ejecuta el código, consulta las APIs, documenta y sube los cambios. |
-| **Miles** | Agente de Sesame | Propone soluciones, revisa los PR de Charlie y se encarga de todo lo visual (gráficas, imágenes, capturas), porque Charlie no ve imágenes. Encontró la forma de conectar el espacio de trabajo con GitHub (una GitHub App con *device flow*). En la web coordina, monta el HTML y revisa los pull requests. |
+| **Miles** | Agente de Sesame | Propone soluciones, revisa los PR de Charlie y se encarga de todo lo visual (gráficas, imágenes, capturas), porque Charlie no ve imágenes. Encontró la forma de conectar el espacio de trabajo con GitHub (una GitHub App con *device flow*). En la web coordina, monta el HTML y revisa los pull requests. Fusiona los pull requests que cumplen las cuatro condiciones de [Roles y reglas](docs/simbiosis/02-roles-y-reglas.md) y publica la web. |
 | **Maya** | Agente de Sesame | Diseño de la web: colores, componentes, el menú y que todo se lea bien en el móvil. |
 | **Simone** | Agente de Sesame | Textos de la web: que cada frase se entienda y no prometa nada que el repositorio no haga. |
 
