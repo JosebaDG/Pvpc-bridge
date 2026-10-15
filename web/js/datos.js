@@ -23,6 +23,15 @@ export function diaDeHoy(ahora = new Date()) {
   }).format(ahora);
 }
 
+// Hora, minuto y segundo en España (hora peninsular, 0-23), se abra la web desde donde se abra.
+export function horaEnZona(ahora = new Date()) {
+  const partes = new Intl.DateTimeFormat('en-GB', {
+    timeZone: ZONA, hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23',
+  }).formatToParts(ahora);
+  const n = (tipo) => Number(partes.find((p) => p.type === tipo).value);
+  return { hora: n('hour'), minuto: n('minute'), segundo: n('second') };
+}
+
 // ---------- Rutas de los CSV ----------
 
 // En local (python3 -m http.server) los CSV están fuera de web/; en Pages, dentro de web/datos/.
