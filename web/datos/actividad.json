@@ -1,0 +1,244 @@
+{
+ "repo": "JosebaDG/Pvpc-bridge",
+ "generado": "2026-10-15T12:10:57Z",
+ "fuente": "API pública de GitHub, /repos/JosebaDG/Pvpc-bridge/pulls (sin token)",
+ "agentes": [
+  "Miles",
+  "Charlie",
+  "Maya",
+  "Simone"
+ ],
+ "prs": [
+  {
+   "numero": 7,
+   "titulo": "Documentar la simbiosis: persona + dos agentes de IA, guía de GitHub y flujo de trabajo",
+   "rama": "docs/simbiosis",
+   "autor": "Charlie",
+   "como_se_sabe": "tabla manual: issue #1, apartado «Quién»: «Charlie escribe y abre el PR»",
+   "abierto": "2026-10-12T12:41:22Z",
+   "fusionado": "2026-10-12T13:13:35Z",
+   "cerrado": "2026-10-12T13:13:35Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/7"
+  },
+  {
+   "numero": 8,
+   "titulo": "Datos: histórico de REE (PVPC, mercado diario, generación) con caché, y archivo del estudio de la API",
+   "rama": "datos/archivo-redata",
+   "autor": "Charlie",
+   "como_se_sabe": "firma",
+   "abierto": "2026-10-12T13:04:44Z",
+   "fusionado": "2026-10-12T15:18:40Z",
+   "cerrado": "2026-10-12T15:18:40Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/8"
+  },
+  {
+   "numero": 10,
+   "titulo": "Docs: eficiencia energética genérica y gráfica pensada para mandar a un chat",
+   "rama": "docs/eficiencia-generica",
+   "autor": "Miles",
+   "como_se_sabe": "tabla manual: descripción del PR #10, «Quién ha hecho qué»: «Miles hizo los cambios y abrió el PR»",
+   "abierto": "2026-10-12T13:16:13Z",
+   "fusionado": "2026-10-12T14:04:23Z",
+   "cerrado": "2026-10-12T14:04:23Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/10"
+  },
+  {
+   "numero": 12,
+   "titulo": "Licencias: código MIT y documentación CC BY 4.0",
+   "rama": "docs/licencias",
+   "autor": "Miles",
+   "como_se_sabe": "firma",
+   "abierto": "2026-10-12T14:13:35Z",
+   "fusionado": "2026-10-12T14:24:01Z",
+   "cerrado": "2026-10-12T14:24:01Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/12"
+  },
+  {
+   "numero": 13,
+   "titulo": "Aviso nocturno con el bloque más barato de mañana (#4)",
+   "rama": "feat/aviso-nocturno",
+   "autor": "Charlie",
+   "como_se_sabe": "firma",
+   "abierto": "2026-10-12T15:31:20Z",
+   "fusionado": "2026-10-12T15:59:09Z",
+   "cerrado": "2026-10-12T15:59:09Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/13"
+  },
+  {
+   "numero": 14,
+   "titulo": "Quita --gpu-w y pone al día roles y tablón",
+   "rama": "docs/limpieza-gpu-y-roles",
+   "autor": "Miles",
+   "como_se_sabe": "firma",
+   "abierto": "2026-10-12T16:24:13Z",
+   "fusionado": "2026-10-14T09:55:09Z",
+   "cerrado": "2026-10-14T09:55:09Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/14"
+  },
+  {
+   "numero": 15,
+   "titulo": "Web: esqueleto y reparto (Miles)",
+   "rama": "web/base",
+   "autor": "Miles",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-14T16:50:18Z",
+   "fusionado": "2026-10-14T16:50:21Z",
+   "cerrado": "2026-10-14T16:50:21Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/15"
+  },
+  {
+   "numero": 16,
+   "titulo": "Web: tokens y componentes de diseño (Maya)",
+   "rama": "web/maya",
+   "autor": "Maya",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-14T16:55:13Z",
+   "fusionado": "2026-10-14T17:02:27Z",
+   "cerrado": "2026-10-14T17:02:27Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/16"
+  },
+  {
+   "numero": 17,
+   "titulo": "Web: gráficas de precio de hoy e histórico, sin librerías (Charlie)",
+   "rama": "web/charlie",
+   "autor": "Charlie",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-14T17:04:10Z",
+   "fusionado": "2026-10-14T19:23:17Z",
+   "cerrado": "2026-10-14T19:23:17Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/17"
+  },
+  {
+   "numero": 18,
+   "titulo": "Web: textos de portada, cómo funciona, instalar y preguntas (Simone)",
+   "rama": "web/simone",
+   "autor": "Simone",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-14T19:47:44Z",
+   "fusionado": "2026-10-15T08:44:30Z",
+   "cerrado": "2026-10-15T08:44:30Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/18"
+  },
+  {
+   "numero": 19,
+   "titulo": "Web: precio en cada barra y hoy frente a otro día (Charlie)",
+   "rama": "web/charlie",
+   "autor": "Charlie",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T07:19:42Z",
+   "fusionado": "2026-10-15T10:02:55Z",
+   "cerrado": "2026-10-15T10:02:55Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/19"
+  },
+  {
+   "numero": 20,
+   "titulo": "Seguridad: quita las referencias a hilos internos (Miles)",
+   "rama": "seguridad/sin-referencias-internas",
+   "autor": "Miles",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T10:02:29Z",
+   "fusionado": "2026-10-15T10:03:53Z",
+   "cerrado": "2026-10-15T10:03:53Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/20"
+  },
+  {
+   "numero": 21,
+   "titulo": "Web: menú de apartados, portada con gancho y arreglo de los 50 px (Maya)",
+   "rama": "web/maya",
+   "autor": "Maya",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T10:05:48Z",
+   "fusionado": "2026-10-15T10:08:38Z",
+   "cerrado": "2026-10-15T10:08:38Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/21"
+  },
+  {
+   "numero": 22,
+   "titulo": "Seguridad: docs/simbiosis sin el nombre de la GitHub App (Miles)",
+   "rama": "seguridad/sin-nombre-de-app",
+   "autor": "Miles",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T10:10:07Z",
+   "fusionado": "2026-10-15T10:11:00Z",
+   "cerrado": "2026-10-15T10:11:00Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/22"
+  },
+  {
+   "numero": 23,
+   "titulo": "Web: cuatro apartados con menú, portada con la gráfica de hoy y puertas (Miles)",
+   "rama": "web/miles-apartados",
+   "autor": "Miles",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T10:13:14Z",
+   "fusionado": "2026-10-15T10:14:12Z",
+   "cerrado": "2026-10-15T10:14:12Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/23"
+  },
+  {
+   "numero": 24,
+   "titulo": "Gráfica de hoy: deslizar el dedo por las barras para ver el precio de cada hora",
+   "rama": "web/charlie",
+   "autor": "Charlie",
+   "como_se_sabe": "rama",
+   "abierto": "2026-10-15T10:20:06Z",
+   "fusionado": "2026-10-15T11:03:03Z",
+   "cerrado": "2026-10-15T11:03:03Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/24"
+  },
+  {
+   "numero": 25,
+   "titulo": "Web: portada corta, puertas, Cómo se ha hecho y El equipo (Simone)",
+   "rama": "web/simone",
+   "autor": "Simone",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T10:48:47Z",
+   "fusionado": "2026-10-15T11:03:55Z",
+   "cerrado": "2026-10-15T11:03:55Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/25"
+  },
+  {
+   "numero": 26,
+   "titulo": "Gráfica de hoy: al deslizar, comparar cada hora con el día anterior",
+   "rama": "web/charlie",
+   "autor": "Charlie",
+   "como_se_sabe": "rama",
+   "abierto": "2026-10-15T11:05:16Z",
+   "fusionado": "2026-10-15T11:22:04Z",
+   "cerrado": "2026-10-15T11:22:05Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/26"
+  },
+  {
+   "numero": 27,
+   "titulo": "Web: texto de «Cómo se forma el precio» y «El mercado por dentro» (Simone)",
+   "rama": "web/simone",
+   "autor": "Simone",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T11:05:38Z",
+   "fusionado": "2026-10-15T12:06:04Z",
+   "cerrado": "2026-10-15T12:06:04Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/27"
+  },
+  {
+   "numero": 28,
+   "titulo": "Web: la gráfica asoma en el primer pantallazo del móvil y la hora actual se lee en oscuro (Maya)",
+   "rama": "web/maya",
+   "autor": "Maya",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T12:07:13Z",
+   "fusionado": "2026-10-15T12:09:00Z",
+   "cerrado": "2026-10-15T12:09:00Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/28"
+  },
+  {
+   "numero": 29,
+   "titulo": "Web: «El equipo en el tiempo», un carril por agente y una barra por PR (Charlie)",
+   "rama": "web/charlie",
+   "autor": "Charlie",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T12:07:38Z",
+   "fusionado": null,
+   "cerrado": null,
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/29"
+  }
+ ]
+}
