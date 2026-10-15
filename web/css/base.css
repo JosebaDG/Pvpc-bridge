@@ -10,6 +10,7 @@
    .portada__gancho, .portada__botones                           portada corta, con gancho
    .puertas + .puerta (.puerta--principal)                       tarjetas-enlace a los apartados
    .fichas + .ficha (+ .ficha__detalle)                          fichas con gancho y detalle a un clic
+   .juego (+ __titulo, __respuesta, __pistas, __pista, __nota)   tarjeta «¿Acertó el mercado?»; .tramo[data-nota]
    .solo-lector                                                  texto oculto a la vista pero leído por lectores de pantalla */
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -354,6 +355,62 @@ summary { cursor: pointer; font-weight: var(--peso-medio); }
 .ficha__detalle > summary + * { margin-top: var(--e-3); padding-top: var(--e-1); }
 .ficha__detalle > :last-child:not(summary) { padding-bottom: var(--e-1); }
 .ficha__detalle > * + .nota { padding-top: var(--e-2); }
+
+/* Juego «¿Acertó el mercado?» (lo pinta graficas.js, de Charlie): div.tarjeta.juego > h3.juego__titulo,
+   p.juego__respuesta (> span con el porqué), p.nota, ul.juego__pistas > li.juego__pista
+   (span.juego__pista-titulo + texto + span.tramo[data-nota]), p.nota.juego__generacion,
+   p.juego__precio y p.nota.juego__nota.
+   - La respuesta («Sí», «A medias», «No») va grande y el porqué debajo, en tamaño de texto: se lee
+     primero el veredicto y luego la razón. Se descartó todo en una línea a tamaño grande: en 320 px
+     ocupaba cinco líneas de titular.
+   - Cada pista es una franja hundida: arriba el nombre y la nota a la derecha, debajo previsto y real.
+     Con order y un ::after de ancho completo, porque el texto de en medio no lleva etiqueta propia.
+     Se descartó dejarlo todo seguido: en 390 px la nota caía sola en una tercera línea y cada pista
+     medía 113-139 px. El orden del HTML no cambia, así que el lector de pantalla lee igual.
+     Desde 48rem cabe todo en una línea y se vuelve al orden normal, con la nota al final.
+   - La nota reutiliza los colores de la escala del precio (verde acertó, ámbar casi, rojo falló),
+     siempre con su palabra, así que no depende del color. No se inventan colores nuevos.
+   - Separación con gap en la tarjeta en vez de márgenes sueltos en cada párrafo.
+   - .juego[hidden]: display:flex pisaría el hidden del navegador y la tarjeta vacía se vería. */
+.juego { display: flex; flex-direction: column; gap: var(--e-3); margin-top: var(--e-4); }
+.juego[hidden] { display: none; }
+.juego > * { margin: 0; }
+.juego__titulo { font-size: var(--t-m); color: var(--c-tinta-2); font-weight: var(--peso-medio); }
+.juego__respuesta { font-size: var(--t-l); font-weight: var(--peso-fuerte); line-height: 1.2; }
+.juego__respuesta > span {
+  display: block;
+  margin-top: var(--e-1);
+  font-size: var(--t-m);
+  font-weight: var(--peso-medio);
+  line-height: var(--interlineado);
+}
+.juego__pistas { list-style: none; padding: 0; display: grid; gap: var(--e-2); }
+.juego__pista {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e-1) var(--e-2);
+  padding: var(--e-3);
+  border-radius: var(--r-m);
+  background: var(--c-superficie-2);
+  font-variant-numeric: tabular-nums;
+}
+.juego__pista::after { content: ""; flex-basis: 100%; order: -1; } /* salto de línea tras la nota */
+.juego__pista-titulo { order: -3; flex: 1 1 auto; font-weight: var(--peso-medio); }
+.juego__pista > .tramo { order: -2; margin-left: auto; font-size: var(--t-xs); white-space: nowrap; }
+@media (min-width: 48rem) {
+  .juego__pista::after { content: none; }
+  .juego__pista-titulo, .juego__pista > .tramo { order: 0; }
+  .juego__pista-titulo { flex: none; }
+}
+.juego__precio strong, .juego__generacion strong { font-variant-numeric: tabular-nums; }
+.juego__nota { padding-top: var(--e-3); border-top: 1px solid var(--c-borde); }
+.tramo[data-nota="acerto"] { color: var(--c-barato-tinta); background: var(--c-barato-suave); }
+.tramo[data-nota="casi"]   { color: var(--c-medio-tinta);  background: var(--c-medio-suave); }
+.tramo[data-nota="fallo"]  { color: var(--c-caro-tinta);   background: var(--c-caro-suave); }
+.tramo[data-nota="acerto"]::before { background: var(--c-barato); }
+.tramo[data-nota="casi"]::before   { background: var(--c-medio); }
+.tramo[data-nota="fallo"]::before  { background: var(--c-caro); }
 
 /* Pie */
 #pie { padding-block: var(--e-7); color: var(--c-tinta-2); font-size: var(--t-s); border-top: 1px solid var(--c-borde); }
