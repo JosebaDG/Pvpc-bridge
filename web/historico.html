@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Histórico desde 2022 · Pvpc-bridge</title>
+  <meta name="description" content="Cómo ha cambiado el precio de la luz (PVPC) hora a hora desde 2022.">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+</head>
+<body>
+  <nav class="menu" aria-label="Apartados">
+    <a class="menu__marca" href="./">Pvpc-bridge</a>
+    <ul class="menu__lista">
+      <li><a href="./">Inicio</a></li>
+      <li><a href="como-funciona.html">Cómo funciona</a></li>
+      <li><a href="historico.html" aria-current="page">Histórico</a></li>
+      <li><a href="como-se-ha-hecho.html">Cómo se ha hecho</a></li>
+    </ul>
+    <a class="menu__repo" href="https://github.com/JosebaDG/Pvpc-bridge" rel="noopener">GitHub</a>
+  </nav>
+  <main>
+    <section id="historico">
+      <!-- Charlie: histórico desde 2022. Lo dibuja web/js/graficas.js dentro de data-grafica="historico". -->
+      <h1 class="seccion__titulo">Cómo ha ido el precio desde 2022</h1>
+      <p class="seccion__entrada">Cada columna es un día y cada fila, una hora (de las 00 h arriba a las 23 h abajo). Encima, la media de cada mes.</p>
+      <div class="tarjeta grafica" data-grafica="historico">
+        <p class="grafica-cargando">Cargando el histórico…</p>
+        <noscript><p>Esta gráfica necesita JavaScript.</p></noscript>
+      </div>
+    </section>
+  </main>
+  <footer id="pie">
+    <p>Datos: <a href="https://www.ree.es/es/datos/apidatos" rel="noopener">Red Eléctrica (REData)</a>. Código abierto con licencia MIT en <a href="https://github.com/JosebaDG/Pvpc-bridge" rel="noopener">GitHub</a>.</p>
+  </footer>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -5,13 +5,14 @@
 //   import { iniciarTextos } from './textos.js';
 //   iniciarTextos();
 //
-// Seguridad: dentro de los textos solo se aceptan <strong>, <code> y <a> (con enlace http(s) o #).
+// Seguridad: dentro de los textos solo se aceptan <strong>, <code> y <a> (con enlace http(s), #ancla
+// o una página de esta web, como como-funciona.html#instalar).
 // Cualquier otra etiqueta se muestra como texto. Por qué no innerHTML a pelo: si algún día entra
 // un <script> o un onclick en el JSON, no debe ejecutarse. Los comandos se pintan con textContent,
 // así que un < en un comando nunca se interpreta.
 
 const ETIQUETAS = new Set(['STRONG', 'CODE', 'A']);
-const ENLACE_VALIDO = /^(https?:\/\/|#)/i;
+const ENLACE_VALIDO = /^(https?:\/\/|#|[a-z0-9-]+\.html(#[a-z0-9-]+)?$)/i;
 
 // Ruta relativa a este archivo, no a la página: funciona igual en local (/web/) y en Pages (/).
 const RUTA_TEXTOS = new URL('../contenido/textos.json', import.meta.url);
