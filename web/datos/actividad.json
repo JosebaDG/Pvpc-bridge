@@ -1,6 +1,6 @@
 {
  "repo": "JosebaDG/Pvpc-bridge",
- "generado": "2026-10-15T12:07:09Z",
+ "generado": "2026-10-15T12:10:57Z",
  "fuente": "API pública de GitHub, /repos/JosebaDG/Pvpc-bridge/pulls (sin token)",
  "agentes": [
   "Miles",
@@ -217,6 +217,28 @@
    "fusionado": "2026-10-15T12:06:04Z",
    "cerrado": "2026-10-15T12:06:04Z",
    "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/27"
+  },
+  {
+   "numero": 28,
+   "titulo": "Web: la gráfica asoma en el primer pantallazo del móvil y la hora actual se lee en oscuro (Maya)",
+   "rama": "web/maya",
+   "autor": "Maya",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T12:07:13Z",
+   "fusionado": "2026-10-15T12:09:00Z",
+   "cerrado": "2026-10-15T12:09:00Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/28"
+  },
+  {
+   "numero": 29,
+   "titulo": "Web: «El equipo en el tiempo», un carril por agente y una barra por PR (Charlie)",
+   "rama": "web/charlie",
+   "autor": "Charlie",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T12:07:38Z",
+   "fusionado": null,
+   "cerrado": null,
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/29"
   }
  ]
 }
