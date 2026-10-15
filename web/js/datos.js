@@ -1,4 +1,4 @@
-// Dueño: Charlie (equipo-agentes #4).
+// Dueño: Charlie.
 // Lee el precio de la luz (PVPC 2.0TD, península, sin impuestos) y lo deja en €/kWh.
 //
 // De dónde salen los datos:
