@@ -1,5 +1,6 @@
 // Dueño: Miles. Pinta los textos de Simone (web/contenido/textos.json)
-// en las secciones portada, puertas, como-funciona, instalar, preguntas, como-se-ha-hecho y equipo.
+// en las secciones portada, puertas, como-funciona, instalar, preguntas, como-se-forma-el-precio,
+// como-se-ha-hecho y equipo.
 // Cada pintor busca su id en la página que esté abierta; si no está, no hace nada.
 //
 // Uso (desde main.js):
@@ -131,6 +132,31 @@ function pintarComoSeHaHecho(seccion, d) {
   );
 }
 
+// «Cómo se forma el precio»: título de su página (h1), cuatro pasos en tarjetas y «El mercado por dentro».
+// Cada ficha enseña el gancho; el detalle y la fuente van dentro de <details>, a un clic.
+function pintarComoSeFormaElPrecio(seccion, d) {
+  const pasos = el('div', 'rejilla',
+    ...(d.pasos ?? []).map((p, i) => el('article', 'tarjeta', el('h3', null, `${i + 1}. ${p.titulo}`), parrafo(p.texto))));
+  const m = d['mercado-por-dentro'];
+  const fichas = m ? el('div', 'rejilla fichas', ...(m.fichas ?? []).map((f) => {
+    const fuente = f.fuente && /^https?:\/\//i.test(f.fuente.href)
+      ? el('p', 'nota', 'Fuente: ', Object.assign(el('a', null, f.fuente.texto), { href: f.fuente.href, rel: 'noopener' }))
+      : null;
+    return el('article', 'tarjeta ficha',
+      el('h3', null, f.titulo),
+      parrafo(f.gancho),
+      el('details', 'ficha__detalle', el('summary', null, 'Ver el detalle'), parrafo(f.detalle), fuente));
+  })) : null;
+  seccion.replaceChildren(
+    el('h1', 'seccion__titulo', d.titulo),
+    parrafo(d.entrada, 'seccion__entrada'),
+    pasos,
+    m ? el('h2', 'seccion__titulo', m.titulo) : null,
+    m?.entrada ? parrafo(m.entrada, 'seccion__entrada') : null,
+    fichas,
+  );
+}
+
 // «El equipo», dentro de «Cómo se ha hecho»: una tarjeta de una línea por miembro y las debilidades en .nota.
 function pintarEquipo(seccion, d) {
   const rejilla = el('div', 'rejilla',
@@ -148,6 +174,7 @@ const PINTORES = {
   'como-funciona': pintarComoFunciona,
   instalar: pintarInstalar,
   preguntas: pintarPreguntas,
+  'como-se-forma-el-precio': pintarComoSeFormaElPrecio,
   'como-se-ha-hecho': pintarComoSeHaHecho,
   equipo: pintarEquipo,
 };

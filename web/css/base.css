@@ -79,6 +79,28 @@ main > section { padding-block: var(--e-7); border-top: 1px solid var(--c-borde)
 .portada__botones { display: flex; flex-wrap: wrap; gap: var(--e-3); margin-top: var(--e-5); }
 /* La gráfica de hoy, pegada a la portada: es el núcleo del proyecto. */
 #portada + main > #precio-hoy:first-child { border-top: 0; padding-top: 0; }
+/* En portada, el h2 de la gráfica («El precio de la luz, hoy») repite el titular: se oculta a la
+   vista pero lo sigue leyendo el lector de pantalla (mismas reglas que .solo-lector), así la
+   estructura de títulos no cambia. La entrada «Cada barra es una hora…» se queda: dice cómo leerla. */
+#portada + main > #precio-hoy:first-child > .seccion__titulo {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
+/* Móvil: que la gráfica asome en el primer pantallazo.
+   Medido en la web publicada: a 390 × 844 la gráfica empezaba en 921 px y a 320 × 568 en 956 px,
+   con la barra del menú tapando desde 779 y 503. Lo que la empujaba: el titular a 44 px en tres
+   líneas, la entrada a 20 px, los márgenes de escritorio y el h2 repetido.
+   Se recorta solo el envoltorio (márgenes y tamaños); el texto de Simone no se toca.
+   Se descartó esconder la entrada o el botón: son el gancho que pidió Joseba. */
+@media (max-width: 47.99rem) {
+  #portada:has(+ main) { padding-block: var(--e-5) var(--e-4); }
+  #portada:has(+ main) h1 { font-size: clamp(2rem, 1.4rem + 3vw, 2.75rem); margin-bottom: var(--e-3); }
+  #portada:has(+ main) p { font-size: var(--t-m); margin-bottom: 0; }
+  #portada:has(+ main) .portada__botones { margin-top: var(--e-4); }
+  #portada + main > #precio-hoy:first-child .seccion__entrada { font-size: var(--t-s); margin-bottom: var(--e-3); }
+  .tarjeta { padding: var(--e-4); }
+}
 
 /* Puertas: tarjetas que enteras son un enlace a un apartado («Cómo funciona», «Cómo se ha hecho»).
    La herramienta va primero y más grande; «Cómo se ha hecho» es la segunda puerta. */
@@ -152,12 +174,15 @@ main > section { padding-block: var(--e-7); border-top: 1px solid var(--c-borde)
 .menu__repo:hover { color: var(--c-acento) !important; }
 
 @media (max-width: 47.99rem) {
+  /* Arriba solo quedan la marca y el repo: sin relleno extra, el enlace al repo ya da los 44 px de toque. */
+  .menu { padding-block: 0; }
   .menu__lista {
     position: fixed;
     inset: auto 0 0 0;
     z-index: 10;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-auto-flow: column; /* una columna por apartado, sin contar cuántos hay */
+    grid-auto-columns: minmax(0, 1fr);
     gap: 0;
     padding: var(--e-1) var(--e-1) calc(var(--e-1) + env(safe-area-inset-bottom));
     background: var(--c-superficie);

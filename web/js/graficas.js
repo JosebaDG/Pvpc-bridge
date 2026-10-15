@@ -1,20 +1,25 @@
 // Dueño: Charlie.
-// Dibuja las dos gráficas de la web sin librerías:
+// Dibuja las gráficas de la web sin librerías:
 // - precio-hoy: 24 barras en SVG hecho a mano (SVG = dibujo con formas que el navegador escala sin
 //   perder nitidez y que se puede inspeccionar como el resto de la página).
 //   Cada barra lleva su precio escrito (tres decimales), como en puente_luz.py y aviso_nocturno.py.
 //   En pantallas anchas, columnas con el precio encima; en móvil, filas con el precio al final.
 //   Si el día no es hoy, la cabecera lo dice en grande y no hay «ahora» ni cifra de ahora.
+//   Al deslizar o con las flechas no se repite el precio: se compara con el día anterior a esa hora.
 // - historico: mapa de calor día × hora en canvas (canvas = un lienzo de píxeles; con unas 41.000
 //   celdas es mucho más rápido que crear 41.000 elementos SVG) y la media mensual como línea.
+// - equipo-tiempo: «El equipo en el tiempo», en SVG. Un carril por agente y una barra por PR,
+//   desde que se abre hasta que se fusiona. Lee web/datos/actividad.json (datos públicos de GitHub).
 //
 // Uso (desde main.js):
 //   import { iniciarGraficas } from './graficas.js';
 //   iniciarGraficas();
-// Busca #precio-hoy [data-grafica="hoy"] y #historico [data-grafica="historico"] y los rellena.
+// Busca #precio-hoy [data-grafica="hoy"], #historico [data-grafica="historico"] y
+// #equipo-tiempo [data-grafica="equipo"], y rellena los que haya en la página.
 
 import {
-  precioDelDia, cargarHistorico, tercios, mejorBloque, PRIMER_AÑO,
+  precioDelDia, precioDelDiaAnterior, compararPrecio, cargarHistorico, tercios, mejorBloque, PRIMER_AÑO,
+  cargarActividad, ZONA,
 } from './datos.js';
 
 // ---------- Colores: solo variables CSS de Maya (web/css/tokens.css) ----------
@@ -66,6 +71,7 @@ const aFecha = (f) => new Date(`${f}T12:00:00Z`);
 const fechaLarga = (f) => new Intl.DateTimeFormat('es-ES', {
   weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC',
 }).format(aFecha(f)).replace(',', ''); // «miércoles 14 de octubre de 2026», sin coma
+const diaSemana = (f) => new Intl.DateTimeFormat('es-ES', { weekday: 'long', timeZone: 'UTC' }).format(aFecha(f));
 const fechaCorta = (f) => new Intl.DateTimeFormat('es-ES', {
   day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC',
 }).format(aFecha(f));
@@ -190,8 +196,22 @@ export function pintarPrecioHoy(contenedor, dia) {
   ]);
 
   const detalle = el('p', {
-    class: 'nota grafica-detalle', 'aria-live': 'polite',
+    class: 'nota grafica-detalle', 'aria-live': 'polite', style: 'min-height:1.5em',
     texto: 'Toca una barra o desliza el dedo por la gráfica para ver el precio de cada hora. Con teclado, usa las flechas.',
+  });
+
+  // Comparación con el día anterior (ayer, si el día es hoy). El precio ya va escrito en cada
+  // barra, así que al deslizar no se repite: se dice cómo estaba el día antes a esa misma hora.
+  // Se carga después de dibujar (no retrasa la gráfica) y, si no hay datos, no se enseña nada.
+  let anterior = null; // { fecha, porHora: Map(hora -> precio) }
+  const nombreAnterior = esHoy ? 'ayer' : 'el día anterior';
+  const tactil = matchMedia('(hover: none), (pointer: coarse)').matches;
+  // Pista para descubrir el gesto, encima de la gráfica. Oculta hasta que haya datos del día antes.
+  const pista = el('p', {
+    class: 'nota grafica-pista', hidden: '', style: 'margin:0 0 .5rem',
+    texto: tactil
+      ? `Desliza por las barras para comparar con ${nombreAnterior}.`
+      : `Pasa el ratón o usa las flechas para comparar con ${nombreAnterior}.`,
   });
 
   // Leyenda con las etiquetas .tramo de Maya: color y palabra siempre juntos (daltonismo).
@@ -230,18 +250,53 @@ export function pintarPrecioHoy(contenedor, dia) {
 
   // position:relative para la franja táctil de las horas en el dibujo en filas (ver hacerDeslizable).
   const lienzo = el('div', { class: 'grafica-lienzo', style: 'position:relative' });
-  contenedor.replaceChildren(...[cabecera, ahoraBloque, lienzo, detalle, resumen, leyenda, tabla, nota].filter(Boolean));
+  contenedor.replaceChildren(...[cabecera, ahoraBloque, pista, lienzo, detalle, resumen, leyenda, tabla, nota].filter(Boolean));
 
   // Hora elegida (con el dedo, el ratón o el teclado). Vive fuera del SVG para que sobreviva
   // cuando se redibuja al cambiar el ancho. -1: todavía ninguna.
   let elegida = -1;
   let marcarEnDibujo = () => {}; // la pone el dibujo actual: mueve el marco y el foco
+  // Frase de la hora i. Con datos del día antes: «12–13 h · ayer 0,192 · ▼ hoy un 23 % más barato».
+  // El sentido va siempre en palabras (más barato, más caro, casi igual); la flecha y el color
+  // solo lo refuerzan. El precio de hoy no se ve (ya está en la barra), pero el lector de pantalla
+  // lo lee, porque en la barra va oculto para él. Sin datos del día antes, la frase de siempre.
+  const escribirDetalle = (i) => {
+    const h = horas[i];
+    const ref = anterior?.porHora.get(h.hora);
+    if (ref === undefined) {
+      detalle.textContent = `${tramo(h.hora)}: ${euros(h.precio)} (${NOMBRE_TERCIO[grupo[i]]}${enBloque(i) ? ', dentro del mejor bloque' : ''}${i === iAhora ? ', ahora' : ''})`;
+      return;
+    }
+    const cmp = compararPrecio(h.precio, ref);
+    const sujeto = esHoy ? 'hoy' : `el ${diaSemana(fecha)}`;
+    const quien = esHoy ? 'ayer' : diaSemana(anterior.fecha);
+    const flecha = { barato: '▼', caro: '▲', igual: '=' }[cmp.sentido];
+    const colorFlecha = { barato: color('barato'), caro: color('caro'), igual: color('eje') }[cmp.sentido];
+    detalle.replaceChildren(
+      `${tramo(h.hora)} · `,
+      el('span', { class: 'solo-lector', texto: `${sujeto} ${euros(h.precio)}, ` }),
+      `${quien} ${f3.format(ref)} · `,
+      el('strong', {}, [
+        el('span', { 'aria-hidden': 'true', style: `color:${colorFlecha};margin-right:.25em`, texto: flecha }),
+        cmp.sentido === 'igual' ? `${sujeto} casi igual` : `${sujeto} ${cmp.texto}`,
+      ]),
+    );
+  };
   const verDetalle = (i) => {
     if (i < 0 || i >= horas.length || i === elegida) return; // sin repetir el aviso de aria-live
     elegida = i;
-    detalle.textContent = `${tramo(horas[i].hora)}: ${euros(horas[i].precio)} (${NOMBRE_TERCIO[grupo[i]]}${enBloque(i) ? ', dentro del mejor bloque' : ''}${i === iAhora ? ', ahora' : ''})`;
+    escribirDetalle(i);
     marcarEnDibujo(i);
   };
+  precioDelDiaAnterior(fecha).then((dia) => {
+    if (!dia) return; // sin datos del día antes: ni pista ni comparación, y ningún error
+    const porHora = new Map();
+    for (const h of dia.horas) if (!porHora.has(h.hora)) porHora.set(h.hora, h.precio); // cambio de hora: la primera
+    anterior = { fecha: dia.fecha, porHora };
+    pista.hidden = false;
+    if (elegida >= 0) escribirDetalle(elegida);
+    else detalle.textContent = '';
+  }).catch((e) => console.warn('día anterior:', e));
   // Con el teclado solo se entra una vez en la gráfica (tabindex «itinerante»): la barra elegida,
   // o la actual, o la más barata. Dentro, las flechas mueven de hora en hora.
   const barraConFoco = () => (elegida >= 0 ? elegida : (iAhora >= 0 ? iAhora : iMin));
@@ -771,12 +826,275 @@ export function pintarHistorico(contenedor, horas) {
 }
 
 // =====================================================================
+// El equipo en el tiempo: un carril por agente, una barra por PR
+// =====================================================================
+// Eje de tiempo con los huecos comprimidos: el equipo trabaja a ratos (el 12 por la tarde, el 14 por
+// la tarde, el 15 por la mañana) y un eje lineal dejaría casi todo el ancho vacío y los PR de una
+// misma hora apelotonados. Por eso, si pasan más de 3 h sin abrir ni fusionar nada, ese rato se
+// dibuja como una franja gris estrecha. Se descartó un eje por días fijos: un PR de 1 minuto y uno
+// de 3 horas se verían casi iguales.
+// Dentro de cada carril, las barras que se pisarían bajan a otra fila, para que ningún número choque.
+
+const HUECO_MS = 3 * 3600e3; // más de 3 h sin actividad: se comprime
+const AIRE_MS = 20 * 60e3; // margen a cada lado de un rato con actividad
+const ANCHO_HUECO = 20; // px de la franja comprimida
+const MIN_RATO = 30; // px mínimos de un rato con actividad
+const MIN_BARRA = 5; // px mínimos de una barra (hay PR que duran segundos)
+const ALTO_EJE = 38;
+const ALTO_CABECERA = 22; // nombre del agente
+const ALTO_FILA = 26;
+const LETRA = 11; // px de las etiquetas del dibujo
+const anchoTexto = (t) => t.length * LETRA * 0.7; // estimación; fuente del sistema
+
+const horaMin = new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit', timeZone: ZONA });
+const soloHora = new Intl.DateTimeFormat('es-ES', { hour: 'numeric', hourCycle: 'h23', timeZone: ZONA });
+const diaCorto = new Intl.DateTimeFormat('es-ES', { weekday: 'short', day: 'numeric', timeZone: ZONA });
+const diaClave = new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: ZONA });
+const diaYHora = (ms) => `${diaCorto.format(ms)}, ${horaMin.format(ms)}`;
+
+function duracion(ms) {
+  const min = Math.max(1, Math.round(ms / 60e3));
+  if (min < 60) return `${min} min`;
+  const h = Math.floor(min / 60);
+  const m = min % 60;
+  if (h < 24) return m ? `${h} h ${m} min` : `${h} h`;
+  const d = Math.floor(h / 24);
+  return `${d} ${d === 1 ? 'día' : 'días'} y ${h % 24} h`;
+}
+
+function prepararEquipo(datos) {
+  const corte = Date.parse(datos.generado);
+  const prs = datos.prs
+    .filter((p) => p.autor && datos.agentes.includes(p.autor))
+    .map((p) => {
+      const estado = p.fusionado ? 'fusionado' : p.cerrado ? 'cerrado' : 'abierto';
+      const fin = p.fusionado ? Date.parse(p.fusionado) : p.cerrado ? Date.parse(p.cerrado) : corte;
+      return { ...p, estado, ini: Date.parse(p.abierto), fin };
+    });
+  // Ratos con actividad: se juntan los momentos (abrir, fusionar) separados por menos de HUECO_MS.
+  const momentos = prs.flatMap((p) => [p.ini, p.fin]).sort((a, b) => a - b);
+  const ratos = [];
+  for (const t of momentos) {
+    const ult = ratos[ratos.length - 1];
+    if (ult && t - ult.hasta <= HUECO_MS) ult.hasta = Math.max(ult.hasta, t);
+    else ratos.push({ desde: t, hasta: t });
+  }
+  for (const r of ratos) { r.desde -= AIRE_MS; r.hasta += AIRE_MS; }
+  return { prs, ratos, corte, agentes: datos.agentes, sinAutor: datos.prs.length - prs.length };
+}
+
+// Convierte un instante en x. Cada rato ocupa un ancho proporcional a lo que dura (con un mínimo);
+// los huecos entre ratos, ANCHO_HUECO cada uno.
+function escalaComprimida(ratos, ancho) {
+  const libre = ancho - (ratos.length - 1) * ANCHO_HUECO;
+  const dur = ratos.map((r) => r.hasta - r.desde);
+  let anchos = dur.map(() => 0);
+  let fijos = new Set();
+  for (let vuelta = 0; vuelta < 3; vuelta++) { // reparte, fija los que no llegan al mínimo y repite
+    const restoPx = libre - fijos.size * MIN_RATO;
+    const restoMs = dur.reduce((s, d, i) => s + (fijos.has(i) ? 0 : d), 0);
+    anchos = dur.map((d, i) => (fijos.has(i) ? MIN_RATO : (restoPx * d) / restoMs));
+    const nuevos = anchos.map((w, i) => (w < MIN_RATO ? i : -1)).filter((i) => i >= 0);
+    if (nuevos.every((i) => fijos.has(i))) break;
+    fijos = new Set([...fijos, ...nuevos]);
+  }
+  const x0 = [];
+  let x = 0;
+  anchos.forEach((w) => { x0.push(x); x += w + ANCHO_HUECO; });
+  const aX = (t) => {
+    for (let i = 0; i < ratos.length; i++) {
+      const r = ratos[i];
+      if (t < r.desde) {
+        if (i === 0) return 0;
+        const prev = ratos[i - 1];
+        return x0[i - 1] + anchos[i - 1] + ((t - prev.hasta) / (r.desde - prev.hasta)) * ANCHO_HUECO;
+      }
+      if (t <= r.hasta) return x0[i] + ((t - r.desde) / (r.hasta - r.desde)) * anchos[i];
+    }
+    return ancho;
+  };
+  return { aX, x0, anchos };
+}
+
+export function pintarEquipo(contenedor, datos) {
+  const { prs, ratos, corte, agentes } = prepararEquipo(datos);
+  if (!prs.length) { mostrarError(contenedor, 'Todavía no hay PR que enseñar.'); return; }
+
+  const porAgente = agentes.map((a) => ({ nombre: a, prs: prs.filter((p) => p.autor === a) }));
+  const fusionados = prs.filter((p) => p.estado === 'fusionado').length;
+  const abiertos = prs.filter((p) => p.estado === 'abierto').length;
+  const primero = Math.min(...prs.map((p) => p.ini));
+
+  const resumen = el('p', { class: 'grafica-resumen' }, [
+    el('strong', { texto: `${prs.length} PR` }),
+    ` desde el ${diaCorto.format(primero)}: `,
+    porAgente.map((a) => `${a.nombre} ${a.prs.length}`).join(', '),
+    `. ${fusionados} fusionados${abiertos ? `, ${abiertos} abierto${abiertos > 1 ? 's' : ''}` : ''}.`,
+  ]);
+
+  const ayuda = 'Toca o pasa el ratón por una barra para ver qué PR es. Con teclado, tabula por las barras.';
+  const detalle = el('p', { class: 'nota grafica-detalle', 'aria-live': 'polite', style: 'min-height:3em', texto: ayuda });
+
+  const leyenda = el('ul', { class: 'grafica-leyenda', style: 'list-style:none;padding:0;margin:0 0 1rem;display:flex;flex-wrap:wrap;align-items:center;gap:.5em 1em' }, [
+    el('li', {}, [muestra('acento'), 'PR fusionado: de que se abre a que se fusiona']),
+    abiertos ? el('li', {}, [muestra('superficie', `outline:2px dashed ${color('acento')};outline-offset:-2px`), 'PR abierto todavía']) : null,
+    el('li', {}, [muestra('pista'), 'Horas sin actividad, comprimidas']),
+  ]);
+
+  // Lo mismo en una tabla plegada: la alternativa accesible al dibujo.
+  const celda = 'text-align:left;padding:.2em 1em .2em 0;vertical-align:top';
+  const tabla = el('details', { class: 'grafica-tabla', style: 'margin:0 0 1rem' }, [
+    el('summary', { texto: `Ver los ${prs.length} PR en una tabla` }),
+    el('div', { style: 'overflow-x:auto' }, el('table', { style: 'border-collapse:collapse;margin-top:.5rem;font-variant-numeric:tabular-nums' }, [
+      el('caption', { class: 'nota', style: 'text-align:left', texto: 'PR de Pvpc-bridge, en hora de España' }),
+      el('thead', {}, el('tr', {}, ['PR', 'Quién', 'Qué', 'Abierto', 'Fusionado', 'Duró'].map((t) => el('th', { scope: 'col', style: celda, texto: t })))),
+      el('tbody', {}, prs.map((p) => el('tr', {}, [
+        el('th', { scope: 'row', style: `${celda};font-weight:inherit` }, el('a', { href: p.url, rel: 'noopener', texto: `#${p.numero}` })),
+        el('td', { style: celda, texto: p.autor }),
+        el('td', { style: `${celda};min-width:14em`, texto: p.titulo }),
+        el('td', { style: `${celda};white-space:nowrap`, texto: diaYHora(p.ini) }),
+        el('td', { style: `${celda};white-space:nowrap`, texto: p.estado === 'fusionado' ? diaYHora(p.fin) : p.estado }),
+        el('td', { style: `${celda};white-space:nowrap`, texto: p.estado === 'abierto' ? '—' : duracion(p.fin - p.ini) }),
+      ]))),
+    ])),
+  ]);
+
+  const nota = el('p', { class: 'nota grafica-nota' }, [
+    'Todos los PR salen desde la misma cuenta de GitHub. Quién hizo cada uno se saca del «(Nombre)» del título, de la rama ',
+    el('code', { texto: 'web/<nombre>' }), ' o de la firma de la descripción. Datos públicos de la API de GitHub a fecha del ',
+    `${diaYHora(corte)}; los genera `,
+    el('a', { href: 'https://github.com/JosebaDG/Pvpc-bridge/tree/main/herramientas/actividad-equipo', rel: 'noopener', texto: 'herramientas/actividad-equipo' }),
+    '.',
+  ]);
+
+  const lienzo = el('div', { class: 'grafica-lienzo' });
+  contenedor.replaceChildren(resumen, leyenda, lienzo, detalle, tabla, nota);
+
+  let elegido = null;
+  function mostrar(p) {
+    elegido = p.numero;
+    const cuando = p.estado === 'fusionado'
+      ? `abierto el ${diaYHora(p.ini)}, fusionado a las ${horaMin.format(p.fin)}${diaClave.format(p.fin) !== diaClave.format(p.ini) ? ` del ${diaCorto.format(p.fin)}` : ''} (${duracion(p.fin - p.ini)})`
+      : p.estado === 'abierto' ? `abierto el ${diaYHora(p.ini)}, aún sin fusionar` : `abierto el ${diaYHora(p.ini)}, cerrado sin fusionar`;
+    detalle.replaceChildren(
+      el('strong', { texto: `#${p.numero} · ${p.autor}` }), ` · ${p.titulo} · ${cuando}. `,
+      el('a', { href: p.url, rel: 'noopener', texto: 'Ver en GitHub' }),
+    );
+    for (const g of lienzo.querySelectorAll('[data-pr]')) {
+      g.querySelector('.barra').style.strokeWidth = g.dataset.pr === String(p.numero) ? '2.5' : '';
+    }
+  }
+
+  function dibujar(ancho) {
+    const { aX, x0, anchos } = escalaComprimida(ratos, ancho);
+
+    // Filas dentro de cada carril: una barra baja de fila si su número chocaría con otra.
+    const carriles = porAgente.map((a) => {
+      const filas = [];
+      const items = a.prs.slice().sort((p, q) => p.ini - q.ini).map((p) => {
+        const xa = aX(p.ini);
+        const w = Math.max(MIN_BARRA, aX(p.fin) - xa);
+        const etiqueta = `#${p.numero}`;
+        const lx = Math.min(xa, ancho - anchoTexto(etiqueta));
+        const desde = Math.min(lx, xa);
+        const hasta = Math.max(xa + w, lx + anchoTexto(etiqueta)) + 4;
+        let fila = filas.findIndex((fin) => fin <= desde);
+        if (fila < 0) { fila = filas.length; filas.push(0); }
+        filas[fila] = hasta;
+        return { p, xa, w, lx, etiqueta, fila };
+      });
+      return { nombre: a.nombre, items, filas: Math.max(1, filas.length) };
+    });
+    const alto = ALTO_EJE + carriles.reduce((s, c) => s + ALTO_CABECERA + c.filas * ALTO_FILA, 0) + 4;
+
+    const svg = s('svg', {
+      viewBox: `0 0 ${ancho} ${alto}`, width: ancho, height: alto, role: 'group',
+      'aria-label': `Línea de tiempo de los ${prs.length} PR, un carril por agente`,
+      style: `display:block;max-width:100%;font-family:var(--f-texto);font-size:${LETRA}px`,
+    });
+
+    // Franjas de los huecos comprimidos, de arriba abajo.
+    for (let i = 0; i + 1 < ratos.length; i++) {
+      svg.append(s('rect', { x: x0[i] + anchos[i], y: 0, width: ANCHO_HUECO, height: alto, fill: color('pista'), 'aria-hidden': 'true' }));
+    }
+
+    // Eje: el día al empezar cada rato (si cambia) y las horas en punto que quepan.
+    const eje = s('g', { 'aria-hidden': 'true', fill: color('eje') });
+    let finDia = -Infinity;
+    let finHora = -Infinity;
+    let diaAnterior = '';
+    ratos.forEach((r, i) => {
+      const dia = diaClave.format(r.desde + AIRE_MS);
+      if (dia !== diaAnterior && x0[i] >= finDia) {
+        const t = diaCorto.format(r.desde + AIRE_MS);
+        const x = Math.min(x0[i], ancho - anchoTexto(t));
+        eje.append(s('text', { x, y: 13, texto: t, style: `font-weight:var(--peso-medio);fill:${color('tinta')}` }));
+        finDia = x + anchoTexto(t) + 8;
+        diaAnterior = dia;
+      }
+      const pxHora = anchos[i] / ((r.hasta - r.desde) / 3600e3);
+      const paso = [1, 2, 3, 4, 6, 12].find((k) => k * pxHora >= 34);
+      if (!paso) return;
+      for (let t = Math.ceil(r.desde / 3600e3) * 3600e3; t <= r.hasta; t += 3600e3) {
+        const h = +soloHora.format(t);
+        if (h % paso) continue;
+        const x = aX(t);
+        const etiqueta = `${h} h`;
+        if (x - anchoTexto(etiqueta) / 2 < Math.max(0, finHora) || x + anchoTexto(etiqueta) / 2 > ancho) continue;
+        eje.append(s('line', { x1: x, x2: x, y1: 32, y2: alto, stroke: color('rejilla'), 'stroke-width': 1 }));
+        eje.append(s('text', { x, y: 29, 'text-anchor': 'middle', texto: etiqueta }));
+        finHora = x + anchoTexto(etiqueta) / 2 + 6;
+      }
+    });
+    svg.append(eje);
+
+    let y = ALTO_EJE;
+    for (const c of carriles) {
+      svg.append(s('line', { x1: 0, x2: ancho, y1: y, y2: y, stroke: color('rejilla'), 'stroke-width': 1, 'aria-hidden': 'true' }));
+      svg.append(s('text', { x: 0, y: y + 15, texto: c.nombre, 'aria-hidden': 'true', style: `font-size:${LETRA + 2}px;font-weight:var(--peso-fuerte);fill:${color('tinta')}` }));
+      const base = y + ALTO_CABECERA;
+      for (const it of c.items) {
+        const yf = base + it.fila * ALTO_FILA;
+        const abierto = it.p.estado !== 'fusionado';
+        const g = s('g', {
+          'data-pr': String(it.p.numero), tabindex: '0', role: 'button', style: 'cursor:pointer;outline-offset:2px',
+          'aria-label': `PR ${it.p.numero} de ${it.p.autor}: ${it.p.titulo}. ${it.p.estado === 'fusionado' ? `Duró ${duracion(it.p.fin - it.p.ini)}` : it.p.estado}.`,
+        }, [
+          s('title', { texto: `#${it.p.numero} · ${it.p.autor} · ${it.p.titulo}` }),
+          // Zona de toque más alta que la barra, para el dedo.
+          s('rect', { x: Math.min(it.lx, it.xa), y: yf, width: Math.max(it.w, anchoTexto(it.etiqueta)), height: ALTO_FILA - 2, fill: 'transparent' }),
+          s('text', { x: it.lx, y: yf + 10, texto: it.etiqueta, fill: color('eje') }),
+          s('rect', {
+            class: 'barra', x: it.xa, y: yf + 13, width: it.w, height: 9, rx: 2,
+            fill: abierto ? color('superficie') : color('acento'), stroke: abierto ? color('acento') : color('tinta'),
+            'stroke-width': abierto ? 1.5 : 0, 'stroke-dasharray': abierto ? '3 2' : null,
+          }),
+        ]);
+        const elegir = () => mostrar(it.p);
+        g.addEventListener('pointerenter', elegir);
+        g.addEventListener('click', elegir);
+        g.addEventListener('focus', elegir);
+        svg.append(g);
+      }
+      y = base + c.filas * ALTO_FILA;
+    }
+
+    lienzo.replaceChildren(svg);
+    const previo = prs.find((p) => p.numero === elegido);
+    if (previo) mostrar(previo);
+  }
+
+  alCambiarAncho(lienzo, dibujar);
+}
+
+// =====================================================================
 // Arranque
 // =====================================================================
 
 export async function iniciarGraficas() {
   const hoy = document.querySelector('#precio-hoy [data-grafica="hoy"]');
   const historico = document.querySelector('#historico [data-grafica="historico"]');
+  const equipo = document.querySelector('#equipo-tiempo [data-grafica="equipo"]');
   const tareas = [];
   if (hoy) {
     tareas.push(precioDelDia()
@@ -787,6 +1105,11 @@ export async function iniciarGraficas() {
     tareas.push(cargarHistorico()
       .then((horas) => (horas.length ? pintarHistorico(historico, horas) : mostrarError(historico, 'No se han encontrado los datos históricos.')))
       .catch((e) => { console.warn('historico:', e); mostrarError(historico, 'No se ha podido dibujar el histórico.'); }));
+  }
+  if (equipo) {
+    tareas.push(cargarActividad()
+      .then((datos) => pintarEquipo(equipo, datos))
+      .catch((e) => { console.warn('equipo-tiempo:', e); mostrarError(equipo, 'No se ha podido dibujar la actividad del equipo.'); }));
   }
   await Promise.allSettled(tareas);
 }
