@@ -60,7 +60,7 @@
       { "comando": "cp contrato.ejemplo.json contrato.json", "explicacion": "Copia el contrato de ejemplo para poner los datos de tu factura." },
       { "comando": "python3 puente_luz.py resumen --dia hoy", "explicacion": "Las horas más baratas y más caras de hoy." },
       { "comando": "python3 puente_luz.py bloque --horas 2 --potencia 2000", "explicacion": "El mejor bloque seguido de 2 horas para un aparato de 2 kW, y lo que cuesta." },
-      { "comando": "python3 puente_luz.py umbral --max-precio 0.10", "explicacion": "Las franjas por debajo de 10 céntimos el kWh." },
+      { "comando": "python3 puente_luz.py umbral --max-precio 0.10", "explicacion": "Las franjas por debajo de 10 céntimos el kWh, sin impuestos." },
       { "comando": "python3 puente_luz.py grafica --dia hoy --salida pvpc.png", "explicacion": "La gráfica del día, lista para mandarla a un chat." },
       { "comando": "python3 aviso_nocturno.py", "explicacion": "El aviso de mañana: mejor bloque, imagen y mensaje corto." }
     ],
