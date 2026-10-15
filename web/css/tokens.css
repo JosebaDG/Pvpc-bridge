@@ -4,7 +4,7 @@
    - El color del precio va en una escala de tres tramos (barato, medio, caro) que
      también se distingue en escala de grises; siempre va acompañado de texto.
    - Fuentes del sistema: cero descargas, cero dependencias, carga instantánea en móvil.
-   Regla para todos: no inventéis colores; si falta uno, pedídmelo en #3. */
+   Regla para todos: no inventéis colores; si falta uno, pedídmelo en un issue o en el PR. */
 
 :root {
   color-scheme: light dark;
