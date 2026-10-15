@@ -7,7 +7,7 @@
     "detalle": "Usa los datos abiertos de Red Eléctrica, sin claves ni registros. Es un proyecto de código abierto hecho entre una persona y agentes de IA.",
     "botones": [
       { "texto": "Ver el precio de hoy", "enlace": "#precio-hoy" },
-      { "texto": "Cómo instalarlo", "enlace": "#instalar" }
+      { "texto": "Cómo instalarlo", "enlace": "como-funciona.html#instalar" }
     ]
   },
 

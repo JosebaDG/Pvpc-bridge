@@ -9,7 +9,19 @@
   <link rel="stylesheet" href="css/base.css">
 </head>
 <body>
-  <!-- Esqueleto de Miles. Cada sección la rellena su dueño (ver web/README.md). -->
+  <!-- Esqueleto de Miles. Cada sección la rellena su dueño (ver web/README.md).
+       Apartados: Inicio (esta), como-funciona.html, historico.html y como-se-ha-hecho.html.
+       El menú se repite igual en las cuatro; solo cambia qué enlace lleva aria-current="page". -->
+  <nav class="menu" aria-label="Apartados">
+    <a class="menu__marca" href="./">Pvpc-bridge</a>
+    <ul class="menu__lista">
+      <li><a href="./" aria-current="page">Inicio</a></li>
+      <li><a href="como-funciona.html">Cómo funciona</a></li>
+      <li><a href="historico.html">Histórico</a></li>
+      <li><a href="como-se-ha-hecho.html">Cómo se ha hecho</a></li>
+    </ul>
+    <a class="menu__repo" href="https://github.com/JosebaDG/Pvpc-bridge" rel="noopener">GitHub</a>
+  </nav>
   <header id="portada"><!-- Maya (look) + Simone (texto) --></header>
   <main>
     <section id="precio-hoy">
@@ -21,20 +33,24 @@
         <noscript><p>Esta gráfica necesita JavaScript.</p></noscript>
       </div>
     </section>
-    <section id="historico">
-      <!-- Charlie: histórico desde 2022. Lo dibuja web/js/graficas.js dentro de data-grafica="historico". -->
-      <h2 class="seccion__titulo">Cómo ha ido el precio desde 2022</h2>
-      <p class="seccion__entrada">Cada columna es un día y cada fila, una hora (de las 00 h arriba a las 23 h abajo). Encima, la media de cada mes.</p>
-      <div class="tarjeta grafica" data-grafica="historico">
-        <p class="grafica-cargando">Cargando el histórico…</p>
-        <noscript><p>Esta gráfica necesita JavaScript.</p></noscript>
+    <section aria-labelledby="puertas-titulo">
+      <!-- Puertas a los apartados. Texto provisional de Miles: Simone puede pasarlo a textos.json. -->
+      <h2 id="puertas-titulo" class="solo-lector">Saber más</h2>
+      <div class="puertas">
+        <a class="puerta puerta--principal" href="como-funciona.html">
+          <h3>Cómo funciona</h3>
+          <p>Los cuatro pasos, cómo instalarlo y las preguntas frecuentes.</p>
+        </a>
+        <a class="puerta" href="como-se-ha-hecho.html">
+          <h3>Cómo se ha hecho</h3>
+          <p>Una persona y un equipo de agentes de IA, trabajando juntos en abierto.</p>
+        </a>
       </div>
     </section>
-    <section id="como-funciona"><!-- Simone --></section>
-    <section id="instalar"><!-- Simone --></section>
-    <section id="preguntas"><!-- Simone --></section>
   </main>
-  <footer id="pie"><!-- Miles: fuentes (REE, Open-Meteo), licencia y enlace al repo --></footer>
+  <footer id="pie">
+    <p>Datos: <a href="https://www.ree.es/es/datos/apidatos" rel="noopener">Red Eléctrica (REData)</a>. Código abierto con licencia MIT en <a href="https://github.com/JosebaDG/Pvpc-bridge" rel="noopener">GitHub</a>.</p>
+  </footer>
   <script type="module" src="js/main.js"></script>
 </body>
 </html>
