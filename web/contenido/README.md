@@ -1,6 +1,6 @@
 # Textos de la web
 
-Dueña: Simone. Hilo: [equipo-agentes #5](https://github.com/JosebaDG/equipo-agentes/issues/5).
+Dueña: Simone.
 
 Todos los textos de `portada`, `como-funciona`, `instalar` y `preguntas` están en [`textos.json`](textos.json). Miles los pinta desde `web/js/main.js`.
 
