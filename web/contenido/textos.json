@@ -1,15 +1,26 @@
 {
-  "_esquema": "Textos de la web de Pvpc-bridge. Una clave por id de sección de index.html. Dentro de los textos solo se usan <strong>, <code> y <a>. Los comandos van sin HTML. Explicación en web/contenido/README.md.",
+  "_esquema": "Textos de la web de Pvpc-bridge. Una clave por id de sección de los cuatro HTML (y puertas, para las tarjetas de la portada). Dentro de los textos solo se usan <strong>, <code> y <a>. Los comandos van sin HTML. Explicación en web/contenido/README.md.",
 
   "portada": {
     "titular": "El precio de la luz, hora a hora",
-    "entrada": "Con la tarifa regulada de la luz (el <strong>PVPC</strong>), cada hora tiene un precio distinto. Pvpc-bridge te dice cuáles son las horas más baratas y cuánto cuesta poner la lavadora, el termo o cargar el coche en cada una.",
-    "detalle": "Usa los datos abiertos de Red Eléctrica, sin claves ni registros. Es un proyecto de código abierto hecho entre una persona y agentes de IA.",
+    "entrada": "Con la tarifa regulada (el <strong>PVPC</strong>), la luz no cuesta lo mismo a las tres de la madrugada que a las ocho de la tarde. Y la hora más barata no es siempre la misma.",
     "botones": [
-      { "texto": "Ver el precio de hoy", "enlace": "#precio-hoy" },
-      { "texto": "Cómo instalarlo", "enlace": "#instalar" }
+      { "texto": "Descubre la de hoy", "enlace": "#precio-hoy" }
     ]
   },
+
+  "puertas": [
+    {
+      "titulo": "Cómo funciona",
+      "texto": "De Red Eléctrica a tu móvil en cuatro pasos, y cómo instalarlo en 5 minutos.",
+      "enlace": "como-funciona.html"
+    },
+    {
+      "titulo": "Cómo se ha hecho",
+      "texto": "Una persona y cuatro agentes de IA que no pueden hablar entre sí.",
+      "enlace": "como-se-ha-hecho.html"
+    }
+  ],
 
   "como-funciona": {
     "titulo": "Cómo funciona",
@@ -103,5 +114,37 @@
         "respuesta": "Sí, aunque es raro. El sábado 26 de septiembre de 2026, el PVPC fue negativo de 11 a 17 h, con un mínimo de -12,63 € por MWh. Coincidieron mucho sol, el fin de semana en valle y el ajuste de los mercados a plazo (futuros). <a href=\"https://github.com/JosebaDG/Pvpc-bridge/blob/main/docs/proyecto-precio-luz.md#precios-negativos\">Aquí está explicado</a>."
       }
     ]
+  },
+
+  "como-se-ha-hecho": {
+    "titulo": "Cómo se ha hecho",
+    "entrada": "Esta web la han hecho una persona y cuatro agentes de IA que no pueden hablar entre sí. Se coordinan por escrito en GitHub, y la persona lo lee todo y decide.",
+    "tarjetas": [
+      {
+        "titulo": "El método",
+        "texto": "La persona decide y valida; los agentes proponen y ejecutan. Cada cambio va en su rama y entra por un pull request revisado. Está en <a href=\"https://github.com/JosebaDG/Pvpc-bridge/blob/main/docs/simbiosis/02-roles-y-reglas.md\">roles y reglas</a> y en el <a href=\"https://github.com/JosebaDG/Pvpc-bridge/blob/main/docs/simbiosis/03-flujo-github.md\">flujo en GitHub</a>."
+      },
+      {
+        "titulo": "Lo que falló",
+        "texto": "Una gráfica que engañaba, un precio negativo que parecía un error y dos agentes que no se hablan. Qué pasó y cómo se salió de cada atasco, en <a href=\"https://github.com/JosebaDG/Pvpc-bridge/blob/main/docs/simbiosis/04-fricciones-y-aprendizajes.md\">fricciones y aprendizajes</a>."
+      },
+      {
+        "titulo": "Cómo replicarlo",
+        "texto": "Lo que nos ha funcionado, para quien quiera sacar adelante un proyecto real con sus propios agentes: <a href=\"https://github.com/JosebaDG/Pvpc-bridge/blob/main/docs/simbiosis/06-como-replicarlo.md\">las lecciones</a>."
+      }
+    ],
+    "historia": "<strong>La historia de esta web.</strong> Del esqueleto al menú de cuatro apartados, pull request a pull request y con lo que salió mal: <a href=\"https://github.com/JosebaDG/Pvpc-bridge/blob/main/docs/simbiosis/07-la-web.md\">cómo se hizo esta web</a>."
+  },
+
+  "equipo": {
+    "titulo": "El equipo",
+    "miembros": [
+      { "nombre": "Joseba", "papel": "La persona. Marca el rumbo, valida contra la realidad y decide." },
+      { "nombre": "Miles", "papel": "Coordina, monta el HTML y revisa los pull requests." },
+      { "nombre": "Charlie", "papel": "Datos y gráficas: el script, la API de Red Eléctrica y las barras de cada hora." },
+      { "nombre": "Maya", "papel": "Diseño: colores, componentes, el menú y que todo se lea bien en el móvil." },
+      { "nombre": "Simone", "papel": "Textos: que cada frase se entienda y no prometa nada que el repositorio no haga." }
+    ],
+    "debilidades": "<strong>Lo que aún cojea.</strong> Los agentes no se hablan directamente: todo pasa por escrito y por la persona. Charlie no ve imágenes, así que lo visual lo comprueba otro agente. Y lo que se decide hablando hay que pasarlo a texto, o se pierde."
   }
 }

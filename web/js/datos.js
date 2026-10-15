@@ -144,6 +144,43 @@ export async function precioDelDia() {
   return { fecha, horas: porDia.get(fecha), fuente: 'csv', esHoy: fecha === hoy };
 }
 
+// Fecha anterior a 'AAAA-MM-DD', también como 'AAAA-MM-DD' (a mediodía UTC: sin líos de cambio de hora).
+export function diaAnterior(fecha) {
+  const d = new Date(`${fecha}T12:00:00Z`);
+  d.setUTCDate(d.getUTCDate() - 1);
+  return d.toISOString().slice(0, 10);
+}
+
+// El día anterior a `fecha`, para comparar hora a hora. La misma cadena que para hoy:
+// primero REData en directo y, si falla, el CSV del repo. Devuelve { fecha, horas, fuente }
+// o null si no hay datos completos de ese día (la web entonces no enseña la comparación).
+export async function precioDelDiaAnterior(fecha) {
+  const ayer = diaAnterior(fecha);
+  const directo = await cargarDiaREData(ayer);
+  if (directo) return { fecha: ayer, horas: directo, fuente: 'redata' };
+  const horas = agruparPorDia(await cargarAño(Number(ayer.slice(0, 4)))).get(ayer) || [];
+  return horas.length >= 23 ? { fecha: ayer, horas, fuente: 'csv' } : null;
+}
+
+// Compara un precio con el de otro día a la misma hora. Devuelve
+// { sentido: 'barato' | 'caro' | 'igual', texto } con texto como «un 23 % más barato».
+// - Diferencia menor del 2 %: «casi igual».
+// - Si el precio de referencia está cerca de cero o es negativo (pasa con mucho sol), un
+//   porcentaje no significa nada (de -0,01 a 0,02 sería «-300 %»): se da la diferencia en €/kWh.
+// - Lo mismo si el precio de hoy es negativo: de 0,010 a -0,010 saldría «un 200 % más barato».
+export function compararPrecio(precio, referencia) {
+  const dif = precio - referencia;
+  const sentido = dif < 0 ? 'barato' : 'caro';
+  if (referencia >= 0.005 && precio >= 0) {
+    const pct = Math.abs(dif) / referencia * 100;
+    if (pct < 2) return { sentido: 'igual', texto: 'casi igual' };
+    return { sentido, texto: `un ${Math.round(pct)} % más ${sentido}` };
+  }
+  if (Math.abs(dif) < 0.001) return { sentido: 'igual', texto: 'casi igual' };
+  const cifra = new Intl.NumberFormat('es-ES', { minimumFractionDigits: 3, maximumFractionDigits: 3 }).format(Math.abs(dif));
+  return { sentido, texto: `${cifra} €/kWh más ${sentido}` };
+}
+
 export function agruparPorDia(horas) {
   const m = new Map();
   for (const h of horas) {

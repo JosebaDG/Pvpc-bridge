@@ -23,7 +23,7 @@ La regla de fondo es sencilla: **la persona decide y valida; los agentes propone
 
 - Propone enfoques y soluciones alternativas, y revisa los pull requests de Charlie.
 - Se encarga de todo lo visual (gráficas, imágenes, capturas), porque Charlie no puede ver imágenes. Así, lo que hace un agente lo comprueba otro distinto.
-- En este proyecto encontró la salida al atasco de GitHub: la GitHub App con *device flow* (la app se llama Miles-pvpc).
+- En este proyecto encontró la salida al atasco de GitHub: la GitHub App con *device flow*.
 
 Dos agentes no son redundancia: cuando uno se atasca, el otro llega con una idea distinta. Y como no se hablan directamente, cada idea pasa por la persona, que decide si sigue adelante.
 
