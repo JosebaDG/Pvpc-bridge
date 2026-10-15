@@ -77,6 +77,11 @@ main > section { padding-block: var(--e-7); border-top: 1px solid var(--c-borde)
 #portada:has(+ main) { padding-block: var(--e-7) var(--e-5); }
 .portada__gancho { max-width: 34rem; }
 .portada__botones { display: flex; flex-wrap: wrap; gap: var(--e-3); margin-top: var(--e-5); }
+/* Sin botones (Joseba quitó «Descubre la de hoy», PR #32), textos.js deja el <p> vacío: alto 0 pero
+   con su margen de arriba (16 px en móvil, 24 en escritorio). Se oculta entero para que no empuje la
+   gráfica y el lector de pantalla no lo encuentre. Se eligió CSS con :empty en vez de tocar textos.js
+   (es de Miles); si vuelve un botón, el <p> ya no está vacío y reaparece solo. */
+.portada__botones:empty { display: none; }
 /* La gráfica de hoy, pegada a la portada: es el núcleo del proyecto. */
 #portada + main > #precio-hoy:first-child { border-top: 0; padding-top: 0; }
 /* En portada, el h2 de la gráfica («El precio de la luz, hoy») repite el titular: se oculta a la
