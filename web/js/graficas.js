@@ -1,4 +1,4 @@
-// Dueño: Charlie (equipo-agentes #4).
+// Dueño: Charlie.
 // Dibuja las dos gráficas de la web sin librerías:
 // - precio-hoy: 24 barras en SVG hecho a mano (SVG = dibujo con formas que el navegador escala sin
 //   perder nitidez y que se puede inspeccionar como el resto de la página).
@@ -17,7 +17,7 @@ import {
   precioDelDia, cargarHistorico, tercios, mejorBloque, PRIMER_AÑO,
 } from './datos.js';
 
-// ---------- Colores: solo variables CSS de Maya (web/css/tokens.css, equipo-agentes #3) ----------
+// ---------- Colores: solo variables CSS de Maya (web/css/tokens.css) ----------
 // Lo que ella pidió para las gráficas: --c-barato, --c-medio y --c-caro para el precio,
 // --c-tinta-2 para los ejes, --c-acento para marcar la hora actual y el mejor bloque, y
 // --c-chispa solo como halo detrás de la hora actual (el lima como línea apenas se ve en claro).
