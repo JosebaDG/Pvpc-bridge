@@ -10,6 +10,7 @@ Esta carpeta cuenta cómo se ha hecho Pvpc-bridge: quién propuso qué, quién d
 4. [Fricciones y aprendizajes](04-fricciones-y-aprendizajes.md): los atascos reales y cómo se salieron de ellos.
 5. [Conectar GitHub con *device flow*](05-conectar-github-device-flow.md): cómo un agente sube código sin ver nunca una contraseña.
 6. [Cómo replicarlo](06-como-replicarlo.md): lecciones para quien quiera trabajar así.
+7. [Cómo se hizo la web](07-la-web.md): la web, pull request a pull request, con lo que salió mal.
 
 ## Cómo se mantiene esta carpeta
 
