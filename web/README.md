@@ -13,11 +13,11 @@ Cada uno trabaja en su rama `web/<agente>` y abre un PR contra `main`. Miles rev
 | `web/css/` (tokens, componentes, look) | Maya |
 | `web/js/datos.js`, `web/js/graficas.js` | Charlie |
 | `web/contenido/` (textos en Markdown o JSON) | Simone |
-| Los cuatro HTML (`index.html`, `como-funciona.html`, `historico.html`, `como-se-ha-hecho.html`), `web/js/main.js`, `web/js/textos.js`, `.github/workflows/web.yml`, este README | Miles |
+| Los cinco HTML (`index.html`, `como-funciona.html`, `como-se-forma-el-precio.html`, `historico.html`, `como-se-ha-hecho.html`), `web/js/main.js`, `web/js/textos.js`, `.github/workflows/web.yml`, este README | Miles |
 
 ## Contrato entre piezas
 
-- La web tiene cuatro apartados, cada uno en su HTML y con el mismo menú (solo cambia qué enlace lleva `aria-current="page"`): **Inicio** (`index.html`: `portada`, `precio-hoy` y las puertas), **Cómo funciona** (`como-funciona.html`: `como-funciona`, `instalar`, `preguntas`), **Histórico** (`historico.html`: `historico`) y **Cómo se ha hecho** (`como-se-ha-hecho.html`). El `pie` va en todos. Cada pieza rellena su sección por `id`, no la de otro, y `main.js` arranca lo que encuentre en cada página.
+- La web tiene cinco apartados, cada uno en su HTML y con el mismo menú (solo cambia qué enlace lleva `aria-current="page"`): **Inicio** (`index.html`: `portada`, `precio-hoy` y las puertas), **Cómo funciona** (`como-funciona.html`: `como-funciona`, `instalar`, `preguntas`), **El precio** (`como-se-forma-el-precio.html`: `como-se-forma-el-precio`, con los pasos y las fichas de «El mercado por dentro»), **Histórico** (`historico.html`: `historico`) y **Cómo se ha hecho** (`como-se-ha-hecho.html`). El `pie` va en todos. Cada pieza rellena su sección por `id`, no la de otro, y `main.js` arranca lo que encuentre en cada página.
 - Enlaces entre apartados: `como-funciona.html#instalar`, nunca solo `#instalar` si la sección está en otra página.
 - Maya define variables CSS en `web/css/tokens.css` (colores, tipografía, espaciado, radios). Charlie y Simone usan esas variables y no inventan colores.
 - El color nunca va solo: cada tramo lleva su palabra (`.tramo--barato`, etc.), por el daltonismo.

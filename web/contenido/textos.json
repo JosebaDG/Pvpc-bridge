@@ -116,6 +116,72 @@
     ]
   },
 
+  "como-se-forma-el-precio": {
+    "_nota": "Página nueva aprobada por Joseba el 15-10-2026. Cada cifra sale del repo (docs/proyecto-precio-luz.md, comprobado con el archivo 70 de ESIOS) o de la fuente oficial que se enlaza. Se habla de coincidencias, no de causas, salvo donde la fórmula lo dice.",
+    "titulo": "Cómo se forma el precio",
+    "entrada": "El precio de cada hora del PVPC no lo pone nadie a mano. Sale de una subasta a mediodía, de los futuros y de los costes de la red, y se publica la tarde de antes.",
+    "pasos": [
+      {
+        "titulo": "A las 12:00, la subasta",
+        "texto": "Cada día a las 12:00 se cierra el <a href=\"https://www.omie.es/es/mercado-de-electricidad\">mercado diario</a>, que fija el precio de la energía de mañana cuarto de hora a cuarto de hora. El PVPC se sigue publicando por horas."
+      },
+      {
+        "titulo": "Se suman las piezas",
+        "texto": "Al precio del mercado se le añaden el ajuste de los futuros, lo que cuesta equilibrar la red al momento y los <strong>peajes y cargos</strong>, que cambian con el tramo."
+      },
+      {
+        "titulo": "Por la tarde, el PVPC",
+        "texto": "Red Eléctrica publica el precio de cada hora de mañana hacia las 20:00 o las 21:00 (hora peninsular)."
+      },
+      {
+        "titulo": "En la factura, los impuestos",
+        "texto": "Encima van el impuesto eléctrico (5,11 %) y el IVA (21 %): cada euro de energía acaba en unos 1,27 euros."
+      }
+    ],
+    "mercado-por-dentro": {
+      "titulo": "El mercado por dentro",
+      "entrada": "Una idea por ficha. Toca una para ver el detalle y de dónde sale.",
+      "fichas": [
+        {
+          "titulo": "El precio de mañana ya está decidido hoy",
+          "gancho": "A mediodía ya se sabe lo que costará la energía de cada hora de mañana. El tiempo que haga mañana llega tarde.",
+          "detalle": "Todos los días a las 12:00 (hora central europea, la misma que la peninsular) se cierra la subasta del mercado diario para las 24 horas del día siguiente. Quien produce ofrece lo que puede vender y a qué precio, y quien compra pide lo que necesita. Como mañana aún no ha llegado, lo que ofrecen los parques eólicos y solares sale de la <strong>previsión</strong> del tiempo, no del viento que acabe soplando. Después, Red Eléctrica suma el resto de piezas y publica el PVPC hacia las 20:00 o las 21:00.",
+          "fuente": { "texto": "OMIE, el mercado diario", "href": "https://www.omie.es/es/mercado-de-electricidad" }
+        },
+        {
+          "titulo": "Quién marca el precio de cada hora",
+          "gancho": "La última oferta que hace falta para cubrir el consumo pone el precio de todas las demás.",
+          "detalle": "Las ofertas se aceptan por orden, de la más barata a la más cara, hasta cubrir lo que se pide. La última que entra marca el precio de ese tramo, y ese precio se paga a toda la energía del tramo. Desde octubre de 2025 cada tramo es un cuarto de hora; el PVPC se sigue publicando por horas. Es el modelo <strong>marginalista</strong>, el mismo en los mercados europeos acoplados. Por eso los días de mucho sol el mediodía se hunde y la noche no: el viernes 9 de octubre de 2026, el mercado estaba en -0,23 € por MWh de 13 a 14 h y en 230 € de 20 a 21 h.",
+          "fuente": { "texto": "De qué está hecho el precio de una hora", "href": "https://github.com/JosebaDG/Pvpc-bridge/blob/main/docs/proyecto-precio-luz.md#de-qué-está-hecho-el-precio-de-una-hora-del-pvpc" }
+        },
+        {
+          "titulo": "Más de la mitad sigue a los futuros",
+          "gancho": "En 2026, el 55 % del coste de la energía del PVPC sigue al precio de los futuros, no a la subasta de mañana.",
+          "detalle": "Los futuros son contratos para comprar electricidad dentro de meses a un precio que se fija hoy. Desde 2024, el PVPC mezcla los dos precios, y el peso de los futuros ha ido subiendo: <strong>0 %</strong> hasta 2023, <strong>25 %</strong> en 2024, <strong>40 %</strong> en 2025 y <strong>55 %</strong> desde 2026. El 45 % que queda sigue al mercado diario e intradiario. Los futuros son una cesta del mercado a plazo OMIP: un 10 % de producto mensual, un 36 % trimestral y un 54 % anual. Se hizo para que el precio no dependa solo de lo que pase cada día. Por eso un PVPC de 2022 no se puede comparar con uno de 2026.",
+          "fuente": { "texto": "Real Decreto 446/2023 (BOE)", "href": "https://www.boe.es/buscar/doc.php?id=BOE-A-2023-14048" }
+        },
+        {
+          "titulo": "El tiempo mueve las horas; los futuros, el día entero",
+          "gancho": "Los futuros suben o bajan todas las horas casi lo mismo. Qué horas salen baratas lo sigue decidiendo el mercado diario, y ahí pesan el sol y el viento.",
+          "detalle": "El ajuste de los futuros se calcula una vez al día y cae casi igual sobre cada hora: el 9 de octubre de 2026 restó entre 0,0156 y 0,0164 € por kWh a todas. El real decreto lo pide así, para mantener «el diferencial de precios resultante de la casación del mercado diario» y que siga mereciendo la pena mover el consumo a las horas baratas. La consecuencia: un día de viento o de sol cambia <strong>qué horas</strong> son baratas; los futuros cambian <strong>el nivel</strong> de todo el día.",
+          "fuente": { "texto": "Futuros desde 2024, explicado", "href": "https://github.com/JosebaDG/Pvpc-bridge/blob/main/docs/proyecto-precio-luz.md#futuros-desde-2024-el-rd-4462023" }
+        },
+        {
+          "titulo": "El mercado a cero y la luz no",
+          "gancho": "Con el mercado a cero, una hora del PVPC puede costar 12 céntimos el kWh.",
+          "detalle": "El 9 de octubre de 2026, de 13 a 14 h, el mercado estaba casi a cero (-0,23 € por MWh) y el PVPC, a 0,1196 € por kWh sin impuestos. Casi todo eran <strong>peajes y cargos</strong> de punta (0,0976). A las 14 h, al pasar a llano, bajó a 0,0514 sin que la energía cambiara: el salto era el peaje.",
+          "fuente": { "texto": "La tabla de ese día", "href": "https://github.com/JosebaDG/Pvpc-bridge/blob/main/docs/proyecto-precio-luz.md#de-qué-está-hecho-el-precio-de-una-hora-del-pvpc" }
+        },
+        {
+          "titulo": "Precios por debajo de cero",
+          "gancho": "El sábado 26 de septiembre de 2026, el PVPC estuvo en negativo seis horas seguidas.",
+          "detalle": "De 11 a 17 h, con un mínimo de -12,63 € por MWh (-1,26 céntimos el kWh, sin impuestos) entre las 14 y las 15. Coincidieron tres cosas: era sábado, todo valle, con peajes y cargos de solo 0,0033 € por kWh; el mercado a mediodía estaba casi a cero; y el ajuste de futuros restó 0,046 € por kWh a todas las horas, porque la media del mercado ese día fue alta (150 € por MWh). Que el mercado baje de cero significa que algunos generadores prefieren pagar a parar. En la factura, una hora negativa resta del importe de la energía. Lo comprobamos hora a hora con el archivo oficial de ESIOS.",
+          "fuente": { "texto": "Precios negativos, explicado", "href": "https://github.com/JosebaDG/Pvpc-bridge/blob/main/docs/proyecto-precio-luz.md#precios-negativos" }
+        }
+      ]
+    }
+  },
+
   "como-se-ha-hecho": {
     "titulo": "Cómo se ha hecho",
     "entrada": "Esta web la han hecho una persona y cuatro agentes de IA que no pueden hablar entre sí. Se coordinan por escrito en GitHub, y la persona lo lee todo y decide.",
