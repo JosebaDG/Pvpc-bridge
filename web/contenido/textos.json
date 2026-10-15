@@ -1,0 +1,107 @@
+{
+  "_esquema": "Textos de la web de Pvpc-bridge. Una clave por id de sección de index.html. Dentro de los textos solo se usan <strong>, <code> y <a>. Los comandos van sin HTML. Explicación en web/contenido/README.md.",
+
+  "portada": {
+    "titular": "El precio de la luz, hora a hora",
+    "entrada": "Con la tarifa regulada de la luz (el <strong>PVPC</strong>), cada hora tiene un precio distinto. Pvpc-bridge te dice cuáles son las horas más baratas y cuánto cuesta poner la lavadora, el termo o cargar el coche en cada una.",
+    "detalle": "Usa los datos abiertos de Red Eléctrica, sin claves ni registros. Es un proyecto de código abierto hecho entre una persona y agentes de IA.",
+    "botones": [
+      { "texto": "Ver el precio de hoy", "enlace": "#precio-hoy" },
+      { "texto": "Cómo instalarlo", "enlace": "#instalar" }
+    ]
+  },
+
+  "como-funciona": {
+    "titulo": "Cómo funciona",
+    "entrada": "Cuatro pasos, desde Red Eléctrica hasta tu móvil.",
+    "pasos": [
+      {
+        "titulo": "Red Eléctrica publica el precio",
+        "texto": "Cada tarde, hacia las 20:00 o las 21:00 (hora peninsular), Red Eléctrica publica el precio de cada hora del día siguiente. Lo hace en su API abierta, <a href=\"https://www.ree.es/es/datos/apidatos\">REData</a>."
+      },
+      {
+        "titulo": "El script lo descarga y lo guarda",
+        "texto": "<code>puente_luz.py</code> pide los precios una sola vez y los guarda en tu ordenador. Así no repite peticiones al servidor de Red Eléctrica."
+      },
+      {
+        "titulo": "Calcula con tu contrato",
+        "texto": "Busca las horas más baratas, el mejor bloque seguido para un aparato y lo que cuesta en euros de factura. Los datos de tu tarifa están en <code>contrato.json</code>, no en el código."
+      },
+      {
+        "titulo": "Te da el resultado",
+        "texto": "Devuelve JSON para que lo lea otro programa o un asistente, dibuja la gráfica del día y prepara un <a href=\"https://github.com/JosebaDG/Pvpc-bridge/blob/main/docs/aviso-nocturno.md\">aviso cada noche</a> con el bloque más barato de mañana."
+      }
+    ],
+    "recuadro": {
+      "titulo": "Tramos e impuestos, sin jerga",
+      "puntos": [
+        "<strong>Tres tramos.</strong> De lunes a viernes, la <strong>punta</strong> va de 10 a 14 h y de 18 a 22 h; el <strong>llano</strong>, de 8 a 10 h, de 14 a 18 h y de 22 a 24 h; y el <strong>valle</strong>, de 0 a 8 h.",
+        "<strong>Fines de semana y festivos.</strong> Sábados, domingos, el 6 de enero y los festivos nacionales de fecha fija son valle todo el día. Los festivos autonómicos y locales no cuentan.",
+        "<strong>Por qué salta el precio a las 14 h.</strong> El precio de cada hora ya incluye el uso de la red (peajes y cargos), y esa parte cambia con el tramo. El salto entre tramos es casi todo eso.",
+        "<strong>El valle no siempre es lo más barato.</strong> En días de mucho sol, el mediodía puede salir más barato que la madrugada, aunque sea punta. Por eso conviene mirar las horas, no solo el tramo.",
+        "<strong>Impuestos.</strong> Encima del precio van el impuesto eléctrico (5,11 %) y el IVA (21 %). Cada euro de energía acaba costando unos 1,27 euros en la factura.",
+        "<strong>Lo que no cambia.</strong> La potencia contratada, el bono social y el alquiler del contador se pagan igual a cualquier hora. Mover un consumo solo cambia lo que pagas por la energía."
+      ],
+      "enlace": { "texto": "Una factura real explicada línea a línea", "href": "https://github.com/JosebaDG/Pvpc-bridge/blob/main/docs/proyecto-precio-luz.md#ejemplo-práctico-una-factura-real-línea-a-línea" }
+    }
+  },
+
+  "instalar": {
+    "titulo": "Instalarlo en 5 minutos",
+    "entrada": "Funciona en cualquier ordenador con Python 3. No necesita registros ni claves.",
+    "requisitos": [
+      "<strong>Python 3.</strong> Basta con la biblioteca estándar.",
+      "<strong>matplotlib</strong>, solo si quieres la gráfica.",
+      "<strong>Git</strong> para descargar el repositorio, y conexión a internet para pedir los precios."
+    ],
+    "comandos": [
+      { "comando": "git clone https://github.com/JosebaDG/Pvpc-bridge.git", "explicacion": "Descarga el proyecto." },
+      { "comando": "cd Pvpc-bridge", "explicacion": "Entra en la carpeta." },
+      { "comando": "cp contrato.ejemplo.json contrato.json", "explicacion": "Copia el contrato de ejemplo para poner los datos de tu factura." },
+      { "comando": "python3 puente_luz.py resumen --dia hoy", "explicacion": "Las horas más baratas y más caras de hoy." },
+      { "comando": "python3 puente_luz.py bloque --horas 2 --potencia 2000", "explicacion": "El mejor bloque seguido de 2 horas para un aparato de 2 kW, y lo que cuesta." },
+      { "comando": "python3 puente_luz.py umbral --max-precio 0.10", "explicacion": "Las franjas por debajo de 10 céntimos el kWh, sin impuestos." },
+      { "comando": "python3 puente_luz.py grafica --dia hoy --salida pvpc.png", "explicacion": "La gráfica del día, lista para mandarla a un chat." },
+      { "comando": "python3 aviso_nocturno.py", "explicacion": "El aviso de mañana: mejor bloque, imagen y mensaje corto." }
+    ],
+    "nota": "<strong>Tu contrato.</strong> En <code>contrato.json</code> van tu potencia, los importes de tu factura y los impuestos. Si no lo creas, el script usa <code>contrato.ejemplo.json</code> y te avisa. <code>contrato.json</code> no se sube al repositorio. Todos los comandos y opciones están en la <a href=\"https://github.com/JosebaDG/Pvpc-bridge/blob/main/docs/proyecto-precio-luz.md\">documentación técnica</a>."
+  },
+
+  "preguntas": {
+    "titulo": "Preguntas frecuentes",
+    "lista": [
+      {
+        "pregunta": "¿Qué es el PVPC?",
+        "respuesta": "Es el Precio Voluntario para el Pequeño Consumidor, la tarifa regulada de la luz. Solo la ofrecen las comercializadoras de referencia, y el precio de la energía cambia cada hora según el mercado."
+      },
+      {
+        "pregunta": "¿Me sirve si tengo una tarifa del mercado libre?",
+        "respuesta": "Las horas baratas del PVPC no son tu precio. Pero si tu tarifa tiene precio fijo o un precio por tramos, puedes ponerlo en <code>contrato.json</code> y comparar. Las tarifas indexadas al mercado no están implementadas, porque cada comercializadora usa su propia fórmula."
+      },
+      {
+        "pregunta": "¿Funciona en Canarias, Baleares, Ceuta y Melilla?",
+        "respuesta": "Todavía no. REData solo da el PVPC de la península. Para las islas, Ceuta y Melilla hace falta ESIOS, la otra API de Red Eléctrica, que pide clave. Está <a href=\"https://github.com/JosebaDG/Pvpc-bridge/blob/main/datos/LIMITACIONES.md\">pendiente</a>."
+      },
+      {
+        "pregunta": "¿De dónde salen los datos?",
+        "respuesta": "De <a href=\"https://www.ree.es/es/datos/apidatos\">REData</a>, la API abierta de Red Eléctrica. El desglose de cada hora sale del <a href=\"https://www.esios.ree.es/es/pvpc\">ESIOS</a>, y el tiempo del aviso nocturno, de Open-Meteo. El proyecto no está vinculado a Red Eléctrica."
+      },
+      {
+        "pregunta": "¿Hace falta una clave de API?",
+        "respuesta": "No. REData no pide clave para los precios, y el desglose del ESIOS que usa el script tampoco."
+      },
+      {
+        "pregunta": "¿Cuánto me voy a ahorrar?",
+        "respuesta": "Depende de tu consumo y de cada día, así que no damos una cifra. Puedes calcularlo: <code>python3 puente_luz.py precios --dia hoy</code> da el precio de cada hora con impuestos, y <code>bloque</code> da lo que cuesta el mejor bloque para tu aparato. Compáralo con la hora a la que lo pones ahora. Son costes de la energía: la potencia y los fijos no cambian."
+      },
+      {
+        "pregunta": "¿Cuándo están los precios de mañana?",
+        "respuesta": "Red Eléctrica los publica cada tarde, hacia las 20:00 o las 21:00, hora peninsular. Si los pides antes, el script te avisa de que aún no están."
+      },
+      {
+        "pregunta": "¿El precio puede ser negativo?",
+        "respuesta": "Sí, aunque es raro. El sábado 26 de septiembre de 2026, el PVPC fue negativo de 11 a 17 h, con un mínimo de -12,63 € por MWh. Coincidieron mucho sol, el fin de semana en valle y el ajuste de los mercados a plazo (futuros). <a href=\"https://github.com/JosebaDG/Pvpc-bridge/blob/main/docs/proyecto-precio-luz.md#precios-negativos\">Aquí está explicado</a>."
+      }
+    ]
+  }
+}
