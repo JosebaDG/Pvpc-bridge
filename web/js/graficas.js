@@ -1259,21 +1259,21 @@ export async function pintarAcerto(contenedor) {
       `${respuesta}. `,
       el('span', { texto: porque }),
     ]),
-    el('p', { class: 'nota', texto: 'El precio de ayer se fijó anteayer a mediodía, con la previsión del tiempo de entonces. Así salió esa previsión:' }),
+    el('p', { class: 'nota', texto: 'La energía de ayer se subastó anteayer a las 12:00, con la previsión del tiempo de entonces. Así salió esa previsión:' }),
     el('ul', { class: 'juego__pistas' }, [
       fila('Viento:', tiempo.viento.previsto, tiempo.viento.real, 'km/h', v, f0),
       fila('Sol:', tiempo.sol.previsto, tiempo.sol.real, 'kWh/m²', so, f1),
     ]),
     generacion,
     el('p', { class: 'juego__precio' }, [
-      'La luz de ayer: media ', el('strong', { texto: euros(mAyer) }), ', ',
+      'La luz de ayer, sin impuestos: media ', el('strong', { texto: euros(mAyer) }), ', ',
       el('span', { 'aria-hidden': 'true', style: `color:${colorFlecha};margin-right:.2em`, texto: flecha }),
       cmp.sentido === 'igual' ? 'casi igual que anteayer.' : `${cmp.texto.replace(/o$/, 'a')} que anteayer.` // «la luz», en femenino,
     ]),
     el('p', { class: 'nota juego__nota' }, [
-      'Son coincidencias, no causas: cuando llega el día, el precio ya está fijado. ',
+      'Son coincidencias, no causas: cuando llega el día, la subasta ya está cerrada, y la media del día la mueven también los futuros, que suben o bajan todas las horas casi lo mismo. ',
       Object.assign(el('a', { texto: 'Por qué el precio se decide el día antes' }), { href: 'como-se-forma-el-precio.html' }),
-      '. Viento a 100 m de altura y sol de media en seis puntos de la península (Lugo, Burgos, Zaragoza, Albacete, Badajoz y Bilbao), de Open-Meteo: la previsión de un día antes frente a su análisis más reciente.',
+      '. Viento a 100 m de altura y sol de media en seis puntos de la península (Lugo, Burgos, Zaragoza, Albacete, Badajoz y Bilbao), de Open-Meteo: la previsión de un día antes frente a su análisis más reciente. «Acertó» es menos de un 10 % de diferencia; «Casi», hasta un 25 %; «Falló», más.',
     ]),
   ].filter(Boolean));
 }
