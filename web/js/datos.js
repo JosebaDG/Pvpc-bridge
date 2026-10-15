@@ -167,10 +167,11 @@ export async function precioDelDiaAnterior(fecha) {
 // - Diferencia menor del 2 %: «casi igual».
 // - Si el precio de referencia está cerca de cero o es negativo (pasa con mucho sol), un
 //   porcentaje no significa nada (de -0,01 a 0,02 sería «-300 %»): se da la diferencia en €/kWh.
+// - Lo mismo si el precio de hoy es negativo: de 0,010 a -0,010 saldría «un 200 % más barato».
 export function compararPrecio(precio, referencia) {
   const dif = precio - referencia;
   const sentido = dif < 0 ? 'barato' : 'caro';
-  if (referencia >= 0.005) {
+  if (referencia >= 0.005 && precio >= 0) {
     const pct = Math.abs(dif) / referencia * 100;
     if (pct < 2) return { sentido: 'igual', texto: 'casi igual' };
     return { sentido, texto: `un ${Math.round(pct)} % más ${sentido}` };
