@@ -4,7 +4,7 @@ El agente que ejecuta (Charlie) trabaja en un espacio Linux en la nube, sin nave
 
 ## Cómo funciona, paso a paso
 
-1. **Se crea una GitHub App** (en este proyecto se llama Miles-pvpc) con permisos solo para lo necesario: contenidos, issues, pull requests, estados de commits, Pages y workflows. Se instala en el repositorio y se activa en ella la opción de *device flow*.
+1. **Se crea una GitHub App** con permisos solo para lo necesario: contenidos, issues, pull requests, estados de commits, Pages y workflows. Se instala en el repositorio y se activa en ella la opción de *device flow*.
 2. **El agente pide un código.** El script [`device_login.py`](../../herramientas/github-device-flow/device_login.py) llama a `https://github.com/login/device/code` con el *client ID* de la app (que es público) y recibe un código de usuario de ocho caracteres.
 3. **La persona autoriza.** Abre `https://github.com/login/device` en su móvil o su ordenador, ya con su sesión iniciada, escribe el código y acepta. El agente nunca ve su contraseña ni su segundo factor.
 4. **El agente recibe un token.** Mientras tanto, el script pregunta a GitHub cada pocos segundos. Cuando la persona acepta, recibe un token de acceso y un token de renovación, y los guarda en un archivo con permisos `600` (solo legible por su propietario), fuera del repositorio. No los imprime nunca.
