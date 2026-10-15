@@ -9,6 +9,7 @@
    .menu (+ __marca, __lista, __repo)                            menú de apartados
    .portada__gancho, .portada__botones                           portada corta, con gancho
    .puertas + .puerta (.puerta--principal)                       tarjetas-enlace a los apartados
+   .fichas + .ficha (+ .ficha__detalle)                          fichas con gancho y detalle a un clic
    .solo-lector                                                  texto oculto a la vista pero leído por lectores de pantalla */
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -308,6 +309,51 @@ main > section { padding-block: var(--e-7); border-top: 1px solid var(--c-borde)
 /* Preguntas con <details> */
 details { border-bottom: 1px solid var(--c-borde); padding-block: var(--e-4); }
 summary { cursor: pointer; font-weight: var(--peso-medio); }
+
+/* Fichas («El mercado por dentro»): .rejilla.fichas > article.tarjeta.ficha > h3 + p (gancho)
+   + details.ficha__detalle (detalle + p.nota con la fuente). El gancho se lee sin tocar nada; el
+   detalle se abre con un botón-píldora con flecha, no con la raya de las preguntas, que dentro de
+   una tarjeta parecía un borde roto.
+   - align-items: start: al abrir una ficha solo crece ella. Se descartó estirar la fila para
+     alinear los botones: las vecinas se quedaban con un hueco vacío del alto del detalle.
+   - El detalle va con una raya de acento a la izquierda: se ve que cuelga de esa ficha, sin
+     meter otra caja dentro de la tarjeta. */
+.fichas { align-items: start; }
+.ficha { display: flex; flex-direction: column; gap: var(--e-3); }
+.ficha > h3, .ficha > p { margin: 0; }
+.ficha__detalle { border: 0; padding: 0; }
+.ficha__detalle > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  min-height: 44px; /* zona de toque */
+  padding: var(--e-2) var(--e-4);
+  border: 1px solid var(--c-borde);
+  border-radius: var(--r-total);
+  font-size: var(--t-s);
+  list-style: none;
+  transition: background var(--transicion);
+}
+.ficha__detalle > summary::-webkit-details-marker { display: none; }
+.ficha__detalle > summary::after { /* flecha: abajo cerrada, arriba abierta */
+  content: "";
+  width: 0.45em;
+  height: 0.45em;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-0.15em) rotate(45deg);
+  transition: transform var(--transicion);
+}
+.ficha__detalle[open] > summary::after { transform: translateY(0.1em) rotate(-135deg); }
+.ficha__detalle > summary:hover, .ficha__detalle[open] > summary { background: var(--c-superficie-2); }
+.ficha__detalle > :not(summary) {
+  margin: 0;
+  padding-left: var(--e-3);
+  border-left: 3px solid var(--c-acento);
+}
+.ficha__detalle > summary + * { margin-top: var(--e-3); padding-top: var(--e-1); }
+.ficha__detalle > :last-child:not(summary) { padding-bottom: var(--e-1); }
+.ficha__detalle > * + .nota { padding-top: var(--e-2); }
 
 /* Pie */
 #pie { padding-block: var(--e-7); color: var(--c-tinta-2); font-size: var(--t-s); border-top: 1px solid var(--c-borde); }
