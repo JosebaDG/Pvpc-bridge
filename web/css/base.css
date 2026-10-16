@@ -12,6 +12,7 @@
    .fichas + .ficha (+ .ficha__detalle)                          fichas con gancho y detalle a un clic
    .juego (+ __titulo, __respuesta, __pistas, __pista, __nota)   tarjeta «¿Acertó el mercado?»; .tramo[data-nota]
    .juego__mas (+ .ficha__detalle), .juego__eleccion, __estado    nota de método plegada y botones de la apuesta
+   .juego__ejemplo (+ .juego__etiqueta)                          ejemplo de apuesta ya resuelta, que no se confunde con una real
    .solo-lector                                                  texto oculto a la vista pero leído por lectores de pantalla */
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -73,6 +74,13 @@ main > section { padding-block: var(--e-7); border-top: 1px solid var(--c-borde)
   z-index: -1;
   pointer-events: none;
 }
+/* En el móvil el halo ocupa casi toda la pantalla y, al 45 %, el lima tiñe el titular (lo vio Joseba
+   en su iPhone). Se suaviza al 18 % en vez de quitarlo: sigue siendo el único adorno de la portada,
+   pero ya no compite con el texto. Se descartó quitarlo del todo: la portada quedaba plana y en
+   escritorio, donde va a un lado, no molesta. */
+@media (max-width: 47.99rem) {
+  #portada::before { background: radial-gradient(closest-side, color-mix(in srgb, var(--c-chispa) 18%, transparent), transparent 70%); }
+}
 #portada p { font-size: var(--t-l); color: var(--c-tinta-2); }
 
 /* Portada con gancho: titular, una frase y la gráfica de hoy justo debajo.
@@ -113,6 +121,9 @@ main > section { padding-block: var(--e-7); border-top: 1px solid var(--c-borde)
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
   margin-top: var(--e-6);
 }
+/* En Inicio las puertas van solas en su sección, detrás de un h2 que solo oye el lector de pantalla:
+   el margen de arriba se sumaba a los 3rem de la sección y dejaba un hueco de 5rem. */
+.solo-lector + .puertas { margin-top: 0; }
 .puerta {
   position: relative;
   display: block;
@@ -127,7 +138,9 @@ main > section { padding-block: var(--e-7); border-top: 1px solid var(--c-borde)
 }
 .puerta h3 { margin-bottom: var(--e-2); }
 .puerta p { color: var(--c-tinta-2); margin: 0; }
-.puerta h3::after { content: " →"; color: var(--c-acento); display: inline-block; transition: transform var(--transicion); }
+/* La flecha va con margen y no con un espacio en el content: en un inline-block el espacio del
+   principio se pierde y la flecha quedaba pegada a la palabra. */
+.puerta h3::after { content: "→"; margin-left: 0.3em; color: var(--c-acento); display: inline-block; transition: transform var(--transicion); }
 .puerta:hover, .puerta:focus-visible { border-color: var(--c-acento); transform: translateY(-2px); }
 .puerta:hover h3::after, .puerta:focus-visible h3::after { transform: translateX(4px); }
 .puerta--principal { border-color: color-mix(in srgb, var(--c-acento) 45%, var(--c-borde)); }
@@ -151,7 +164,10 @@ main > section { padding-block: var(--e-7); border-top: 1px solid var(--c-borde)
   padding-block: var(--e-3);
   /* A todo lo ancho, con el contenido alineado con el resto de la página. */
   padding-inline: max(var(--e-4), (100% - var(--ancho-max)) / 2);
-  background: color-mix(in srgb, var(--c-fondo) 94%, transparent);
+  /* Opaca: con un 6 % de transparencia, en Safari del iPhone el texto que pasa por debajo al hacer
+     scroll se transparentaba en la cabecera. Se descartó el desenfoque (backdrop-filter): cuesta
+     batería al desplazar y no aporta nada a una barra tan fina. */
+  background: var(--c-fondo);
 }
 @media (min-width: 48rem) { .menu { view-transition-name: menu; } }
 .menu::after { /* línea inferior a todo lo ancho de la pantalla, sin ensanchar la página */
@@ -239,6 +255,12 @@ main > section { padding-block: var(--e-7); border-top: 1px solid var(--c-borde)
   gap: var(--e-4);
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
 }
+/* Lo que va detrás de una rejilla (otro h2, un párrafo, una nota) quedaba pegado a las tarjetas:
+   ni la rejilla tenía margen abajo ni el h2 o el p arriba. Pasaba en «El mercado por dentro»,
+   «Lo que aún cojea» y «La historia de esta web». Se pone en la rejilla y solo si no es lo último
+   de la sección, para no sumarse al relleno de abajo de la sección. Se descartó dar margen de
+   arriba a todos los h2: movería títulos que ya estaban bien. */
+.rejilla:not(:last-child) { margin-bottom: var(--e-6); }
 .tarjeta {
   background: var(--c-superficie);
   border: 1px solid var(--c-borde);
@@ -250,16 +272,20 @@ main > section { padding-block: var(--e-7); border-top: 1px solid var(--c-borde)
 .tarjeta--destacada { border-color: color-mix(in srgb, var(--c-acento) 45%, var(--c-borde)); }
 .tarjeta h3 { margin-bottom: var(--e-2); }
 
-/* Cifras */
+/* Cifras.
+   Fuente del texto con números tabulares (todos los dígitos del mismo ancho), no la monoespaciada:
+   en esta la coma ocupa un carácter entero («0, 354») y a tamaño grande empujaba «€/kWh ahora»
+   a otra línea. tabular-nums ya basta para que la cifra no baile al cambiar de hora.
+   La unidad no se parte por dentro: o cabe entera al lado o baja entera. */
 .cifra {
-  font-family: var(--f-cifras);
+  font-family: var(--f-texto);
   font-size: var(--t-xxl);
   font-weight: var(--peso-fuerte);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.04em;
   line-height: 1;
 }
-.cifra__unidad { font-size: 0.35em; font-weight: var(--peso-medio); color: var(--c-tinta-2); letter-spacing: 0; margin-left: var(--e-2); }
+.cifra__unidad { display: inline-block; white-space: nowrap; font-size: 0.35em; font-weight: var(--peso-medio); color: var(--c-tinta-2); letter-spacing: 0; margin-left: var(--e-2); }
 
 /* Tramos de precio: color y texto siempre juntos */
 .tramo {
@@ -424,6 +450,52 @@ summary { cursor: pointer; font-weight: var(--peso-medio); }
 .juego__eleccion { display: flex; gap: var(--e-3); }
 .juego__eleccion > .boton { flex: 1 1 0; justify-content: center; min-height: 44px; max-width: 14rem; padding-inline: var(--e-3); }
 .juego__estado { color: var(--c-tinta-2); }
+/* Juego: ejemplo de una apuesta ya resuelta, cuando la apuesta está cerrada (lo pinta graficas.js).
+   Marcado: div.juego__ejemplo > p (span.juego__etiqueta «Ejemplo» + frase con el día y la apuesta)
+   + p.juego__eleccion con los dos botones disabled (el elegido con data-elegida) + p.nota con el
+   resultado. Va en el sitio de las pistas, que con la apuesta cerrada no salen, así que la tarjeta
+   mide lo mismo abierta que cerrada.
+   - Que no parezca una apuesta real: etiqueta «Ejemplo» al principio de la frase (la lee también
+     el lector de pantalla), franja hundida con borde discontinuo y texto en gris de nota.
+   - Botones apagados: sin relleno, borde discontinuo y sin cursor de mano; el elegido, con borde
+     de acento y tinta normal. Más bajos (36 px) porque no se pueden pulsar. Se descartó bajar la
+     opacidad: deja el texto por debajo del contraste AA.
+   - Se descartó una tarjeta aparte: la sección crecía otra tarjeta entera. */
+.juego__ejemplo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-2);
+  padding: var(--e-3);
+  border: 1px dashed var(--c-borde);
+  border-radius: var(--r-m);
+  background: var(--c-superficie-2);
+  color: var(--c-tinta-2);
+  font-size: var(--t-s);
+}
+.juego__ejemplo > * { margin: 0; }
+.juego__etiqueta {
+  display: inline-block;
+  margin-right: var(--e-2);
+  padding: 0 var(--e-2);
+  border: 1px solid var(--c-borde);
+  border-radius: var(--r-total);
+  background: var(--c-superficie);
+  font-size: var(--t-xs);
+  font-weight: var(--peso-medio);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  vertical-align: 0.1em;
+}
+.juego__ejemplo .juego__eleccion > .boton {
+  min-height: 2.25rem;
+  padding-block: var(--e-1);
+  background: transparent;
+  color: var(--c-tinta-2);
+  border: 1px dashed var(--c-borde);
+  cursor: default;
+  transform: none;
+}
+.juego__ejemplo .juego__eleccion > .boton[data-elegida] { color: var(--c-tinta); border: 1px solid var(--c-acento); }
 .tramo[data-nota="acerto"] { color: var(--c-barato-tinta); background: var(--c-barato-suave); }
 .tramo[data-nota="casi"]   { color: var(--c-medio-tinta);  background: var(--c-medio-suave); }
 .tramo[data-nota="fallo"]  { color: var(--c-caro-tinta);   background: var(--c-caro-suave); }
