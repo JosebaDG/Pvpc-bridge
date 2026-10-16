@@ -147,6 +147,9 @@ function mostrarError(contenedor, texto) {
 // Precio de hoy: 24 barras en SVG
 // =====================================================================
 
+// Al volver a pintar la gráfica de hoy se quita el aviso de desplazamiento de la burbuja anterior.
+let quitarAvisoBurbuja = () => {};
+
 export function pintarPrecioHoy(contenedor, dia) {
   const { horas, fecha, esHoy, fuente } = dia;
   const grupo = tercios(horas);
@@ -209,8 +212,9 @@ export function pintarPrecioHoy(contenedor, dia) {
 
   // Burbuja del gesto (móvil). En filas la gráfica mide unos 650 px y el párrafo del detalle
   // queda debajo, fuera de la pantalla o tapado por la barra de apartados, justo mientras el dedo
-  // recorre las horas. Mientras dura el gesto con dedo o lápiz, y solo si ese párrafo no se ve
-  // entero, se enseña una copia de su frase fija en la pantalla, cerca del dedo: justo encima,
+  // recorre las horas. Mientras dura el gesto con dedo o lápiz, y salvo que ese párrafo se vea
+  // entero a menos de dos filas del dedo, se enseña una copia de su frase fija en la pantalla,
+  // cerca del dedo: justo encima,
   // con su borde de abajo a 44 px del punto que toca (algo más de una fila), para leerla sin
   // apartar la vista de la barra. Si arriba no cabe (dedo pegado al menú), pasa debajo, a 72 px:
   // la yema tapa más hacia abajo que hacia arriba. Y si aun así no cabe, se corre lo justo para
@@ -219,6 +223,16 @@ export function pintarPrecioHoy(contenedor, dia) {
   //   y no lo oye dos veces.
   // - Va en <body>, no en la tarjeta: así ningún antecesor con transform rompe el position:fixed.
   // - Estilos en línea con los tokens de Maya, sin tocar base.css; ella puede pasarlos a una clase.
+  // - Se decide por la distancia del dedo al párrafo, no por si el párrafo se ve, y en cada
+  //   movimiento. Antes bastaba con verlo entero al empezar el gesto: con la gráfica subida (las
+  //   primeras barras fuera de la pantalla) el párrafo asomaba abajo, no salía la burbuja y la
+  //   frase se leía solo al fondo de la pantalla, lejos del dedo; y si asomaba a medias, unas
+  //   veces salía y otras no (lo vio Joseba en su iPhone). Ahora solo se omite cuando el párrafo
+  //   está entero en la zona libre y a menos de dos filas del dedo, porque entonces ya está junto
+  //   a él. Para volver a salir pide media fila más: sin parpadeos en el límite.
+  // - Si el navegador se queda el gesto para desplazar la página (pointercancel) o la página se
+  //   mueve con la burbuja fuera de un gesto, se va al momento: fija en la pantalla, ya no
+  //   señalaría la hora que se lee.
   // Descartado: mover el propio párrafo a position:fixed (la página saltaría al sacarlo del flujo
   // y el aria-live repetiría), desplazar la página hasta la frase (el dedo perdería su hora),
   // fijarla arriba o abajo de la pantalla (primera versión: con el dedo en medio se iba lejos y
@@ -247,11 +261,20 @@ export function pintarPrecioHoy(contenedor, dia) {
     const abajo = barra && barra.top > alto / 2 && barra.height > 0 ? barra.top : alto;
     return { arriba, abajo };
   };
-  const detalleVisible = () => {
+  // Alto de una fila de la gráfica en pantalla: en filas, el de la franja de las horas entre 24;
+  // en columnas (barras verticales), el de una fila del móvil, unos 26 px.
+  const altoFila = () => {
+    const f = lienzo.querySelector('.grafica-franja-horas')?.getBoundingClientRect();
+    return f && f.height > 0 ? f.height / horas.length : 26;
+  };
+  // Distancia en px del dedo al párrafo del detalle, si el párrafo se ve entero; si no, Infinity.
+  const distanciaDetalle = (dedoY) => {
     const r = detalle.getBoundingClientRect();
     const z = zonaLibre();
-    return r.height > 0 && r.top >= z.arriba && r.bottom <= z.abajo;
+    if (!(r.height > 0 && r.top >= z.arriba && r.bottom <= z.abajo)) return Infinity;
+    return Math.max(r.top - dedoY, dedoY - r.bottom, 0);
   };
+  let enGesto = false;
   const copiarFrase = () => {
     const copia = [...detalle.childNodes].map((n) => n.cloneNode(true));
     burbuja.replaceChildren(...copia);
@@ -279,12 +302,24 @@ export function pintarPrecioHoy(contenedor, dia) {
   const gestoBurbuja = (ev, fase) => {
     if (ev.pointerType === 'mouse') return; // con ratón la frase ya se ve: la gráfica es baja
     clearTimeout(soltarBurbuja);
+    if (fase === 'cancela') { // el navegador se ha quedado el gesto para desplazar la página
+      enGesto = false;
+      burbuja.hidden = true;
+      return;
+    }
     if (fase === 'fin') {
+      enGesto = false;
       soltarBurbuja = setTimeout(() => { burbuja.hidden = true; }, 1500); // un momento para leerla
       return;
     }
-    if (fase === 'inicio' && detalleVisible()) return;
-    if (fase === 'mueve' && burbuja.hidden) return;
+    if (fase === 'inicio') enGesto = true;
+    if (!enGesto) return;
+    const cerca = 2 * altoFila();
+    const distancia = distanciaDetalle(ev.clientY);
+    if (burbuja.hidden ? distancia < cerca + altoFila() / 2 : distancia < cerca) {
+      burbuja.hidden = true; // el párrafo ya está junto al dedo
+      return;
+    }
     copiarFrase();
     const nueva = burbuja.hidden;
     if (nueva) {
@@ -295,6 +330,12 @@ export function pintarPrecioHoy(contenedor, dia) {
     colocarBurbuja(ev.clientY);
     burbuja.style.visibility = '';
   };
+  quitarAvisoBurbuja();
+  const alDesplazar = () => {
+    if (!enGesto && !burbuja.hidden) { clearTimeout(soltarBurbuja); burbuja.hidden = true; }
+  };
+  addEventListener('scroll', alDesplazar, { passive: true });
+  quitarAvisoBurbuja = () => removeEventListener('scroll', alDesplazar);
 
   // Comparación con el día anterior (ayer, si el día es hoy). El precio ya va escrito en cada
   // barra, así que al deslizar no se repite: se dice cómo estaba el día antes a esa misma hora.
@@ -440,7 +481,7 @@ export function pintarPrecioHoy(contenedor, dia) {
       });
       const soltar = (ev) => {
         if (zona.hasPointerCapture(ev.pointerId)) zona.releasePointerCapture(ev.pointerId);
-        gestoBurbuja(ev, 'fin');
+        gestoBurbuja(ev, ev.type === 'pointercancel' ? 'cancela' : 'fin');
       };
       zona.addEventListener('pointerup', soltar);
       zona.addEventListener('pointercancel', soltar);
