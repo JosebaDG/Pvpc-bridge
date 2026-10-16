@@ -1294,12 +1294,24 @@ export async function pintarAcerto(contenedor) {
       el('span', { 'aria-hidden': 'true', style: `color:${colorFlecha};margin-right:.2em`, texto: flecha }),
       cmp.sentido === 'igual' ? 'casi igual que anteayer.' : `${cmp.texto.replace(/o$/, 'a')} que anteayer.` // «la luz», en femenino,
     ]),
-    el('p', { class: 'nota juego__nota' }, [
-      'Son coincidencias, no causas: cuando llega el día, la subasta ya está cerrada, y la media del día la mueven también los futuros, que suben o bajan todas las horas casi lo mismo. ',
+    // A la vista, la frase que evita leer el juego al revés; el método, plegado (nota de Simone).
+    el('p', { class: 'nota', texto: 'Son coincidencias, no causas: cuando llega el día, la subasta ya está cerrada.' }),
+    comoSeCalcula([
+      'La media del día la mueven también los futuros, que suben o bajan todas las horas casi lo mismo. ',
       Object.assign(el('a', { texto: 'Por qué el precio se decide el día antes' }), { href: 'como-se-forma-el-precio.html' }),
       '. Viento a 100 m de altura y sol de media en seis puntos de la península (Lugo, Burgos, Zaragoza, Albacete, Badajoz y Bilbao), de Open-Meteo: la previsión de un día antes frente a su análisis más reciente. «Acertó» es menos de un 10 % de diferencia; «Casi», hasta un 25 %; «Falló», más.',
     ]),
   ].filter(Boolean));
+}
+
+// Nota de método de las dos tarjetas del juego, plegada tras el botón-píldora de las fichas
+// (estilos .ficha__detalle y .juego__mas en base.css). Cerrada al pintar: si la tarjeta se
+// vuelve a pintar (la apuesta a las 12:00), sale un pliegue nuevo y cerrado, sin restos.
+function comoSeCalcula(contenido) {
+  return el('details', { class: 'ficha__detalle juego__mas' }, [
+    el('summary', { texto: 'Cómo se calcula' }),
+    el('p', { class: 'nota juego__nota' }, contenido),
+  ]);
 }
 
 // ---------- La apuesta: «¿Más barata o más cara mañana?» ----------
@@ -1503,11 +1515,15 @@ export async function pintarApuesta(contenedor) {
       ` · mejor ${r.mejor} · ${r.aciertos} de ${r.jugadas} acertadas`,
     ]));
   }
-  piezas.push(el('p', { class: 'nota juego__nota' }, [
-    'Tu apuesta y tu racha se quedan en este navegador. Se apuesta hasta las 12:00 porque a esa hora cierra la subasta de mañana: desde entonces el precio está decidido y solo falta publicarlo (',
-    Object.assign(el('a', { texto: 'por qué' }), { href: 'como-se-forma-el-precio.html' }),
-    '). Pistas de Open-Meteo, media de los seis puntos de arriba. Son coincidencias, no causas.',
-  ]));
+  // A la vista, dónde se guarda la racha (es cuestión de confianza); el resto, plegado.
+  piezas.push(
+    el('p', { class: 'nota', texto: 'Tu apuesta y tu racha se quedan en este navegador.' }),
+    comoSeCalcula([
+      'Se apuesta hasta las 12:00 porque a esa hora cierra la subasta de mañana: desde entonces el precio está decidido y solo falta publicarlo (',
+      Object.assign(el('a', { texto: 'por qué' }), { href: 'como-se-forma-el-precio.html' }),
+      '). Pistas de Open-Meteo: media de los mismos seis puntos que en «¿Acertó el mercado?». Son coincidencias, no causas.',
+    ]),
+  );
 
   contenedor.hidden = false;
   contenedor.replaceChildren(...piezas);
