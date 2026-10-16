@@ -11,6 +11,7 @@
    .puertas + .puerta (.puerta--principal)                       tarjetas-enlace a los apartados
    .fichas + .ficha (+ .ficha__detalle)                          fichas con gancho y detalle a un clic
    .juego (+ __titulo, __respuesta, __pistas, __pista, __nota)   tarjeta «¿Acertó el mercado?»; .tramo[data-nota]
+   .juego__mas (+ .ficha__detalle), .juego__eleccion, __estado    nota de método plegada y botones de la apuesta
    .solo-lector                                                  texto oculto a la vista pero leído por lectores de pantalla */
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -405,6 +406,24 @@ summary { cursor: pointer; font-weight: var(--peso-medio); }
 }
 .juego__precio strong, .juego__generacion strong { font-variant-numeric: tabular-nums; }
 .juego__nota { padding-top: var(--e-3); border-top: 1px solid var(--c-borde); }
+/* Juego: la nota de método, a un clic, y los botones de la apuesta.
+   Marcado: details.ficha__detalle.juego__mas > summary («Cómo se calcula») + p.nota.juego__nota,
+   en las dos tarjetas (lo pinta graficas.js). A la vista quedan la pregunta, los botones, el
+   resultado y la racha; fuentes, seis puntos, umbrales y el «por qué», plegados.
+   - Se reutiliza el botón-píldora de las fichas en vez de un estilo nuevo: el mismo gesto abre
+     el detalle en toda la web. Se descartó la raya de las preguntas (details normal): dentro de
+     una tarjeta parecía un borde roto.
+   - La raya de arriba pasa de la nota al pliegue, para que siga separando juego y método.
+   - .juego__eleccion: los dos botones a partes iguales y de 44 px o más de alto, en una fila
+     hasta 320 px y como mucho 14rem cada uno en pantalla ancha. Se descartó apilarlos: con dos
+     palabras cada uno caben y se ahorra una línea.
+   - .juego__estado: aria-live, siempre con texto; color de nota para que no compita con la
+     pregunta. */
+.juego__mas { padding-top: var(--e-3); border-top: 1px solid var(--c-borde); }
+.juego__mas > .juego__nota { padding-top: var(--e-1); border-top: 0; }
+.juego__eleccion { display: flex; gap: var(--e-3); }
+.juego__eleccion > .boton { flex: 1 1 0; justify-content: center; min-height: 44px; max-width: 14rem; padding-inline: var(--e-3); }
+.juego__estado { color: var(--c-tinta-2); }
 .tramo[data-nota="acerto"] { color: var(--c-barato-tinta); background: var(--c-barato-suave); }
 .tramo[data-nota="casi"]   { color: var(--c-medio-tinta);  background: var(--c-medio-suave); }
 .tramo[data-nota="fallo"]  { color: var(--c-caro-tinta);   background: var(--c-caro-suave); }
