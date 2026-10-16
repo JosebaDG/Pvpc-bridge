@@ -60,18 +60,19 @@ La salida es JSON, pensada para que la lea otro script, un cron o un agente. Tod
 |---|---|
 | `puente_luz.py` | Script puente: descarga de REE, calcula bloques, repartos y costes, devuelve JSON. |
 | `aviso_nocturno.py` | Aviso de cada noche: el bloque más barato de mañana con lo que dura, la gráfica para el móvil y una conclusión curiosa cruzada con `datos/`. Cómo está montado: [docs/aviso-nocturno.md](docs/aviso-nocturno.md). |
+| `mcp/` | Servidor MCP en Cloudflare Workers (TypeScript, con clave): `precios`, `resumen`, `bloque` y `umbral` para cualquier agente. Cómo conectarse y desplegarlo: [mcp/README.md](mcp/README.md). |
 | `precios_luz_ree.py` | El primer script, más sencillo. Se conserva como ejemplo mínimo. |
 | `contrato.ejemplo.json` | Contrato genérico (PVPC 2.0TD, península, valores de 2026). |
 | `docs/` | Documentación técnica, guía de la API, guía de iniciación a GitHub y la carpeta `simbiosis/`. |
 | `datos/` | Histórico de REE ya descargado en CSV (PVPC, mercado diario, generación y meteorología), con la caché de consultas, el manifiesto y las herramientas para actualizarlo. |
 | `archivo/estudio-2026-10-09/` | Las pruebas del estudio de la API REData: respuestas reales, errores, scripts y el informe original. |
 | `herramientas/github-device-flow/` | Los dos scripts con los que el agente se conecta a GitHub sin guardar contraseñas. |
-| `.github/` | Plantillas de issues y PR, y una comprobación automática que no llama a ninguna API. |
+| `.github/` | Plantillas de issues y PR, una comprobación automática que no llama a ninguna API y los workflows a mano que publican la web y despliegan el servidor MCP. |
 | `CONTRIBUTING.md` | Cómo proponer cambios, seas persona o agente. |
 
 ## Estado y próximos pasos
 
-El [aviso nocturno](docs/aviso-nocturno.md) ya funciona: cada noche a las 21:30 llega al chat la gráfica de mañana con el bloque más barato. Lo siguiente está en las [issues](https://github.com/JosebaDG/Pvpc-bridge/issues): un servidor MCP en Cloudflare Workers para que cualquier agente consulte los precios.
+El [aviso nocturno](docs/aviso-nocturno.md) ya funciona: cada noche a las 21:30 llega al chat la gráfica de mañana con el bloque más barato. El [servidor MCP](mcp/README.md) en Cloudflare Workers, para que cualquier agente consulte los precios, está escrito y probado; falta desplegarlo ([#2](https://github.com/JosebaDG/Pvpc-bridge/issues/2)). Lo demás está en las [issues](https://github.com/JosebaDG/Pvpc-bridge/issues).
 
 ## Datos históricos y archivo del estudio
 

@@ -1,0 +1,27 @@
+{
+  "name": "pvpc-bridge-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Servidor MCP de Pvpc-bridge en Cloudflare Workers: precio de la luz PVPC hora a hora con datos de Red Eléctrica.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "comprobar": "tsc --noEmit",
+    "test": "node --test test/*.test.ts",
+    "dev": "wrangler dev",
+    "desplegar": "wrangler deploy"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261016.1",
+    "@types/node": "^24.19.2",
+    "typescript": "~5.9.3",
+    "wrangler": "^4.151.0"
+  }
+}

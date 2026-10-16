@@ -32,7 +32,7 @@ jobs:
       - name: No se ha colado nada privado
         run: |
           fallo=0
-          for f in contrato.json .env; do
+          for f in contrato.json .env mcp/.dev.vars; do
             if git ls-files --error-unmatch "$f" >/dev/null 2>&1; then
               echo "::error::$f no debe estar en el repositorio"; fallo=1
             fi
@@ -41,3 +41,32 @@ jobs:
             echo "::error::Parece que hay un token de GitHub en el repositorio"; fallo=1
           fi
           exit $fallo
+
+  mcp:
+    # Servidor MCP (mcp/): tipos de TypeScript y pruebas. Las pruebas usan datos guardados de REE
+    # (mcp/test/fixtures) y comparan los cálculos con puente_luz.py; no llaman a ninguna API.
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mcp
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: mcp/package-lock.json
+
+      - name: Instala dependencias (sin scripts de instalación)
+        run: npm ci --ignore-scripts
+
+      - name: Los tipos cuadran
+        run: npm run comprobar
+
+      - name: Pruebas (incluida la comparación con puente_luz.py)
+        run: npm test
