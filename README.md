@@ -1,20 +1,22 @@
-# Pvpc-bridge: precio de la luz hora a hora, hecho entre una persona y dos agentes de IA
+# Pvpc-bridge: precio de la luz hora a hora, hecho entre una persona y cuatro agentes de IA
 
 Pvpc-bridge descarga el precio de la luz de cada hora (PVPC) desde la API abierta de Red Eléctrica, lo pasa por un script puente que devuelve JSON y responde preguntas prácticas: cuáles son las horas más baratas, cuándo conviene poner un consumo grande o flexible (la lavadora, el lavavajillas, el termo, la carga del coche o un equipo que trabaja durante horas) y cuánto cuesta en euros de factura. Además dibuja la gráfica del día, pensada para mandarla a un chat con un texto corto que la explique a una persona.
 
 La meta es tener una navaja suiza del mercado eléctrico español: precios, costes, impuestos y avisos para gastar mejor la energía, con datos abiertos y sin depender de nadie.
 
-Pero este repositorio quiere enseñar algo más que un script. Es un **proyecto formativo** que documenta **la simbiosis**: cómo trabajan juntos una persona y dos agentes de IA de Sesame para sacar adelante un proyecto real, desde una idea en una llamada de voz hasta un repositorio con issues, ramas y pull requests. Lo hemos escrito para aprender nosotros y para que le sirva a quien quiera trabajar así.
+Pero este repositorio quiere enseñar algo más que un script. Es un **proyecto formativo** que documenta **la simbiosis**: cómo trabajan juntos una persona y cuatro agentes de IA de Sesame para sacar adelante un proyecto real, desde una idea en una llamada de voz hasta un repositorio con issues, ramas, pull requests y una web. Empezó con dos agentes; con la web, el equipo pasó a cuatro. Lo hemos escrito para aprender nosotros y para que le sirva a quien quiera trabajar así.
 
 ## Quién hace qué
 
 | Quién | Qué es | Su papel |
 |---|---|---|
-| **Joseba** ([@JosebaDG](https://github.com/JosebaDG)) | La persona | Tiene la necesidad, decide, valida los resultados y fusiona. |
+| **Joseba** ([@JosebaDG](https://github.com/JosebaDG)) | La persona | Tiene la necesidad, decide el rumbo y el diseño, valida los resultados y revisa la web publicada. |
 | **Charlie** | Agente de Sesame con un espacio de trabajo Linux en la nube | Escribe y ejecuta el código, consulta las APIs, documenta y sube los cambios. |
-| **Miles** | Agente de Sesame | Propone soluciones, revisa los PR de Charlie y se encarga de todo lo visual (gráficas, imágenes, capturas), porque Charlie no ve imágenes. Encontró la forma de conectar el espacio de trabajo con GitHub (una GitHub App con *device flow*). |
+| **Miles** | Agente de Sesame | Propone soluciones, revisa los PR de Charlie y se encarga de todo lo visual (gráficas, imágenes, capturas), porque Charlie no ve imágenes. Encontró la forma de conectar el espacio de trabajo con GitHub (una GitHub App con *device flow*). En la web coordina, monta el HTML y revisa los pull requests. Fusiona los pull requests que cumplen las cuatro condiciones de [Roles y reglas](docs/simbiosis/02-roles-y-reglas.md) y publica la web. |
+| **Maya** | Agente de Sesame | Diseño de la web: colores, componentes, el menú y que todo se lea bien en el móvil. |
+| **Simone** | Agente de Sesame | Textos de la web: que cada frase se entienda y no prometa nada que el repositorio no haga. |
 
-Charlie y Miles no hablan directamente: se coordinan por escrito en el [tablón de coordinación (#11)](https://github.com/JosebaDG/Pvpc-bridge/issues/11), y la persona lo lee y decide. Así ninguna decisión se toma entre agentes sin que ella la vea, y lo que hace uno lo revisa el otro. Las reglas completas están en [Roles y reglas](docs/simbiosis/02-roles-y-reglas.md).
+Los agentes no hablan directamente: se coordinan por escrito en el [tablón de coordinación (#11)](https://github.com/JosebaDG/Pvpc-bridge/issues/11), y la persona lo lee y decide. Así ninguna decisión se toma entre agentes sin que ella la vea, y lo que hace uno lo revisa el otro. Las reglas completas están en [Roles y reglas](docs/simbiosis/02-roles-y-reglas.md).
 
 ## Por dónde empezar
 
@@ -26,6 +28,7 @@ Charlie y Miles no hablan directamente: se coordinan por escrito en el [tablón 
 4. [Fricciones y aprendizajes](docs/simbiosis/04-fricciones-y-aprendizajes.md): lo que falló y cómo se resolvió.
 5. [Cómo se conectó GitHub con *device flow*](docs/simbiosis/05-conectar-github-device-flow.md), sin secretos.
 6. [Cómo replicarlo](docs/simbiosis/06-como-replicarlo.md) en tu propio proyecto.
+7. [Cómo se hizo la web](docs/simbiosis/07-la-web.md), pull request a pull request.
 
 **Si nunca has usado GitHub así**: la [guía de iniciación](docs/iniciacion-github.md) explica, paso a paso, cómo revisar y fusionar un pull request desde el navegador o el móvil.
 

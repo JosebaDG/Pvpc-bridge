@@ -23,6 +23,15 @@ export function diaDeHoy(ahora = new Date()) {
   }).format(ahora);
 }
 
+// Hora, minuto y segundo en España (hora peninsular, 0-23), se abra la web desde donde se abra.
+export function horaEnZona(ahora = new Date()) {
+  const partes = new Intl.DateTimeFormat('en-GB', {
+    timeZone: ZONA, hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23',
+  }).formatToParts(ahora);
+  const n = (tipo) => Number(partes.find((p) => p.type === tipo).value);
+  return { hora: n('hour'), minuto: n('minute'), segundo: n('second') };
+}
+
 // ---------- Rutas de los CSV ----------
 
 // En local (python3 -m http.server) los CSV están fuera de web/; en Pages, dentro de web/datos/.
@@ -103,7 +112,15 @@ export async function cargarHistorico() {
 // Pide a REData el PVPC de un día. Es una petición GET sin cabeceras extra a propósito:
 // REE contesta a GET con CORS abierto, pero rechaza (403) la «consulta previa» OPTIONS que
 // el navegador haría si añadiéramos cabeceras propias. Devuelve null si algo falla.
-export async function cargarDiaREData(fecha) {
+// Cada día se pide una sola vez por visita: la gráfica de hoy, «¿Acertó el mercado?» y la
+// apuesta comparten la misma respuesta (también si es null) y REE no recibe consultas repetidas.
+const diasPedidos = new Map();
+export function cargarDiaREData(fecha) {
+  if (!diasPedidos.has(fecha)) diasPedidos.set(fecha, pedirDiaREData(fecha));
+  return diasPedidos.get(fecha);
+}
+
+async function pedirDiaREData(fecha) {
   const url = `${REDATA}?start_date=${fecha}T00:00&end_date=${fecha}T23:59&time_trunc=hour`;
   const corte = new AbortController();
   const reloj = setTimeout(() => corte.abort(), ESPERA_REDATA_MS);
@@ -151,6 +168,13 @@ export function diaAnterior(fecha) {
   return d.toISOString().slice(0, 10);
 }
 
+// Fecha siguiente a 'AAAA-MM-DD'.
+export function diaSiguiente(fecha) {
+  const d = new Date(`${fecha}T12:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + 1);
+  return d.toISOString().slice(0, 10);
+}
+
 // El día anterior a `fecha`, para comparar hora a hora. La misma cadena que para hoy:
 // primero REData en directo y, si falla, el CSV del repo. Devuelve { fecha, horas, fuente }
 // o null si no hay datos completos de ese día (la web entonces no enseña la comparación).
@@ -188,6 +212,108 @@ export function agruparPorDia(horas) {
     m.get(h.fecha).push(h);
   }
   return m;
+}
+
+// ---------- «¿Acertó el mercado?»: tiempo previsto, tiempo que hizo y generación real ----------
+
+// Los seis puntos del histórico de meteo (datos/manifiesto.json): Lugo, Burgos, Zaragoza,
+// Albacete, Badajoz y Bilbao. Repartidos por la península, cerca de zonas con eólica o solar.
+const PUNTOS_METEO = [[43.01, -7.56], [42.34, -3.7], [41.65, -0.88], [38.99, -1.86], [38.88, -6.97], [43.26, -2.93]];
+// API «Previous Runs» de Open-Meteo: gratis, sin clave y con CORS abierto. Para cada hora da la
+// previsión más reciente (`variable`, lo más parecido a lo que hizo) y la que se hacía un día
+// antes (`variable_previous_day1`), que es la que había cuando el mercado diario cerró.
+const OPEN_METEO = 'https://previous-runs-api.open-meteo.com/v1/forecast';
+const REDATA_GENERACION = 'https://apidatos.ree.es/es/datos/generacion/estructura-generacion';
+
+async function pedirJSON(url, espera = ESPERA_REDATA_MS) {
+  const corte = new AbortController();
+  const reloj = setTimeout(() => corte.abort(), espera);
+  try {
+    const r = await fetch(url, { signal: corte.signal }); // GET sin cabeceras extra (ver cargarDiaREData)
+    return r.ok ? await r.json() : null;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(reloj);
+  }
+}
+
+const mediaDe = (xs) => xs.reduce((a, b) => a + b, 0) / xs.length;
+
+// Viento y sol de un día, previstos un día antes y los que hubo, de media en los seis puntos.
+// Devuelve { viento: { previsto, real } en km/h a 100 m (media del día, la altura de los
+// aerogeneradores), sol: { previsto, real } en kWh/m² (radiación del día) } o null.
+export async function tiempoPrevistoYReal(fecha) {
+  const vars = ['wind_speed_100m', 'shortwave_radiation'];
+  const url = `${OPEN_METEO}?latitude=${PUNTOS_METEO.map((p) => p[0]).join(',')}`
+    + `&longitude=${PUNTOS_METEO.map((p) => p[1]).join(',')}`
+    + `&hourly=${vars.flatMap((v) => [v, `${v}_previous_day1`]).join(',')}`
+    + `&start_date=${fecha}&end_date=${fecha}&timezone=${encodeURIComponent(ZONA)}`;
+  const json = await pedirJSON(url);
+  const puntos = [].concat(json || []); // con varios puntos, Open-Meteo devuelve una lista
+  if (puntos.length !== PUNTOS_METEO.length) return null;
+  const porPunto = (v, conv) => {
+    const vals = puntos.map((p) => {
+      const xs = p.hourly?.[v] ?? [];
+      return xs.length >= 23 && xs.every(Number.isFinite) ? conv(xs) : NaN;
+    });
+    return vals.every(Number.isFinite) ? mediaDe(vals) : NaN;
+  };
+  const viento = (xs) => mediaDe(xs);
+  const sol = (xs) => xs.reduce((a, b) => a + b, 0) / 1000; // W/m² cada hora -> kWh/m² del día
+  const r = {
+    viento: { previsto: porPunto('wind_speed_100m_previous_day1', viento), real: porPunto('wind_speed_100m', viento) },
+    sol: { previsto: porPunto('shortwave_radiation_previous_day1', sol), real: porPunto('shortwave_radiation', sol) },
+  };
+  return Object.values(r).every((x) => Number.isFinite(x.previsto) && Number.isFinite(x.real)) ? r : null;
+}
+
+// API normal de previsión de Open-Meteo (gratis, sin clave, CORS abierto): para la apuesta.
+const OPEN_METEO_PREVISION = 'https://api.open-meteo.com/v1/forecast';
+
+// Viento a 100 m (km/h) y sol (W/m²) de media en unas horas de cada día, en los seis puntos.
+// Para mañana es la previsión; para hoy, la más reciente del modelo. Devuelve
+// Map(fecha -> { viento, sol }) o null si falta algo.
+export async function tiempoEnHoras(desde, hasta, horas) {
+  const url = `${OPEN_METEO_PREVISION}?latitude=${PUNTOS_METEO.map((p) => p[0]).join(',')}`
+    + `&longitude=${PUNTOS_METEO.map((p) => p[1]).join(',')}`
+    + '&hourly=wind_speed_100m,shortwave_radiation'
+    + `&start_date=${desde}&end_date=${hasta}&timezone=${encodeURIComponent(ZONA)}`;
+  const puntos = [].concat((await pedirJSON(url)) || []);
+  if (puntos.length !== PUNTOS_METEO.length) return null;
+  const m = new Map();
+  for (const p of puntos) {
+    const t = p.hourly?.time ?? [];
+    t.forEach((iso, k) => {
+      if (!horas.includes(Number(iso.slice(11, 13)))) return;
+      const f = iso.slice(0, 10);
+      if (!m.has(f)) m.set(f, { viento: [], sol: [] });
+      m.get(f).viento.push(p.hourly.wind_speed_100m?.[k]);
+      m.get(f).sol.push(p.hourly.shortwave_radiation?.[k]);
+    });
+  }
+  const r = new Map();
+  for (const [f, { viento, sol }] of m) {
+    const completo = (xs) => xs.length === horas.length * PUNTOS_METEO.length && xs.every(Number.isFinite);
+    if (completo(viento) && completo(sol)) r.set(f, { viento: mediaDe(viento), sol: mediaDe(sol) });
+  }
+  return r.size ? r : null;
+}
+
+// Eólica y fotovoltaica reales de España, en MWh por día, de `desde` a `hasta` (REData).
+// Devuelve Map(fecha -> { eolica, solar }) o null. REData no da la generación por horas.
+export async function generacionDiaria(desde, hasta) {
+  const json = await pedirJSON(`${REDATA_GENERACION}?start_date=${desde}T00:00&end_date=${hasta}T23:59&time_trunc=day`);
+  const serie = (id) => (json?.included || []).find((s) => s.id === id)?.attributes?.values || [];
+  const m = new Map();
+  for (const [clave, id] of [['eolica', '10291'], ['solar', '1458']]) {
+    for (const v of serie(id)) {
+      const f = String(v.datetime).slice(0, 10);
+      if (!m.has(f)) m.set(f, {});
+      m.get(f)[clave] = v.value;
+    }
+  }
+  return m.size ? m : null;
 }
 
 // ---------- Cálculos para la gráfica de hoy ----------

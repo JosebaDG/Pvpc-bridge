@@ -8,18 +8,25 @@
 //   Al deslizar o con las flechas no se repite el precio: se compara con el día anterior a esa hora.
 // - historico: mapa de calor día × hora en canvas (canvas = un lienzo de píxeles; con unas 41.000
 //   celdas es mucho más rápido que crear 41.000 elementos SVG) y la media mensual como línea.
+// - acerto: tarjeta «¿Acertó el mercado?», debajo de la gráfica de hoy. Compara el tiempo que se
+//   preveía para ayer cuando se fijó su precio con el que hizo, y la luz de ayer con la de anteayer.
+// - apuesta: «¿Más barata o más cara mañana?», debajo de la anterior. Hasta las 12:00 (hora
+//   peninsular), cuando cierra la subasta de mañana, se apuesta por la tarde (14 a 17 h); la racha
+//   se guarda solo en el navegador.
 // - equipo-tiempo: «El equipo en el tiempo», en SVG. Un carril por agente y una barra por PR,
 //   desde que se abre hasta que se fusiona. Lee web/datos/actividad.json (datos públicos de GitHub).
 //
 // Uso (desde main.js):
 //   import { iniciarGraficas } from './graficas.js';
 //   iniciarGraficas();
-// Busca #precio-hoy [data-grafica="hoy"], #historico [data-grafica="historico"] y
-// #equipo-tiempo [data-grafica="equipo"], y rellena los que haya en la página.
+// Busca #precio-hoy [data-grafica="hoy"], #precio-hoy [data-grafica="acerto"], #precio-hoy [data-grafica="apuesta"],
+// #historico [data-grafica="historico"] y #equipo-tiempo [data-grafica="equipo"], y rellena los
+// que haya en la página.
 
 import {
   precioDelDia, precioDelDiaAnterior, compararPrecio, cargarHistorico, tercios, mejorBloque, PRIMER_AÑO,
-  cargarActividad, ZONA,
+  cargarActividad, ZONA, diaDeHoy, diaAnterior, tiempoPrevistoYReal, generacionDiaria,
+  cargarDiaREData, diaSiguiente, tiempoEnHoras, horaEnZona,
 } from './datos.js';
 
 // ---------- Colores: solo variables CSS de Maya (web/css/tokens.css) ----------
@@ -200,6 +207,95 @@ export function pintarPrecioHoy(contenedor, dia) {
     texto: 'Toca una barra o desliza el dedo por la gráfica para ver el precio de cada hora. Con teclado, usa las flechas.',
   });
 
+  // Burbuja del gesto (móvil). En filas la gráfica mide unos 650 px y el párrafo del detalle
+  // queda debajo, fuera de la pantalla o tapado por la barra de apartados, justo mientras el dedo
+  // recorre las horas. Mientras dura el gesto con dedo o lápiz, y solo si ese párrafo no se ve
+  // entero, se enseña una copia de su frase fija en la pantalla, cerca del dedo: justo encima,
+  // con su borde de abajo a 44 px del punto que toca (algo más de una fila), para leerla sin
+  // apartar la vista de la barra. Si arriba no cabe (dedo pegado al menú), pasa debajo, a 72 px:
+  // la yema tapa más hacia abajo que hacia arriba. Y si aun así no cabe, se corre lo justo para
+  // quedar entre el menú y la barra de apartados. Al soltar se va sola.
+  // - Es solo para la vista (aria-hidden): el lector de pantalla sigue con el aria-live de siempre
+  //   y no lo oye dos veces.
+  // - Va en <body>, no en la tarjeta: así ningún antecesor con transform rompe el position:fixed.
+  // - Estilos en línea con los tokens de Maya, sin tocar base.css; ella puede pasarlos a una clase.
+  // Descartado: mover el propio párrafo a position:fixed (la página saltaría al sacarlo del flujo
+  // y el aria-live repetiría), desplazar la página hasta la frase (el dedo perdería su hora),
+  // fijarla arriba o abajo de la pantalla (primera versión: con el dedo en medio se iba lejos y
+  // tapaba la fecha) y dejarla a 3 o 4 filas (unos 110 px: el ojo tiene que saltar).
+  document.querySelectorAll('.grafica-burbuja').forEach((b) => b.remove()); // si se vuelve a pintar
+  const burbuja = el('div', {
+    class: 'grafica-burbuja', 'aria-hidden': 'true', hidden: '',
+    style: [
+      'position:fixed', 'left:max(var(--e-4, 1rem), env(safe-area-inset-left))',
+      'right:max(var(--e-4, 1rem), env(safe-area-inset-right))', 'z-index:11', 'max-width:32rem', 'margin-inline:auto',
+      'padding:.6rem .9rem', 'border-radius:var(--r-m, 14px)', 'border:1px solid var(--c-borde, #d9d5cc)',
+      'background:var(--c-superficie, #fff)', 'color:var(--c-tinta, #14161c)', 'box-shadow:var(--sombra, 0 8px 24px rgb(20 22 28 / .12))',
+      'font-size:var(--t-s, .9375rem)', 'line-height:1.35', 'font-variant-numeric:tabular-nums', 'pointer-events:none',
+    ].join(';'),
+  });
+  document.body.append(burbuja);
+  let burbujaArriba = false;
+  let soltarBurbuja = 0;
+  // Zona libre de la pantalla: entre el menú de arriba (sticky) y la barra de apartados de abajo
+  // (fija en el móvil). Si no hay barra abajo, hasta el borde de la ventana.
+  const zonaLibre = () => {
+    const alto = window.visualViewport?.height ?? window.innerHeight;
+    const menu = document.querySelector('.menu')?.getBoundingClientRect();
+    const barra = document.querySelector('.menu__lista')?.getBoundingClientRect();
+    const arriba = menu && menu.bottom > 0 && menu.top <= 0 ? menu.bottom : 0;
+    const abajo = barra && barra.top > alto / 2 && barra.height > 0 ? barra.top : alto;
+    return { arriba, abajo };
+  };
+  const detalleVisible = () => {
+    const r = detalle.getBoundingClientRect();
+    const z = zonaLibre();
+    return r.height > 0 && r.top >= z.arriba && r.bottom <= z.abajo;
+  };
+  const copiarFrase = () => {
+    const copia = [...detalle.childNodes].map((n) => n.cloneNode(true));
+    burbuja.replaceChildren(...copia);
+    burbuja.querySelectorAll('.solo-lector').forEach((n) => n.remove()); // el precio de hoy ya va en la barra
+  };
+  const SEPARACION_ARRIBA = 44; // del punto del dedo al borde de abajo de la burbuja
+  const SEPARACION_ABAJO = 72; // del punto del dedo al borde de arriba, cuando va debajo
+  const VUELTA = 24; // margen para volver arriba: sin parpadeos en el límite
+  const colocarBurbuja = (dedoY) => {
+    const z = zonaLibre();
+    const margen = 8;
+    const h = burbuja.getBoundingClientRect().height;
+    const topArriba = dedoY - SEPARACION_ARRIBA - h;
+    const limite = z.arriba + margen;
+    // Encima del dedo siempre que quepa. Ya debajo, solo vuelve arriba con VUELTA px de sobra.
+    if (!burbujaArriba) burbujaArriba = topArriba >= limite + VUELTA;
+    else if (topArriba < limite) burbujaArriba = false;
+    const top = burbujaArriba ? topArriba : dedoY + SEPARACION_ABAJO;
+    // Dentro de la zona libre: sin pisar el menú ni la barra de apartados.
+    const minimo = z.arriba + margen;
+    const maximo = Math.max(minimo, z.abajo - margen - h);
+    burbuja.style.top = `${Math.round(Math.min(Math.max(top, minimo), maximo))}px`;
+    burbuja.style.bottom = 'auto';
+  };
+  const gestoBurbuja = (ev, fase) => {
+    if (ev.pointerType === 'mouse') return; // con ratón la frase ya se ve: la gráfica es baja
+    clearTimeout(soltarBurbuja);
+    if (fase === 'fin') {
+      soltarBurbuja = setTimeout(() => { burbuja.hidden = true; }, 1500); // un momento para leerla
+      return;
+    }
+    if (fase === 'inicio' && detalleVisible()) return;
+    if (fase === 'mueve' && burbuja.hidden) return;
+    copiarFrase();
+    const nueva = burbuja.hidden;
+    if (nueva) {
+      burbujaArriba = true; // cada gesto empieza encima del dedo, si cabe
+      burbuja.style.visibility = 'hidden'; // medirla sin que se vea en un sitio provisional
+      burbuja.hidden = false;
+    }
+    colocarBurbuja(ev.clientY);
+    burbuja.style.visibility = '';
+  };
+
   // Comparación con el día anterior (ayer, si el día es hoy). El precio ya va escrito en cada
   // barra, así que al deslizar no se repite: se dice cómo estaba el día antes a esa misma hora.
   // Se carga después de dibujar (no retrasa la gráfica) y, si no hay datos, no se enseña nada.
@@ -286,6 +382,7 @@ export function pintarPrecioHoy(contenedor, dia) {
     if (i < 0 || i >= horas.length || i === elegida) return; // sin repetir el aviso de aria-live
     elegida = i;
     escribirDetalle(i);
+    if (!burbuja.hidden) copiarFrase();
     marcarEnDibujo(i);
   };
   precioDelDiaAnterior(fecha).then((dia) => {
@@ -296,6 +393,7 @@ export function pintarPrecioHoy(contenedor, dia) {
     pista.hidden = false;
     if (elegida >= 0) escribirDetalle(elegida);
     else detalle.textContent = '';
+    if (!burbuja.hidden) copiarFrase();
   }).catch((e) => console.warn('día anterior:', e));
   // Con el teclado solo se entra una vez en la gráfica (tabindex «itinerante»): la barra elegida,
   // o la actual, o la más barata. Dentro, las flechas mueven de hora en hora.
@@ -331,12 +429,19 @@ export function pintarPrecioHoy(contenedor, dia) {
         if (ev.pointerType === 'mouse' && ev.button !== 0) return;
         zona.setPointerCapture(ev.pointerId);
         verDetalle(aIndice(ev));
+        gestoBurbuja(ev, 'inicio');
       });
       zona.addEventListener('pointermove', (ev) => {
         // Con ratón basta pasar por encima; con dedo o lápiz, solo mientras se arrastra.
-        if (ev.pointerType === 'mouse' || zona.hasPointerCapture(ev.pointerId)) verDetalle(aIndice(ev));
+        if (ev.pointerType === 'mouse' || zona.hasPointerCapture(ev.pointerId)) {
+          verDetalle(aIndice(ev));
+          gestoBurbuja(ev, 'mueve');
+        }
       });
-      const soltar = (ev) => { if (zona.hasPointerCapture(ev.pointerId)) zona.releasePointerCapture(ev.pointerId); };
+      const soltar = (ev) => {
+        if (zona.hasPointerCapture(ev.pointerId)) zona.releasePointerCapture(ev.pointerId);
+        gestoBurbuja(ev, 'fin');
+      };
       zona.addEventListener('pointerup', soltar);
       zona.addEventListener('pointercancel', soltar);
     }
@@ -1091,15 +1196,342 @@ export function pintarEquipo(contenedor, datos) {
 // Arranque
 // =====================================================================
 
+// =====================================================================
+// «¿Acertó el mercado?»: ayer frente a lo que se esperaba
+// =====================================================================
+// El precio de cada día se decide el día antes a mediodía, con la previsión del tiempo de
+// entonces (ficha 1 de «Cómo se forma el precio»). La tarjeta mira ayer, que ya ha pasado entero:
+// - Tiempo: viento a 100 m y sol, previstos un día antes frente a lo que hubo (Open-Meteo,
+//   media de los seis puntos del histórico). Por debajo del 10 % de diferencia, «acertó»; hasta
+//   el 25 %, «casi»; más, «falló».
+// - Generación real de eólica y fotovoltaica en España (REData), ayer frente a anteayer.
+// - La luz de ayer frente a la de anteayer (media del día, sin impuestos).
+// Son coincidencias, nunca causas: la tarjeta no dice «por eso». Si falta el tiempo o el precio,
+// la tarjeta no se enseña y no sale ningún error. Va fuera de la gráfica, en su propia tarjeta.
+// Se descartó comparar la tarde de hoy: el precio de hoy ya está fijado y la tarde aún no ha pasado.
+const UMBRAL_ACIERTO = 0.10;
+const UMBRAL_CASI = 0.25;
+const f0 = num(0);
+const f1 = num(1);
+
+function veredicto(previsto, real) {
+  const dif = previsto > 0 ? (real - previsto) / previsto : 0;
+  const abs = Math.abs(dif);
+  return { dif, pct: Math.round(abs * 100), nota: abs < UMBRAL_ACIERTO ? 'acerto' : abs < UMBRAL_CASI ? 'casi' : 'fallo' };
+}
+const PALABRA_NOTA = { acerto: 'Acertó', casi: 'Casi', fallo: 'Falló' };
+
+export async function pintarAcerto(contenedor) {
+  const hoy = diaDeHoy();
+  const ayer = diaAnterior(hoy);
+  const anteayer = diaAnterior(ayer);
+  const [tiempo, precioAyer, precioAnteayer, gen] = await Promise.all([
+    tiempoPrevistoYReal(ayer).catch(() => null),
+    precioDelDiaAnterior(hoy).catch(() => null),
+    precioDelDiaAnterior(ayer).catch(() => null),
+    generacionDiaria(anteayer, ayer).catch(() => null),
+  ]);
+  if (!tiempo || !precioAyer || !precioAnteayer) {
+    contenedor.hidden = true; // sin datos no hay juego, y tampoco error
+    return;
+  }
+
+  const v = veredicto(tiempo.viento.previsto, tiempo.viento.real);
+  const so = veredicto(tiempo.sol.previsto, tiempo.sol.real);
+  const nombreAyer = `ayer, ${diaSemana(ayer)}`;
+  const fraseViento = v.nota === 'acerto'
+    ? 'el viento fue el previsto'
+    : `sopló un ${v.pct} % ${v.dif < 0 ? 'menos' : 'más'} de lo previsto`;
+  const fraseSol = so.nota === 'acerto'
+    ? 'el sol fue el previsto'
+    : `hubo un ${so.pct} % ${so.dif < 0 ? 'menos' : 'más'} de sol de lo previsto`;
+  // Respuesta corta y su porqué, sin causas: «Sí», «A medias» o «No».
+  const notas = [v.nota, so.nota];
+  const respuesta = notas.every((n) => n === 'acerto') ? 'Sí'
+    : notas.every((n) => n === 'fallo') ? 'No' : 'A medias';
+  const porque = respuesta === 'Sí'
+    ? `${nombreAyer[0].toUpperCase()}${nombreAyer.slice(1)}, el viento y el sol fueron los previstos.`
+    : `${nombreAyer[0].toUpperCase()}${nombreAyer.slice(1)}, ${fraseViento} y ${fraseSol}.`;
+
+  const media = (d) => d.horas.reduce((a, h) => a + h.precio, 0) / d.horas.length;
+  const mAyer = media(precioAyer);
+  const mAnteayer = media(precioAnteayer);
+  const cmp = compararPrecio(mAyer, mAnteayer);
+  const flecha = { barato: '▼', caro: '▲', igual: '=' }[cmp.sentido];
+  const colorFlecha = { barato: color('barato'), caro: color('caro'), igual: color('eje') }[cmp.sentido];
+
+  const fila = (titulo, previsto, real, unidad, ver, formato) => el('li', { class: 'juego__pista', 'data-nota': ver.nota }, [
+    el('span', { class: 'juego__pista-titulo', texto: titulo }),
+    ` previsto ${formato.format(previsto)} ${unidad} · hubo ${formato.format(real)} ${unidad} `,
+    el('span', { class: 'tramo', 'data-nota': ver.nota, texto: ver.nota === 'acerto' ? PALABRA_NOTA.acerto : `${PALABRA_NOTA[ver.nota]} · ${ver.dif < 0 ? '−' : '+'}${ver.pct} %` }),
+  ]);
+
+  const gAyer = gen?.get(ayer);
+  const gAnte = gen?.get(anteayer);
+  const gwh = (mwh) => `${f0.format(mwh / 1000)} GWh`;
+  const generacion = gAyer?.eolica != null && gAyer?.solar != null && gAnte?.eolica != null && gAnte?.solar != null
+    ? el('p', { class: 'nota juego__generacion' }, [
+      'Lo que produjeron en España (REData): eólica ', el('strong', { texto: gwh(gAyer.eolica) }), ` (anteayer ${gwh(gAnte.eolica)}), `,
+      'fotovoltaica ', el('strong', { texto: gwh(gAyer.solar) }), ` (anteayer ${gwh(gAnte.solar)}).`,
+    ])
+    : null;
+
+  contenedor.hidden = false;
+  contenedor.replaceChildren(...[
+    el('h3', { class: 'juego__titulo', texto: '¿Acertó el mercado?' }),
+    el('p', { class: 'juego__respuesta' }, [
+      `${respuesta}. `,
+      el('span', { texto: porque }),
+    ]),
+    el('p', { class: 'nota', texto: 'La energía de ayer se subastó anteayer a las 12:00, con la previsión del tiempo de entonces. Así salió esa previsión:' }),
+    el('ul', { class: 'juego__pistas' }, [
+      fila('Viento:', tiempo.viento.previsto, tiempo.viento.real, 'km/h', v, f0),
+      fila('Sol:', tiempo.sol.previsto, tiempo.sol.real, 'kWh/m²', so, f1),
+    ]),
+    generacion,
+    el('p', { class: 'juego__precio' }, [
+      'La luz de ayer, sin impuestos: media ', el('strong', { texto: euros(mAyer) }), ', ',
+      el('span', { 'aria-hidden': 'true', style: `color:${colorFlecha};margin-right:.2em`, texto: flecha }),
+      cmp.sentido === 'igual' ? 'casi igual que anteayer.' : `${cmp.texto.replace(/o$/, 'a')} que anteayer.` // «la luz», en femenino,
+    ]),
+    el('p', { class: 'nota juego__nota' }, [
+      'Son coincidencias, no causas: cuando llega el día, la subasta ya está cerrada, y la media del día la mueven también los futuros, que suben o bajan todas las horas casi lo mismo. ',
+      Object.assign(el('a', { texto: 'Por qué el precio se decide el día antes' }), { href: 'como-se-forma-el-precio.html' }),
+      '. Viento a 100 m de altura y sol de media en seis puntos de la península (Lugo, Burgos, Zaragoza, Albacete, Badajoz y Bilbao), de Open-Meteo: la previsión de un día antes frente a su análisis más reciente. «Acertó» es menos de un 10 % de diferencia; «Casi», hasta un 25 %; «Falló», más.',
+    ]),
+  ].filter(Boolean));
+}
+
+// ---------- La apuesta: «¿Más barata o más cara mañana?» ----------
+// Segunda parte del juego, en su propia tarjeta debajo de «¿Acertó el mercado?». Desde medianoche
+// hasta las 12:00, hora peninsular, se elige si mañana de 14 a 17 h la luz será más barata o más
+// cara que hoy, con dos pistas: viento y sol previstos. Cuando sale el precio (hacia las 20:15), la
+// siguiente visita dice si se acertó y lleva la racha.
+// - Se cierra a las 12:00 porque a esa hora cierra la subasta de mañana y OMIE publica sus precios
+//   hacia las 13:00: desde entonces la respuesta se puede mirar. De 12:00 a la publicación la
+//   tarjeta dice «Apuestas cerradas» y enseña la apuesta hecha, si la hay. Cada apuesta guarda
+//   cuándo se hizo (hecha, en ms) y una guardada a las 12:00 o después no cuenta: se descarta al
+//   resolver, sin sumar ni romper la racha.
+// - Todo se guarda en este navegador (localStorage, clave CLAVE_APUESTA) y no sale de él: ni
+//   servidor ni servicios nuevos. Sin localStorage (navegación privada de algunos navegadores),
+//   la tarjeta no se enseña.
+// - Se compara la media de 14 a 17 h, sin impuestos, de mañana frente a la de hoy. Si salen
+//   iguales a tres decimales, empate: no cuenta ni rompe la racha.
+// - La racha son los aciertos seguidos entre las apuestas hechas; un día sin apostar no la rompe.
+// Se descartó apostar por el día entero: la media del día la mueven sobre todo los futuros, que
+// suben o bajan todas las horas casi lo mismo; las horas de sol son las que más cambian con el tiempo.
+const CLAVE_APUESTA = 'pvpc-bridge.apuesta.v1';
+const HORAS_APUESTA = [14, 15, 16]; // de 14 a 17 h
+const TEXTO_FRANJA = 'de 14 a 17 h';
+const HORA_CIERRE = 12; // la subasta de mañana cierra a las 12:00, hora peninsular (ZONA)
+
+// ¿Ese instante (ms) cae el día `dia`, en España, antes de las 12:00? 11:59 sí; 12:00 y 12:01, no.
+const antesDelCierre = (instante, dia) => diaDeHoy(new Date(instante)) === dia
+  && horaEnZona(new Date(instante)).hora < HORA_CIERRE;
+
+function leerApuesta() {
+  let crudo;
+  try {
+    crudo = localStorage.getItem(CLAVE_APUESTA);
+    localStorage.setItem(`${CLAVE_APUESTA}.prueba`, '1');
+    localStorage.removeItem(`${CLAVE_APUESTA}.prueba`);
+  } catch {
+    return null; // sin localStorage no hay apuesta
+  }
+  const vacio = { pendiente: null, ultimo: null, racha: { actual: 0, mejor: 0, jugadas: 0, aciertos: 0 } };
+  try {
+    const e = JSON.parse(crudo);
+    const fecha = (f) => typeof f === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(f);
+    const ok = e && e.racha && ['actual', 'mejor', 'jugadas', 'aciertos'].every((k) => Number.isInteger(e.racha[k]) && e.racha[k] >= 0)
+      && (e.pendiente === null || (fecha(e.pendiente.dia) && fecha(e.pendiente.ref) && Number.isFinite(e.pendiente.refMedia)
+        && Number.isFinite(e.pendiente.hecha) && ['barata', 'cara'].includes(e.pendiente.eleccion)));
+    return ok ? { ...vacio, ...e } : vacio;
+  } catch {
+    return vacio;
+  }
+}
+const guardarApuesta = (e) => { try { localStorage.setItem(CLAVE_APUESTA, JSON.stringify(e)); } catch { /* lleno o bloqueado */ } };
+
+// Media de 14 a 17 h de un día, o null si falta alguna de esas horas.
+function mediaFranja(horas) {
+  const xs = (horas || []).filter((h) => HORAS_APUESTA.includes(h.hora)).map((h) => h.precio);
+  return xs.length === HORAS_APUESTA.length ? xs.reduce((a, b) => a + b, 0) / xs.length : null;
+}
+const redondeo = (p) => Math.round(p * 1000); // a tres decimales, como se ve en pantalla
+
+export async function pintarApuesta(contenedor) {
+  const estado = leerApuesta();
+  if (!estado) { contenedor.hidden = true; return; }
+  const hoy = diaDeHoy();
+  const manana = diaSiguiente(hoy);
+  const [horasHoy, horasManana, tiempo] = await Promise.all([
+    cargarDiaREData(hoy), cargarDiaREData(manana),
+    tiempoEnHoras(hoy, manana, HORAS_APUESTA).catch(() => null),
+  ]);
+  const mHoy = mediaFranja(horasHoy);
+  const mManana = mediaFranja(horasManana);
+
+  // 1. Si hay una apuesta esperando y ya ha salido su precio, se resuelve. Una guardada a las
+  //    12:00 o después de su día (con la respuesta ya decidida) no cuenta y se descarta.
+  let recien = false;
+  let p = estado.pendiente;
+  if (p && !antesDelCierre(p.hecha, p.ref)) {
+    estado.pendiente = null;
+    guardarApuesta(estado);
+    p = null;
+  }
+  if (p) {
+    const horasDia = p.dia === manana ? horasManana : p.dia === hoy ? horasHoy : await cargarDiaREData(p.dia);
+    const m = mediaFranja(horasDia);
+    if (m !== null) {
+      const empate = redondeo(m) === redondeo(p.refMedia);
+      const acierto = !empate && (p.eleccion === 'barata' ? m < p.refMedia : m > p.refMedia);
+      const r = estado.racha;
+      if (!empate) {
+        r.jugadas += 1;
+        if (acierto) { r.aciertos += 1; r.actual += 1; r.mejor = Math.max(r.mejor, r.actual); } else r.actual = 0;
+      }
+      estado.ultimo = { ...p, media: m, acierto, empate };
+      estado.pendiente = null;
+      guardarApuesta(estado);
+      recien = true;
+    }
+  }
+  if (mHoy === null && !estado.ultimo) { contenedor.hidden = true; return; }
+
+  clearTimeout(contenedor.relojCierre);
+  const sinPrecioManana = mHoy !== null && mManana === null;
+  const abierta = sinPrecioManana && antesDelCierre(Date.now(), hoy); // antes de las 12:00
+  const cerrada = sinPrecioManana && !abierta; // de 12:00 a que sale el precio de mañana
+  const titulo = el('h3', { class: 'juego__titulo', texto: '¿Más barata o más cara mañana?' });
+  const piezas = [titulo];
+
+  // 2. El resultado de la última apuesta, mientras sea de hoy o de mañana (o recién resuelta).
+  const u = estado.ultimo;
+  if (u && (recien || u.dia >= hoy)) {
+    const cmp = compararPrecio(u.media, u.refMedia);
+    const como = cmp.sentido === 'igual' ? 'casi igual que' : `${cmp.texto.replace(/o$/, 'a')} que`;
+    const palabra = u.empate ? 'Empate.' : u.acierto ? 'Acertaste.' : 'Esta vez no.';
+    piezas.push(el('p', { class: 'juego__respuesta' }, [
+      `${palabra} `,
+      el('span', { texto: `Dijiste «más ${u.eleccion}». El ${diaSemana(u.dia)}, ${TEXTO_FRANJA}, la luz salió a ${euros(u.media)}, ${como} el ${diaSemana(u.ref)} (${f3.format(u.refMedia)}).` }),
+    ]));
+  }
+
+  // 3. La pregunta, si aún se puede apostar; si no, cómo sale mañana frente a hoy.
+  const estadoTexto = el('p', { class: 'nota juego__estado', 'aria-live': 'polite' });
+  if (abierta) {
+    // Si la página sigue abierta a las 12:00, la tarjeta se vuelve a pintar ya cerrada.
+    const { hora, minuto, segundo } = horaEnZona();
+    const faltan = (((HORA_CIERRE - hora) * 60 - minuto) * 60 - segundo) * 1000;
+    contenedor.relojCierre = setTimeout(() => pintarApuesta(contenedor).catch(() => { contenedor.hidden = true; }), faltan + 1000);
+    const botones = ['barata', 'cara'].map((op) => el('button', {
+      type: 'button', class: 'boton boton--secundario', 'data-eleccion': op, 'aria-pressed': 'false', texto: `Más ${op}`,
+    }));
+    const marcar = () => {
+      const elegida = estado.pendiente?.dia === manana ? estado.pendiente.eleccion : null;
+      for (const b of botones) {
+        const si = b.dataset.eleccion === elegida;
+        b.setAttribute('aria-pressed', String(si));
+        b.className = si ? 'boton' : 'boton boton--secundario';
+      }
+      estadoTexto.textContent = elegida
+        ? `Tu apuesta: más ${elegida}. Puedes cambiarla hasta las 12:00 y lo sabrás cuando salga el precio de mañana, hacia las 20:15.`
+        : 'Se puede apostar hasta las 12:00, hora peninsular.';
+    };
+    for (const b of botones) {
+      b.addEventListener('click', () => {
+        // Pulsado a las 12:00 o después con la página abierta desde antes: no se guarda.
+        if (!antesDelCierre(Date.now(), hoy)) {
+          pintarApuesta(contenedor).catch(() => { contenedor.hidden = true; });
+          return;
+        }
+        estado.pendiente = { dia: manana, ref: hoy, refMedia: mHoy, eleccion: b.dataset.eleccion, hecha: Date.now() };
+        guardarApuesta(estado);
+        marcar();
+      });
+    }
+    piezas.push(
+      el('p', {}, [
+        `¿Mañana, ${diaSemana(manana)}, ${TEXTO_FRANJA}, la luz será más barata o más cara que hoy? Hoy, a esas horas: `,
+        el('strong', { texto: euros(mHoy) }), ' de media, sin impuestos.',
+      ]),
+      el('p', { class: 'juego__eleccion' }, botones),
+      estadoTexto,
+    );
+    const tHoy = tiempo?.get(hoy);
+    const tManana = tiempo?.get(manana);
+    if (tHoy && tManana) {
+      const pista = (nombre, a, b, unidad, formato) => el('li', { class: 'juego__pista' }, [
+        el('span', { class: 'juego__pista-titulo', texto: nombre }),
+        ` hoy ${formato.format(a)} ${unidad} · mañana ${formato.format(b)} ${unidad} (previsto)`,
+      ]);
+      piezas.push(
+        el('p', { class: 'nota', texto: `Pistas, ${TEXTO_FRANJA}:` }),
+        el('ul', { class: 'juego__pistas' }, [
+          pista('Viento:', tHoy.viento, tManana.viento, 'km/h', f0),
+          pista('Sol:', tHoy.sol, tManana.sol, 'W/m²', f0),
+        ]),
+      );
+    }
+    marcar();
+  } else if (cerrada) {
+    const tuya = estado.pendiente?.dia === manana ? estado.pendiente.eleccion : null;
+    piezas.push(
+      el('p', {}, [el('strong', { texto: 'Apuestas cerradas:' }), ' el precio de mañana ya está decidido y sale hacia las 20:15.']),
+      el('p', { class: 'nota juego__estado' }, tuya
+        ? [`Tu apuesta: más ${tuya} que hoy ${TEXTO_FRANJA} (`, el('strong', { texto: euros(mHoy) }), ' de media, sin impuestos).']
+        : ['La próxima apuesta abre a medianoche y cierra a las 12:00.']),
+    );
+  } else if (mHoy !== null && mManana !== null && u?.dia === manana && (recien || u.dia >= hoy)) {
+    // Ya se ha dicho arriba cómo sale mañana: solo cuándo vuelve la apuesta.
+    piezas.push(el('p', { class: 'nota', texto: 'La próxima apuesta abre a medianoche y cierra a las 12:00.' }));
+  } else if (mHoy !== null && mManana !== null) {
+    const cmp = compararPrecio(mManana, mHoy);
+    piezas.push(el('p', {}, [
+      `Ya ha salido el precio de mañana: ${TEXTO_FRANJA}, `, el('strong', { texto: euros(mManana) }), ' de media, ',
+      cmp.sentido === 'igual' ? 'casi igual que hoy' : `${cmp.texto.replace(/o$/, 'a')} que hoy`, ` (${f3.format(mHoy)}). `,
+      'La próxima apuesta abre a medianoche y cierra a las 12:00.',
+    ]));
+  }
+
+  // 4. La racha y de dónde sale todo.
+  const r = estado.racha;
+  if (r.jugadas > 0) {
+    piezas.push(el('p', { class: 'juego__precio' }, [
+      'Racha: ', el('strong', { texto: `${r.actual} seguid${r.actual === 1 ? 'o' : 'os'}` }),
+      ` · mejor ${r.mejor} · ${r.aciertos} de ${r.jugadas} acertadas`,
+    ]));
+  }
+  piezas.push(el('p', { class: 'nota juego__nota' }, [
+    'Tu apuesta y tu racha se quedan en este navegador. Se apuesta hasta las 12:00 porque a esa hora cierra la subasta de mañana: desde entonces el precio está decidido y solo falta publicarlo (',
+    Object.assign(el('a', { texto: 'por qué' }), { href: 'como-se-forma-el-precio.html' }),
+    '). Pistas de Open-Meteo, media de los seis puntos de arriba. Son coincidencias, no causas.',
+  ]));
+
+  contenedor.hidden = false;
+  contenedor.replaceChildren(...piezas);
+}
+
 export async function iniciarGraficas() {
   const hoy = document.querySelector('#precio-hoy [data-grafica="hoy"]');
   const historico = document.querySelector('#historico [data-grafica="historico"]');
   const equipo = document.querySelector('#equipo-tiempo [data-grafica="equipo"]');
+  const acerto = document.querySelector('#precio-hoy [data-grafica="acerto"]');
+  const apuesta = document.querySelector('#precio-hoy [data-grafica="apuesta"]');
   const tareas = [];
   if (hoy) {
     tareas.push(precioDelDia()
       .then((dia) => (dia ? pintarPrecioHoy(hoy, dia) : mostrarError(hoy, 'No hay precios disponibles ahora mismo.')))
       .catch((e) => { console.warn('precio-hoy:', e); mostrarError(hoy, 'No se ha podido dibujar el precio de hoy.'); }));
+  }
+  if (acerto) {
+    tareas.push(pintarAcerto(acerto)
+      .catch((e) => { console.warn('acerto:', e); acerto.hidden = true; }));
+  }
+  if (apuesta) {
+    tareas.push(pintarApuesta(apuesta)
+      .catch((e) => { console.warn('apuesta:', e); apuesta.hidden = true; }));
   }
   if (historico) {
     tareas.push(cargarHistorico()
