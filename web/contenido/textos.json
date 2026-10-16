@@ -209,5 +209,38 @@
       { "nombre": "Simone", "papel": "Textos: que cada frase se entienda y no prometa nada que el repositorio no haga." }
     ],
     "debilidades": "<strong>Lo que aún cojea.</strong> Los agentes no se hablan directamente: todo pasa por escrito y por la persona. Charlie no ve imágenes, así que lo visual lo comprueba otro agente. Y lo que se decide hablando hay que pasarlo a texto, o se pierde."
+  },
+
+  "apuesta": {
+    "_nota": "Textos de la tarjeta «¿Más barata o más cara mañana?» (index.html, #precio-hoy). No es una sección: los pinta Charlie desde graficas.js. Lo que va entre llaves lo rellena el código. Cifras de las reglas: datos/historico, junio de 2023 a octubre de 2026, media de 14 a 17 h. Explicación y ejemplo con un día real en web/contenido/README.md.",
+
+    "ejemplo": {
+      "etiqueta": "Ejemplo",
+      "entrada": "Así se juega, con el último día que ya tiene respuesta.",
+      "pregunta": "¿El {dia}, de 14 a 17 h, la luz sería más barata o más cara que el {dia_ref}? El {dia_ref}, a esas horas: <strong>{media_ref}</strong> de media, sin impuestos.",
+      "pistas": "Pistas de aquella mañana: viento {viento_ref} → {viento_dia} km/h y sol {sol_ref} → {sol_dia} W/m² (previsto).",
+      "resultado": "Salió a <strong>{media_dia}</strong>, {comparacion} que el {dia_ref}: acertaba «más {eleccion}».",
+      "empate": "Salió a <strong>{media_dia}</strong>, igual que el {dia_ref} a tres decimales: empate, no cuenta.",
+      "mercado": "Solo el mercado, sin peajes ni cargos: {mercado_ref} → {mercado_dia} €/kWh."
+    },
+
+    "avisos": {
+      "_nota": "Uno como mucho, debajo de las pistas, según qué día es mañana. Ni domingo tras sábado ni días laborables seguidos llevan aviso: ahí decide el mercado. Festivo = la lista de festivos de valle de docs/proyecto-precio-luz.md.",
+      "sabado": "Ojo, mañana es sábado: peajes y cargos van en valle todo el día y baja el consumo. Desde junio de 2023, de viernes a sábado, de 14 a 17 h, la luz bajó 97 de cada 100 veces.",
+      "lunes": "Ojo, mañana es lunes: vuelven los peajes de día laborable y sube el consumo. Desde junio de 2023, de domingo a lunes, de 14 a 17 h, la luz subió 97 de cada 100 veces.",
+      "festivo": "Ojo, mañana es festivo nacional: peajes y cargos van en valle todo el día, como un domingo, y eso tira el precio hacia abajo.",
+      "pista_mercado": "Para ver qué hace el tiempo sin el calendario, fíjate en el mercado: de viernes a sábado baja 85 de cada 100 veces, no 97."
+    },
+
+    "manual": {
+      "resumen": "Cómo sale el precio de mañana",
+      "entrada": "Nadie pone el precio a mano. Sale en cuatro pasos:",
+      "pasos": [
+        { "titulo": "12:00, cierra la subasta", "texto": "En el <a href=\"https://www.omie.es/es/mercado-de-electricidad\">mercado diario de OMIE</a> se cruzan las ofertas de quien vende y quien compra la energía de mañana. Desde ese momento el precio está decidido: por eso la apuesta cierra a esa hora." },
+        { "titulo": "Hacia las 13:00, el mercado", "texto": "OMIE publica el precio de cada cuarto de hora de mañana. Es solo una pieza: faltan los futuros, el ajuste de la red y los peajes y cargos." },
+        { "titulo": "Hacia las 20:15, el PVPC", "texto": "Red Eléctrica suma todas las piezas y publica el precio de cada hora de mañana. Con ese precio, sin impuestos, se resuelve la apuesta." },
+        { "titulo": "Qué lo mueve", "texto": "El viento y el sol lo bajan, porque producen casi gratis y dejan fuera a las centrales caras. El gas y el consumo lo suben. Y el calendario: sábados, domingos y festivos nacionales llevan los peajes más baratos todo el día." }
+      ]
+    }
   }
 }
