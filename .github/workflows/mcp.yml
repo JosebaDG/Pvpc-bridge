@@ -68,9 +68,9 @@ jobs:
           MCP_CLAVE: ${{ secrets.MCP_CLAVE }}
         run: |
           secretos="$RUNNER_TEMP/secretos.json"
+          trap 'rm -f "$secretos"' EXIT # se borra aunque falle el despliegue
           node -e 'require("fs").writeFileSync(process.argv[1], JSON.stringify({ MCP_CLAVE: process.env.MCP_CLAVE }), { mode: 0o600 })' "$secretos"
           npx wrangler deploy --secrets-file "$secretos" | tee "$RUNNER_TEMP/despliegue.log"
-          rm -f "$secretos"
           echo "url=$(grep -oE 'https://[a-z0-9.-]+\.workers\.dev' "$RUNNER_TEMP/despliegue.log" | head -1)" >> "$GITHUB_OUTPUT"
 
       - name: El servidor responde y pide la clave

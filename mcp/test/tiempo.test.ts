@@ -27,6 +27,13 @@ test("hoy y mañana se cuentan en hora de Madrid, no en UTC", () => {
   assert.equal(sumarDias("2026-12-31", 1), "2027-01-01");
   assert.throws(() => resolverDia("2026-02-30", ahora), ErrorEntrada);
   assert.throws(() => resolverDia("pasado", ahora), ErrorEntrada);
+  // Fuera de lo que tiene REData: antes del 2021-06-01 o después de mañana.
+  assert.equal(resolverDia("2021-06-01", ahora), "2021-06-01");
+  assert.throws(() => resolverDia("2021-05-31", ahora), ErrorEntrada);
+  assert.throws(() => resolverDia("1990-01-01", ahora), ErrorEntrada);
+  assert.equal(resolverDia("2026-10-17", ahora), "2026-10-17");
+  assert.throws(() => resolverDia("2026-10-18", ahora), ErrorEntrada);
+  assert.throws(() => resolverDia("2030-01-01", ahora), ErrorEntrada);
 });
 
 test("momentos: ahora, HH:MM, 24:00 e ISO con y sin desfase", () => {

@@ -113,15 +113,31 @@ export function limitesDia(fecha: string): [number, number] {
   return [madridAUtc(a, m, d), madridAUtc(a2, m2, d2)];
 }
 
-/** "hoy", "manana"/"mañana" o "AAAA-MM-DD" -> "AAAA-MM-DD". */
+/** Primer día con el PVPC en REData. Antes de eso, REE no tiene nada que darnos. */
+export const PRIMER_DIA = "2021-06-01";
+
+/**
+ * Una fecha fuera de lo que REE puede tener (antes del PRIMER_DIA o después de mañana) es un
+ * error de quien pregunta, no un "aún no publicado": así no se pide a REE un día que nunca saldrá
+ * (y que, como "no publicado", se volvería a pedir cada 10 minutos).
+ */
+export function comprobarRango(fecha: string, ahora: number): string {
+  trocear(fecha);
+  const manana = sumarDias(fechaMadrid(ahora), 1);
+  if (fecha < PRIMER_DIA || fecha > manana) {
+    throw new ErrorEntrada(`REData tiene el PVPC desde el ${PRIMER_DIA} y hasta mañana (${manana}); ${fecha} queda fuera.`);
+  }
+  return fecha;
+}
+
+/** "hoy", "manana"/"mañana" o "AAAA-MM-DD" -> "AAAA-MM-DD", dentro del rango que tiene REE. */
 export function resolverDia(dia: string | undefined, ahora: number): string {
   const v = (dia ?? "hoy").trim().toLowerCase();
   const hoy = fechaMadrid(ahora);
   if (v === "hoy") return hoy;
   if (v === "manana" || v === "mañana") return sumarDias(hoy, 1);
   if (v === "ayer") return sumarDias(hoy, -1);
-  trocear(v);
-  return v;
+  return comprobarRango(v, ahora);
 }
 
 /**

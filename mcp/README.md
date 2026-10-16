@@ -13,13 +13,13 @@ Los cálculos son los de [`puente_luz.py`](../puente_luz.py), traducidos a TypeS
 | `bloque` | Mejor bloque seguido de N horas para un consumo, con su coste. | `horas`, `potencia_w`, `dia`, `desde`, `hasta` |
 | `umbral` | Franjas seguidas por debajo de un precio. | `max_precio_eur_kwh`, `dia`, `desde`, `hasta`, `min_horas`, `potencia_w`, `con_impuestos` |
 
-- `dia`: `hoy`, `manana` o `AAAA-MM-DD`. Los precios de mañana salen hacia las 20:15, hora peninsular.
+- `dia`: `hoy`, `manana` o `AAAA-MM-DD`, desde el 2021-06-01 (primer día del PVPC en REData) hasta mañana. Los precios de mañana salen hacia las 20:15, hora peninsular: antes de las 20:00 el servidor ni pregunta a REE y responde `no_publicado`.
 - `desde` y `hasta`: `ahora`, `HH:MM` (`24:00` es medianoche) o una fecha y hora ISO. Sin desfase, se entiende hora peninsular.
 - `bloque` sin `dia` mira desde ahora hasta el final de mañana, si ya está publicado. Con `dia: hoy` no propone horas pasadas.
 
 Todas las horas van en hora peninsular. Los precios van en €/kWh **sin impuestos**, como los publica Red Eléctrica, y cada respuesta trae también el precio con impuestos genéricos de 2026: impuesto eléctrico del 5,11 % e IVA del 21 %. No incluye término de potencia, bono social ni alquiler del contador. El servidor no conoce ningún contrato privado.
 
-Si un día aún no está publicado, la herramienta responde con `"error": "no_publicado"` y no se cae.
+Si un día aún no está publicado, la herramienta responde con `"error": "no_publicado"` y no se cae. Una fecha fuera de ese rango responde `"error": "entrada"` sin llegar a REE.
 
 ## Conectarse
 

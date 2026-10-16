@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { atender } from "../src/servidor.ts";
 import { creaObtenerDia, vaciarMemoria, type AlmacenKV } from "../src/ree.ts";
 import { NoPublicado } from "../src/precios.ts";
+import { ErrorEntrada } from "../src/tiempo.ts";
 import { fetchFalso, ms, obtenerGuardado } from "./ayuda.ts";
 
 const CLAVE = "clave-de-prueba-123";
@@ -82,9 +83,17 @@ test("caché: cada día se pide a REE una sola vez, también entre instancias co
   vaciarMemoria(); // como si fuera otra instancia del Worker
   await obtener("2026-10-15");
   assert.equal(llamadas.length, 1);
-  // Un día sin publicar se recuerda un rato sin volver a preguntar.
+  // Mañana antes de las 20:00 no se pregunta: sería un 502 seguro.
   await assert.rejects(obtener("2026-10-16"), NoPublicado);
-  await assert.rejects(obtener("2026-10-16"), NoPublicado);
+  assert.equal(llamadas.length, 1);
+  // Una fecha que REE nunca tendrá es un error de entrada y tampoco se pide.
+  await assert.rejects(obtener("1990-01-01"), ErrorEntrada);
+  await assert.rejects(obtener("2026-10-17"), ErrorEntrada);
+  assert.equal(llamadas.length, 1);
+  // Desde las 20:00 sí se pregunta, y un día sin publicar se recuerda un rato sin volver a preguntar.
+  const tarde = creaObtenerDia({ kv, fetch: f, ahora: () => ms("2026-10-15T20:05+02:00") });
+  await assert.rejects(tarde("2026-10-16"), NoPublicado);
+  await assert.rejects(tarde("2026-10-16"), NoPublicado);
   assert.equal(llamadas.length, 2);
   assert.equal(guardado.size, 1);
 });

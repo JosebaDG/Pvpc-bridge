@@ -7,11 +7,15 @@
 // y solo en memoria, para no gastar escrituras de KV.
 
 import { ErrorFuente, NoPublicado, parsearREE, type Tramo } from "./precios.ts";
-import { limitesDia } from "./tiempo.ts";
+import { comprobarRango, fechaMadrid, partesMadrid, sumarDias } from "./tiempo.ts";
 
 export const URL_REE = "https://apidatos.ree.es/es/datos/mercados/precios-mercados-tiempo-real";
 const ESPERA_MS = 15_000;
 const NO_PUBLICADO_MS = 10 * 60_000;
+/** REE publica el PVPC de mañana hacia las 20:15, hora peninsular: antes de las 20:00 ni se pregunta. */
+const HORA_PUBLICACION = 20;
+const MENSAJE_NO_PUBLICADO = (fecha: string) =>
+  `REE aún no tiene precios del ${fecha} (salen hacia las 20:15, hora peninsular, del día anterior).`;
 const VERSION_CACHE = "v1";
 
 /** Lo que se usa de un espacio de Workers KV (así las pruebas pueden pasar uno falso). */
@@ -45,7 +49,11 @@ export function creaObtenerDia(op: OpcionesDescarga = {}) {
   const pedir = op.fetch ?? fetch;
   const ahora = op.ahora ?? Date.now;
   return async function obtenerDia(fecha: string): Promise<Tramo[]> {
-    limitesDia(fecha); // valida la fecha antes de nada
+    const t = ahora();
+    comprobarRango(fecha, t); // fecha válida y dentro de lo que REE puede tener, antes de nada
+    if (fecha === sumarDias(fechaMadrid(t), 1) && partesMadrid(t).hora < HORA_PUBLICACION) {
+      throw new NoPublicado(MENSAJE_NO_PUBLICADO(fecha)); // sería un 502 seguro: no se pide
+    }
     const clave = `pvpc:${VERSION_CACHE}:${fecha}`;
     const enMemoria = memoria.get(clave);
     if (enMemoria) {
@@ -111,7 +119,7 @@ async function descargar(fecha: string, pedir: typeof fetch, alPedir?: (url: str
       // no era JSON
     }
     if (res.status === 502 && /no est(á|a)n disponibles/i.test(detalle)) {
-      throw new NoPublicado(`REE aún no tiene precios del ${fecha} (salen hacia las 20:15, hora peninsular, del día anterior).`);
+      throw new NoPublicado(MENSAJE_NO_PUBLICADO(fecha));
     }
     throw new ErrorFuente(`HTTP ${res.status} de REE: ${detalle.slice(0, 200)}`);
   }
