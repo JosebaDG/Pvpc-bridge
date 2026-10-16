@@ -1,0 +1,13 @@
+// Configuración del Worker. No lleva ningún secreto: la clave (MCP_CLAVE) se guarda aparte,
+// como secreto del Worker, y la sube el workflow "MCP" desde los secretos del repositorio.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "pvpc-bridge-mcp",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "observability": { "enabled": true },
+  // Caché de precios compartida. Sin "id": la primera vez que se despliega, wrangler crea el espacio
+  // de KV solo y después reutiliza el mismo. Entra en el plan gratuito.
+  "kv_namespaces": [{ "binding": "PRECIOS" }]
+}

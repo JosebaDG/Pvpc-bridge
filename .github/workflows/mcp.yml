@@ -1,0 +1,86 @@
+name: MCP
+
+# Despliega el servidor MCP (mcp/) en Cloudflare Workers.
+# Solo a mano (Actions > MCP > Run workflow), igual que la web.
+#
+# Necesita tres secretos del repositorio (Settings > Secrets and variables > Actions):
+#   CLOUDFLARE_API_TOKEN   token de Cloudflare con la plantilla "Edit Cloudflare Workers"
+#   CLOUDFLARE_ACCOUNT_ID  identificador de la cuenta de Cloudflare
+#   MCP_CLAVE              clave que tendrán que mandar los clientes (larga y aleatoria)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mcp
+  cancel-in-progress: false
+
+jobs:
+  desplegar:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mcp
+    steps:
+      - name: Comprueba que están los secretos
+        working-directory: .
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_CUENTA: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          MCP_CLAVE: ${{ secrets.MCP_CLAVE }}
+        run: |
+          fallo=0
+          [ -n "$CF_TOKEN" ] || { echo "::error::Falta el secreto CLOUDFLARE_API_TOKEN"; fallo=1; }
+          [ -n "$CF_CUENTA" ] || { echo "::error::Falta el secreto CLOUDFLARE_ACCOUNT_ID"; fallo=1; }
+          [ -n "$MCP_CLAVE" ] || { echo "::error::Falta el secreto MCP_CLAVE"; fallo=1; }
+          if [ -n "$MCP_CLAVE" ] && [ ${#MCP_CLAVE} -lt 24 ]; then
+            echo "::error::MCP_CLAVE es demasiado corta: usa al menos 24 caracteres aleatorios"; fallo=1
+          fi
+          exit $fallo
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: mcp/package-lock.json
+
+      - run: npm ci --ignore-scripts
+
+      - name: Pruebas antes de desplegar
+        run: |
+          npm run comprobar
+          npm test
+
+      - name: Despliega en Cloudflare con la clave como secreto del Worker
+        id: despliegue
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          MCP_CLAVE: ${{ secrets.MCP_CLAVE }}
+        run: |
+          secretos="$RUNNER_TEMP/secretos.json"
+          node -e 'require("fs").writeFileSync(process.argv[1], JSON.stringify({ MCP_CLAVE: process.env.MCP_CLAVE }), { mode: 0o600 })' "$secretos"
+          npx wrangler deploy --secrets-file "$secretos" | tee "$RUNNER_TEMP/despliegue.log"
+          rm -f "$secretos"
+          echo "url=$(grep -oE 'https://[a-z0-9.-]+\.workers\.dev' "$RUNNER_TEMP/despliegue.log" | head -1)" >> "$GITHUB_OUTPUT"
+
+      - name: El servidor responde y pide la clave
+        env:
+          URL: ${{ steps.despliegue.outputs.url }}
+        run: |
+          [ -n "$URL" ] || { echo "::warning::wrangler no ha dado la URL; mírala en Cloudflare > Workers"; exit 0; }
+          sleep 5
+          curl -fsS "$URL/salud"
+          estado=$(curl -s -o /dev/null -w '%{http_code}' -X POST "$URL/mcp")
+          [ "$estado" = "401" ] || { echo "::error::/mcp sin clave debería dar 401 y da $estado"; exit 1; }
+          echo "### Servidor MCP desplegado" >> "$GITHUB_STEP_SUMMARY"
+          echo "URL para los clientes: $URL/mcp (cabecera Authorization: Bearer y la clave MCP_CLAVE)" >> "$GITHUB_STEP_SUMMARY"

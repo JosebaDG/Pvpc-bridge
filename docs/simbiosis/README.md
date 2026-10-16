@@ -11,6 +11,7 @@ Esta carpeta cuenta cómo se ha hecho Pvpc-bridge: quién propuso qué, quién d
 5. [Conectar GitHub con *device flow*](05-conectar-github-device-flow.md): cómo un agente sube código sin ver nunca una contraseña.
 6. [Cómo replicarlo](06-como-replicarlo.md): lecciones para quien quiera trabajar así.
 7. [Cómo se hizo la web](07-la-web.md): la web, pull request a pull request, con lo que salió mal.
+8. [El servidor MCP](08-el-servidor-mcp.md): de script a servicio, y por qué TypeScript, con clave y con GitHub Actions.
 
 ## Cómo se mantiene esta carpeta
 
