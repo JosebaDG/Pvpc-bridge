@@ -1,7 +1,7 @@
 {
  "repo": "JosebaDG/Pvpc-bridge",
- "generado": "2026-10-15T12:10:57Z",
- "fuente": "API pública de GitHub, /repos/JosebaDG/Pvpc-bridge/pulls (sin token)",
+ "generado": "2026-10-17T08:24:32Z",
+ "fuente": "API pública de GitHub, /repos/JosebaDG/Pvpc-bridge/pulls",
  "agentes": [
   "Miles",
   "Charlie",
@@ -236,9 +236,240 @@
    "autor": "Charlie",
    "como_se_sabe": "título",
    "abierto": "2026-10-15T12:07:38Z",
+   "fusionado": "2026-10-15T12:12:20Z",
+   "cerrado": "2026-10-15T12:12:20Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/29"
+  },
+  {
+   "numero": 30,
+   "titulo": "README: una persona y cuatro agentes de IA, con Maya y Simone en «Quién hace qué» (Simone)",
+   "rama": "web/simone",
+   "autor": "Simone",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T13:03:12Z",
+   "fusionado": "2026-10-15T14:04:58Z",
+   "cerrado": "2026-10-15T14:04:58Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/30"
+  },
+  {
+   "numero": 31,
+   "titulo": "Web: fichas de «El mercado por dentro» con el detalle a un clic (Maya)",
+   "rama": "web/maya",
+   "autor": "Maya",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T13:06:16Z",
+   "fusionado": "2026-10-15T14:04:40Z",
+   "cerrado": "2026-10-15T14:04:40Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/31"
+  },
+  {
+   "numero": 32,
+   "titulo": "Portada: quita el botón «Descubre la de hoy» (Simone)",
+   "rama": "web/simone-portada",
+   "autor": "Simone",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T13:49:27Z",
+   "fusionado": "2026-10-15T14:04:49Z",
+   "cerrado": "2026-10-15T14:04:49Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/32"
+  },
+  {
+   "numero": 33,
+   "titulo": "Portada: sin botones, el hueco vacío no empuja la gráfica (Maya)",
+   "rama": "web/maya-portada",
+   "autor": "Maya",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T14:03:05Z",
+   "fusionado": null,
+   "cerrado": "2026-10-15T15:06:59Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/33"
+  },
+  {
+   "numero": 34,
+   "titulo": "Gráfica de hoy: en el móvil, la frase de la comparación se ve mientras se desliza (Charlie)",
+   "rama": "web/charlie",
+   "autor": "Charlie",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T14:06:48Z",
+   "fusionado": "2026-10-15T16:05:45Z",
+   "cerrado": "2026-10-15T16:05:45Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/34"
+  },
+  {
+   "numero": 35,
+   "titulo": "Juego «¿Acertó el mercado?»: primera versión, ayer frente a lo previsto (Charlie)",
+   "rama": "web/charlie-juego",
+   "autor": "Charlie",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T14:14:28Z",
+   "fusionado": "2026-10-15T16:05:33Z",
+   "cerrado": "2026-10-15T16:05:33Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/35"
+  },
+  {
+   "numero": 36,
+   "titulo": "Roles: Miles fusiona con cuatro condiciones, la persona revisa lo publicado, y cinco papeles (Simone)",
+   "rama": "web/simone",
+   "autor": "Simone",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T15:03:24Z",
+   "fusionado": "2026-10-15T16:05:57Z",
+   "cerrado": "2026-10-15T16:05:57Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/36"
+  },
+  {
+   "numero": 37,
+   "titulo": "Web: diseño de la tarjeta «¿Acertó el mercado?» (Maya)",
+   "rama": "web/maya-juego",
+   "autor": "Maya",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T15:06:49Z",
+   "fusionado": "2026-10-15T16:05:22Z",
+   "cerrado": "2026-10-15T16:05:22Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/37"
+  },
+  {
+   "numero": 38,
+   "titulo": "Juego «¿Acertó el mercado?»: fuera los estilos en línea, ya los pone base.css (Charlie)",
+   "rama": "web/charlie",
+   "autor": "Charlie",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T16:17:20Z",
+   "fusionado": "2026-10-15T17:03:24Z",
+   "cerrado": "2026-10-15T17:03:24Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/38"
+  },
+  {
+   "numero": 39,
+   "titulo": "Gráfica de hoy: en el móvil, la burbuja de «ayer» va junto al dedo (Charlie)",
+   "rama": "web/charlie",
+   "autor": "Charlie",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T18:05:23Z",
+   "fusionado": "2026-10-15T19:05:22Z",
+   "cerrado": "2026-10-15T19:05:22Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/39"
+  },
+  {
+   "numero": 40,
+   "titulo": "Juego: la apuesta «¿Más barata o más cara mañana?», con racha en el navegador (Charlie)",
+   "rama": "web/charlie-apuesta",
+   "autor": "Charlie",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-15T18:11:58Z",
+   "fusionado": "2026-10-16T07:03:07Z",
+   "cerrado": "2026-10-16T07:03:07Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/40"
+  },
+  {
+   "numero": 41,
+   "titulo": "Servidor MCP en Cloudflare Workers (TypeScript, con clave)",
+   "rama": "mcp/miles",
+   "autor": "Miles",
+   "como_se_sabe": "rama",
+   "abierto": "2026-10-16T07:30:04Z",
+   "fusionado": "2026-10-16T13:10:00Z",
+   "cerrado": "2026-10-16T13:10:00Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/41"
+  },
+  {
+   "numero": 42,
+   "titulo": "Juego: la nota de método, a un clic, y los botones de la apuesta a partes iguales (Maya)",
+   "rama": "web/maya",
+   "autor": "Maya",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-16T07:32:55Z",
+   "fusionado": "2026-10-16T10:03:26Z",
+   "cerrado": "2026-10-16T10:03:26Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/42"
+  },
+  {
+   "numero": 43,
+   "titulo": "Juego: «Cómo se calcula» plegado, con una frase a la vista, y mañana no se pide a REE antes de las 20:00 (Charlie)",
+   "rama": "web/charlie",
+   "autor": "Charlie",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-16T10:21:17Z",
+   "fusionado": "2026-10-16T13:03:38Z",
+   "cerrado": "2026-10-16T13:03:38Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/43"
+  },
+  {
+   "numero": 44,
+   "titulo": "Gráfica de hoy: la burbuja de «ayer» ya no depende de dónde queda la gráfica en la pantalla (Charlie)",
+   "rama": "web/charlie",
+   "autor": "Charlie",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-16T19:23:31Z",
+   "fusionado": "2026-10-17T07:07:38Z",
+   "cerrado": "2026-10-17T07:07:38Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/44"
+  },
+  {
+   "numero": 45,
+   "titulo": "Móvil: cabecera opaca, cifra sin hueco en la coma, aire tras las rejillas, halo suave y estilo del ejemplo de la apuesta (Maya)",
+   "rama": "web/maya",
+   "autor": "Maya",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-16T19:34:13Z",
+   "fusionado": "2026-10-17T07:07:48Z",
+   "cerrado": "2026-10-17T07:07:48Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/45"
+  },
+  {
+   "numero": 46,
+   "titulo": "Apuesta: ejemplo, avisos de fin de semana y manual en cuatro pasos; «casi igual» sin «=»; nota de marzo de 2022 en el histórico (Simone)",
+   "rama": "web/simone-apuesta",
+   "autor": "Simone",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-16T19:49:25Z",
+   "fusionado": "2026-10-17T07:07:58Z",
+   "cerrado": "2026-10-17T07:07:58Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/46"
+  },
+  {
+   "numero": 47,
+   "titulo": "Apuesta: ejemplo resuelto con la apuesta cerrada y manual de cuatro pasos (Charlie)",
+   "rama": "web/charlie",
+   "autor": "Charlie",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-17T07:26:07Z",
    "fusionado": null,
    "cerrado": null,
-   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/29"
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/47"
+  },
+  {
+   "numero": 48,
+   "titulo": "Gráfica de hoy: «Hora actual» sin contorno y unidades sin partir (Charlie)",
+   "rama": "web/charlie-detalles",
+   "autor": "Charlie",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-17T07:28:30Z",
+   "fusionado": null,
+   "cerrado": null,
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/48"
+  },
+  {
+   "numero": 49,
+   "titulo": "Web: comentarios genéricos, sin nombres personales ni referencias al repaso (Miles)",
+   "rama": "web/miles-sin-nombres",
+   "autor": "Miles",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-17T08:19:17Z",
+   "fusionado": "2026-10-17T08:23:37Z",
+   "cerrado": "2026-10-17T08:23:37Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/49"
+  },
+  {
+   "numero": 50,
+   "titulo": "Web: publicación diaria a las 20:30 con el histórico y la actividad del equipo al día (Miles)",
+   "rama": "miles/publicacion-diaria",
+   "autor": "Miles",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-17T08:22:17Z",
+   "fusionado": "2026-10-17T08:24:05Z",
+   "cerrado": "2026-10-17T08:24:05Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/50"
   }
  ]
 }
