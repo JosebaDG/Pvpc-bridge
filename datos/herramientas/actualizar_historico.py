@@ -26,6 +26,15 @@ Uso (desde la raíz del repositorio):
   python3 datos/herramientas/actualizar_historico.py             # descarga lo que falta
   python3 datos/herramientas/actualizar_historico.py --serie precios
   python3 datos/herramientas/actualizar_historico.py --solo-csv  # rehace CSV y manifiesto, sin red
+  python3 datos/herramientas/actualizar_historico.py --serie precios --con-manana  # publicación diaria
+
+El precio de mañana (--con-manana):
+  REE publica el PVPC de mañana cada tarde (el «last-update» de sus respuestas suele marcar
+  hacia las 20:45, hora peninsular). Con --con-manana, y solo a partir de las 21:00 en Madrid,
+  el tramo que contiene mañana se vuelve a pedir si la copia guardada todavía no tiene el PVPC
+  de mañana, aunque no hayan pasado 12 horas (como mucho una vez por hora). El último día del
+  mes también se pide el tramo del mes siguiente, que solo tiene ese día. Si REE aún no lo ha
+  publicado, no se insiste: se guarda lo que haya y se vuelve a intentar en la siguiente ejecución.
 """
 from __future__ import annotations
 
@@ -47,6 +56,12 @@ import urllib.parse
 import urllib.request
 from datetime import date, datetime, timedelta, timezone
 
+try:
+    from zoneinfo import ZoneInfo
+    MADRID = ZoneInfo("Europe/Madrid")
+except Exception:  # sin base de datos de zonas horarias: se usa la hora del sistema
+    MADRID = None
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import cache_ree  # noqa: E402
 
@@ -60,6 +75,9 @@ PAUSA_MINIMA = 3.0
 ESPERAS_REINTENTO = (30, 60, 120)
 MAX_FALLOS_SEGUIDOS = 3
 HORAS_ENTRE_REFRESCOS = 12
+HORA_MANANA = 21            # desde esta hora de Madrid se espera tener ya el PVPC de mañana
+MINUTOS_ENTRE_REINTENTOS_MANANA = 60
+ID_PVPC = "1001"
 
 INICIO_SPOT = date(2014, 1, 1)
 INICIO_PVPC = date(2021, 6, 1)
@@ -88,15 +106,21 @@ def _fin_de_mes(d: date) -> date:
     return sig - timedelta(days=1)
 
 
-def tramos_precios(hoy: date):
+def ahora_madrid() -> datetime:
+    return datetime.now(MADRID) if MADRID else datetime.now()
+
+
+def tramos_precios(hoy: date, hasta: date | None = None):
+    """Un tramo por mes natural, de INICIO_SPOT al mes de `hasta` (por defecto, hoy)."""
+    hasta = hasta or hoy
     d = INICIO_SPOT
-    while d <= hoy:
+    while d <= hasta:
         fin = _fin_de_mes(d)
         yield ("mercados", "precios-mercados-tiempo-real", f"{d}T00:00", f"{fin}T23:59", "hour", fin)
         d = fin + timedelta(days=1)
 
 
-def tramos_generacion(hoy: date):
+def tramos_generacion(hoy: date, hasta: date | None = None):
     for a in range(INICIO_GEN.year, hoy.year + 1):
         fin = date(a, 12, 31)
         yield ("generacion", "estructura-generacion", f"{a}-01-01T00:00", f"{fin}T23:59", "day", fin)
@@ -132,8 +156,9 @@ def _registrar(serie, url, resultado, detalle=""):
         w.writerow([datetime.now(timezone.utc).isoformat(timespec="seconds"), serie, url, resultado, detalle[:200]])
 
 
-def _con_reintentos(cortes: Cortes, serie: str, url: str, pedir):
-    """Ejecuta pedir() respetando pausas y reintentos. Devuelve el resultado o None."""
+def _con_reintentos(cortes: Cortes, serie: str, url: str, pedir, reintentar: bool = True):
+    """Ejecuta pedir() respetando pausas y reintentos. Devuelve el resultado o None.
+    Con reintentar=False, un fallo no se reintenta ni cuenta para parar (días aún sin publicar)."""
     intento = 0
     while True:
         cortes.esperar_turno()
@@ -145,6 +170,9 @@ def _con_reintentos(cortes: Cortes, serie: str, url: str, pedir):
         except cache_ree.ErrorREData as e:
             codigo = e.codigo
             _registrar(serie, url, f"error {codigo}", str(e))
+            if not reintentar:
+                print(f"   sin datos ({codigo}): se reintentará en la siguiente ejecución", flush=True)
+                return None
             reintentable = codigo == 0 or codigo == 429 or codigo >= 500
             max_intentos = len(ESPERAS_REINTENTO) if reintentable else 1
             if intento < max_intentos:
@@ -160,6 +188,30 @@ def _con_reintentos(cortes: Cortes, serie: str, url: str, pedir):
             return None
 
 
+def tiene_pvpc_de(entrada, dia: date) -> bool:
+    """¿La copia guardada trae el PVPC completo de `dia` (23, 24 o 25 horas)?"""
+    if entrada is None:
+        return False
+    d = cache_ree.leer(entrada["ruta"])
+    for it in d.get("included", []):
+        if str(it.get("id")) == ID_PVPC:
+            n = sum(str(v.get("datetime", ""))[:10] == dia.isoformat() for v in it["attributes"]["values"])
+            return n >= 23
+    return False
+
+
+def _falta_manana(entrada, ini: str, fin_tramo: date, manana: date | None) -> bool:
+    """El tramo contiene mañana, la copia no trae su PVPC y hace más de una hora que se pidió."""
+    if manana is None or not (date.fromisoformat(ini[:10]) <= manana <= fin_tramo):
+        return False
+    if entrada is None:
+        return True
+    if tiene_pvpc_de(entrada, manana):
+        return False
+    guardado = datetime.fromisoformat(entrada["guardado_en"])
+    return datetime.now(timezone.utc) - guardado > timedelta(minutes=MINUTOS_ENTRE_REINTENTOS_MANANA)
+
+
 def _necesita_red(entrada, fin_tramo: date, hoy: date) -> bool:
     if entrada is None:
         return True
@@ -170,23 +222,30 @@ def _necesita_red(entrada, fin_tramo: date, hoy: date) -> bool:
     return datetime.now(timezone.utc) - guardado > timedelta(hours=HORAS_ENTRE_REFRESCOS)
 
 
-def descargar_redata(serie: str, hoy: date, cortes: Cortes, simular: bool, max_pet: int | None):
+def descargar_redata(serie: str, hoy: date, cortes: Cortes, simular: bool, max_pet: int | None,
+                     manana: date | None = None):
     pendientes = []
-    for cat, w, ini, fin, tt, fin_tramo in TRAMOS[serie](hoy):
+    for cat, w, ini, fin, tt, fin_tramo in TRAMOS[serie](hoy, manana):
         e = cache_ree.en_cache(cat, w, ini, fin, tt)
-        if _necesita_red(e, fin_tramo, hoy):
-            pendientes.append((cat, w, ini, fin, tt, e is not None))
+        por_manana = serie == "precios" and _falta_manana(e, ini, fin_tramo, manana)
+        if por_manana or _necesita_red(e, fin_tramo, hoy):
+            # Un tramo que solo tiene días futuros (el mes siguiente, el último día del mes) no se
+            # reintenta: si REE aún no lo ha publicado, toca en la siguiente ejecución.
+            futuro = date.fromisoformat(ini[:10]) > hoy
+            pendientes.append((cat, w, ini, fin, tt, e is not None, por_manana, futuro))
     print(f"[{serie}] {len(pendientes)} peticiones pendientes", flush=True)
-    for n, (cat, w, ini, fin, tt, refresco) in enumerate(pendientes, 1):
+    for n, (cat, w, ini, fin, tt, refresco, por_manana, futuro) in enumerate(pendientes, 1):
         url = cache_ree.url_normalizada(cat, w, ini, fin, tt)
-        print(f"  {n}/{len(pendientes)} {w} {ini[:10]} -> {fin[:10]}{' (refresco)' if refresco else ''}", flush=True)
+        motivo = " (para el precio de mañana)" if por_manana else " (refresco)" if refresco else ""
+        print(f"  {n}/{len(pendientes)} {w} {ini[:10]} -> {fin[:10]}{motivo}", flush=True)
         if simular:
             continue
         if max_pet is not None and cortes.peticiones >= max_pet:
             print("  alcanzado --max-peticiones; el resto queda para otro día")
             return
         _con_reintentos(cortes, serie, url,
-                        lambda: cache_ree.obtener(cat, w, ini, fin, tt, refrescar=refresco, avisar=False))
+                        lambda: cache_ree.obtener(cat, w, ini, fin, tt, refrescar=refresco, avisar=False),
+                        reintentar=not futuro)
 
 
 def _url_meteo(lat, lon, ini: date, fin: date) -> str:
@@ -278,7 +337,9 @@ def _apuntar_actualizacion(serie, it):
 
 def _entradas(serie, hoy):
     usadas = []
-    for cat, w, ini, fin, tt, _ in TRAMOS[serie](hoy):
+    # Para los CSV se lee también el mes siguiente si ya está guardado (el último día del mes,
+    # trae el PVPC de mañana).
+    for cat, w, ini, fin, tt, _ in TRAMOS[serie](hoy, hoy + timedelta(days=1)):
         e = cache_ree.en_cache(cat, w, ini, fin, tt)
         if e:
             usadas.append(e)
@@ -430,18 +491,38 @@ def main():
     ap.add_argument("--max-peticiones", type=int, default=None, help="tope de peticiones en esta ejecución")
     ap.add_argument("--simular", action="store_true", help="lista lo que pediría, sin tocar la red")
     ap.add_argument("--solo-csv", action="store_true", help="no descarga: rehace CSV y manifiesto desde la caché")
+    ap.add_argument("--con-manana", action="store_true",
+                    help=f"desde las {HORA_MANANA}:00 en Madrid, pide el PVPC de mañana si aún no está guardado")
     a = ap.parse_args()
-    hoy = date.today()
+    ahora = ahora_madrid()
+    hoy = ahora.date()
+    manana = None
+    if a.con_manana:
+        if ahora.hour >= HORA_MANANA:
+            manana = hoy + timedelta(days=1)
+            print(f"precio de mañana: se busca el del {manana}", flush=True)
+        else:
+            print(f"precio de mañana: antes de las {HORA_MANANA}:00 en Madrid no se busca", flush=True)
     if not a.solo_csv:
         cortes = Cortes(a.pausa)
         for s in (["precios", "generacion", "meteo"] if a.serie == "todas" else [a.serie]):
             if s == "meteo":
                 descargar_meteo(hoy, cortes, a.simular, a.max_peticiones)
             else:
-                descargar_redata(s, hoy, cortes, a.simular, a.max_peticiones)
+                descargar_redata(s, hoy, cortes, a.simular, a.max_peticiones, manana)
         print(f"peticiones hechas: {cortes.peticiones}")
     if not a.simular:
         generar(hoy)
+    if manana is not None:
+        e = next((cache_ree.en_cache(cat, w, ini, fin, tt)
+                  for cat, w, ini, fin, tt, fin_t in tramos_precios(hoy, manana)
+                  if date.fromisoformat(ini[:10]) <= manana <= fin_t), None)
+        tiene = tiene_pvpc_de(e, manana)
+        print(f"precio de mañana ({manana}): {'guardado' if tiene else 'todavía no publicado por REE'}")
+        salida = os.environ.get("GITHUB_OUTPUT")
+        if salida:
+            with open(salida, "a", encoding="utf-8") as f:
+                f.write(f"manana={'si' if tiene else 'no'}\n")
 
 
 if __name__ == "__main__":

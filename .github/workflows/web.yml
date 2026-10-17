@@ -4,17 +4,20 @@ name: Web
 # Repo público: los minutos de Actions no cuentan.
 #
 # Dos formas de lanzarla:
-# - Sola, cada día a las 20:30 hora peninsular (después de que REE publique los precios de
-#   mañana, hacia las 20:15). Antes de publicar pone al día el histórico de precios y de
-#   generación (datos/) y la actividad del equipo de «Cómo se ha hecho»
+# - Sola, cada día a las 21:30 hora peninsular, con el precio de mañana ya incluido. REE publica
+#   el PVPC de mañana cada tarde (sus respuestas marcan la actualización hacia las 20:45), así que
+#   a las 21:30 hay margen. Antes de publicar pone al día el histórico de precios y de generación
+#   (datos/), con el PVPC de mañana, y la actividad del equipo de «Cómo se ha hecho»
 #   (web/datos/actividad.json), y guarda esos datos en main. Es la única publicación automática.
+#   Si REE aún no ha publicado mañana, se publica igual con lo que haya y la siguiente ejecución
+#   lo vuelve a intentar.
 # - A mano (Actions > Web > Run workflow), cuando lo fusionado cambia lo que se ve. Publica main
 #   tal cual, con la actividad del equipo al día. Marcando «actualizar», hace también lo de la
 #   publicación diaria.
 #
-# Hora: el cron de Actions va en UTC y no sabe del cambio de hora. Hay dos horarios, 18:30 UTC
-# (las 20:30 en verano, UTC+2) y 19:30 UTC (las 20:30 en invierno, UTC+1), y el primer trabajo
-# deja seguir solo al que cae a las 20:30 en Madrid ese día. Se mira qué horario saltó y no la
+# Hora: el cron de Actions va en UTC y no sabe del cambio de hora. Hay dos horarios, 19:30 UTC
+# (las 21:30 en verano, UTC+2) y 20:30 UTC (las 21:30 en invierno, UTC+1), y el primer trabajo
+# deja seguir solo al que cae a las 21:30 en Madrid ese día. Se mira qué horario saltó y no la
 # hora del reloj, porque GitHub puede retrasar unos minutos los trabajos programados.
 
 on:
@@ -25,8 +28,8 @@ on:
         type: boolean
         default: false
   schedule:
-    - cron: "30 18 * * *"
     - cron: "30 19 * * *"
+    - cron: "30 20 * * *"
 
 permissions:
   contents: read
@@ -60,12 +63,12 @@ jobs:
           case "$desfase" in +0100|+0200) ;; *) echo "::error::No se sabe la hora de Madrid ($desfase)"; exit 1 ;; esac
           echo "Horario que ha saltado: $HORARIO (UTC). Desfase de Madrid hoy: $desfase"
           case "$HORARIO|$desfase" in
-            "30 18 * * *|+0200"|"30 19 * * *|+0100")
-              echo "Son las 20:30 en Madrid: toca publicar."
+            "30 19 * * *|+0200"|"30 20 * * *|+0100")
+              echo "Son las 21:30 en Madrid: toca publicar."
               echo "seguir=si" >> "$GITHUB_OUTPUT"
               echo "actualizar=si" >> "$GITHUB_OUTPUT" ;;
             *)
-              echo "Este horario no cae a las 20:30 en Madrid hoy: no se hace nada."
+              echo "Este horario no cae a las 21:30 en Madrid hoy: no se hace nada."
               echo "seguir=no" >> "$GITHUB_OUTPUT"
               echo "actualizar=no" >> "$GITHUB_OUTPUT" ;;
           esac
@@ -97,8 +100,10 @@ jobs:
         continue-on-error: true
         run: |
           # Con la caché del repo: solo pide lo que falta y el tramo en curso (dos o tres peticiones,
-          # con pausas). El tiempo de Open-Meteo no se pide aquí: la web no lo lee del histórico.
-          python3 datos/herramientas/actualizar_historico.py --serie precios
+          # con pausas). --con-manana: desde las 21:00 en Madrid, vuelve a pedir el tramo de mañana
+          # si la copia guardada aún no trae su PVPC (el último día del mes, el del mes siguiente).
+          # El tiempo de Open-Meteo no se pide aquí: la web no lo lee del histórico.
+          python3 datos/herramientas/actualizar_historico.py --serie precios --con-manana
           python3 datos/herramientas/actualizar_historico.py --serie generacion
 
       - name: Pone al día la actividad del equipo («Cómo se ha hecho»)
@@ -147,9 +152,16 @@ jobs:
           GUARDAR: ${{ steps.guardar.outcome }}
         run: |
           ultimo=$(tail -n 1 datos/historico/pvpc_peninsula_horario/$(ls datos/historico/pvpc_peninsula_horario | sort | tail -n 1) | cut -d, -f1)
+          manana=$(TZ=Europe/Madrid date -d tomorrow +%F)
+          if grep -q "^$manana" datos/historico/pvpc_peninsula_horario/*.csv; then
+            precio_manana="sí, el del $manana"
+          else
+            precio_manana="todavía no (lo vuelve a intentar la siguiente ejecución)"
+          fi
           {
             echo "### Publicación de la web"
             echo "- Histórico: ${HIST:-no tocaba} · último dato del PVPC: $ultimo"
+            echo "- Precio de mañana guardado: $precio_manana"
             echo "- Actividad del equipo: $ACT"
             echo "- Datos guardados en main: ${GUARDAR:-no tocaba}"
           } >> "$GITHUB_STEP_SUMMARY"

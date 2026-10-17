@@ -6,6 +6,9 @@
 //   En GitHub Pages la Action los copia a web/datos/; en local se leen de ../datos/historico/.
 // - Hoy: primero REData en directo desde el navegador (REE permite leerla desde otra web: responde
 //   con la cabecera CORS «Access-Control-Allow-Origin: *»). Si falla, el último día de los CSV.
+// - Mañana: la publicación diaria de las 21:30 (hora peninsular) ya guarda en los CSV el PVPC de
+//   mañana. Por eso el último día de los CSV puede ser mañana: lo que enseña «hoy» se filtra
+//   siempre por la fecha de hoy, nunca por el último día del archivo.
 //
 // Sin dependencias: solo fetch y JavaScript del navegador.
 
@@ -107,6 +110,12 @@ export async function cargarHistorico() {
   return listas.flat().sort((a, b) => a.utc - b.utc);
 }
 
+// Las horas de un día en los CSV del repo, o null si ese día no está completo (23, 24 o 25 horas).
+export async function diaDelCSV(fecha) {
+  const horas = agruparPorDia(await cargarAño(Number(fecha.slice(0, 4)))).get(fecha) || [];
+  return horas.length >= 23 ? horas : null;
+}
+
 // ---------- Hoy en directo desde REData ----------
 
 // Pide a REData el PVPC de un día. Es una petición GET sin cabeceras extra a propósito:
@@ -129,6 +138,13 @@ export function cargarDiaREData(fecha) {
   if (aunSinPublicar(fecha)) return Promise.resolve(null);
   if (!diasPedidos.has(fecha)) diasPedidos.set(fecha, pedirDiaREData(fecha));
   return diasPedidos.get(fecha);
+}
+
+// Como cargarDiaREData, pero si REData no responde mira los CSV del repo, que tras la publicación
+// de las 21:30 ya traen el PVPC de mañana. Antes de que salga (aunSinPublicar) da null igual.
+export async function cargarDia(fecha) {
+  if (aunSinPublicar(fecha)) return null;
+  return (await cargarDiaREData(fecha)) || diaDelCSV(fecha);
 }
 
 async function pedirDiaREData(fecha) {
@@ -193,8 +209,8 @@ export async function precioDelDiaAnterior(fecha) {
   const ayer = diaAnterior(fecha);
   const directo = await cargarDiaREData(ayer);
   if (directo) return { fecha: ayer, horas: directo, fuente: 'redata' };
-  const horas = agruparPorDia(await cargarAño(Number(ayer.slice(0, 4)))).get(ayer) || [];
-  return horas.length >= 23 ? { fecha: ayer, horas, fuente: 'csv' } : null;
+  const horas = await diaDelCSV(ayer);
+  return horas ? { fecha: ayer, horas, fuente: 'csv' } : null;
 }
 
 // Compara un precio con el de otro día a la misma hora. Devuelve
