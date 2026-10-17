@@ -26,7 +26,7 @@
 import {
   precioDelDia, precioDelDiaAnterior, compararPrecio, cargarHistorico, tercios, mejorBloque, PRIMER_AÑO,
   cargarActividad, ZONA, diaDeHoy, diaAnterior, tiempoPrevistoYReal, generacionDiaria,
-  cargarDiaREData, diaSiguiente, tiempoEnHoras, horaEnZona,
+  cargarDiaREData, diaSiguiente, tiempoEnHoras, horaEnZona, pistasEjemplo,
 } from './datos.js';
 
 // ---------- Colores: solo variables CSS de Maya (web/css/tokens.css) ----------
@@ -1414,6 +1414,99 @@ function mediaFranja(horas) {
 }
 const redondeo = (p) => Math.round(p * 1000); // a tres decimales, como se ve en pantalla
 
+// ---------- Ejemplo resuelto y manual de la apuesta (textos de Simone) ----------
+// Los textos están en `apuesta` de web/contenido/textos.json (dueña: Simone); lo que va entre
+// llaves lo rellena este código. Se lee el mismo JSON que pinta textos.js, una vez por visita.
+const RUTA_TEXTOS = new URL('../contenido/textos.json', import.meta.url);
+let textosApuesta = null;
+function cargarTextosApuesta() {
+  textosApuesta ??= fetch(RUTA_TEXTOS)
+    .then((r) => (r.ok ? r.json() : null))
+    .then((d) => d?.apuesta ?? null)
+    .catch(() => null);
+  return textosApuesta;
+}
+
+// Rellena una plantilla de Simone y la convierte en nodos. Solo se acepta <strong> (lo único que
+// usan estos textos) y como elemento de verdad; cualquier otra etiqueta sale como texto. Los
+// valores se meten como texto, nunca como HTML. Se descartó innerHTML: un JSON con un <script>
+// u onclick no debe ejecutarse nunca (la misma regla que textos.js).
+function plantilla(texto, valores) {
+  const rellenar = (s) => s.replace(/\{(\w+)\}/g, (m, k) => (k in valores ? String(valores[k]) : m));
+  return String(texto ?? '').split(/(<strong>[\s\S]*?<\/strong>)/).filter(Boolean)
+    .map((parte) => (parte.startsWith('<strong>') && parte.endsWith('</strong>')
+      ? el('strong', { texto: rellenar(parte.slice(8, -9)) })
+      : rellenar(parte)));
+}
+
+// Ejemplo con el último día ya resuelto: «hoy» frente a «ayer», de 14 a 17 h. Se marca la opción
+// que acertó, para que se lea como un día resuelto y no como una apuesta (ninguna si es empate).
+// Marcado y estilos de Maya (.juego__ejemplo en base.css): botones disabled y el bueno con
+// data-elegida. Devuelve null si falta algún precio o los textos.
+function ejemploApuesta(t, ref, dia, horasRef, horasDia, pistas) {
+  const mRef = mediaFranja(horasRef);
+  const mDia = mediaFranja(horasDia);
+  if (!t?.ejemplo || mRef === null || mDia === null) return null;
+  const e = t.ejemplo;
+  const empate = redondeo(mDia) === redondeo(mRef);
+  const eleccion = mDia < mRef ? 'barata' : 'cara';
+  const cmp = compararPrecio(mDia, mRef);
+  const v = {
+    dia: diaSemana(dia), dia_ref: diaSemana(ref), media_ref: euros(mRef), media_dia: euros(mDia), eleccion,
+    comparacion: cmp.sentido === 'igual' ? 'casi igual' : cmp.texto.replace(/o$/, 'a'),
+  };
+  if (pistas) {
+    Object.assign(v, {
+      viento_ref: f0.format(pistas.ref.viento), viento_dia: f0.format(pistas.dia.viento),
+      sol_ref: f0.format(pistas.ref.sol), sol_dia: f0.format(pistas.dia.sol),
+    });
+  }
+  const botones = ['barata', 'cara'].map((op) => el('button', {
+    type: 'button', class: 'boton boton--secundario', disabled: '', 'data-elegida': !empate && op === eleccion ? '' : null,
+    texto: `Más ${op}`,
+  }));
+  return el('div', { class: 'juego__ejemplo' }, [
+    // Etiqueta, entrada y pregunta en un solo párrafo (marcado de Maya): una franja menos de alto.
+    el('p', {}, [
+      el('span', { class: 'juego__etiqueta', texto: e.etiqueta || 'Ejemplo' }),
+      ...(e.entrada ? [...plantilla(e.entrada, v), ' '] : []), ...plantilla(e.pregunta, v),
+    ]),
+    pistas && e.pistas ? el('p', {}, plantilla(e.pistas, v)) : null,
+    el('p', { class: 'juego__eleccion' }, botones),
+    el('p', { class: 'nota' }, plantilla(empate ? e.empate : e.resultado, v)),
+  ].filter(Boolean));
+}
+
+// Manual de cuatro pasos (de la subasta al PVPC y qué lo mueve), plegado como «Cómo se calcula».
+function manualApuesta(t) {
+  const m = t?.manual;
+  if (!m?.pasos?.length) return null;
+  return el('details', { class: 'ficha__detalle juego__mas juego__manual' }, [
+    el('summary', { texto: m.resumen || 'Cómo sale el precio de mañana' }),
+    el('div', { class: 'juego__nota' }, [
+      m.entrada ? el('p', { class: 'nota' }, plantilla(m.entrada, {})) : null,
+      el('ol', { class: 'nota' }, m.pasos.map((p) => el('li', {}, [
+        el('strong', { texto: p.titulo }), '. ', ...textoConEnlaces(p.texto),
+      ]))),
+    ].filter(Boolean)),
+  ]);
+}
+
+// Como plantilla(), pero acepta también <a href="https://…"> (el manual enlaza a OMIE). Solo
+// enlaces https absolutos o páginas de esta web; si no, el enlace sale como texto.
+function textoConEnlaces(texto) {
+  return String(texto ?? '').split(/(<a href="[^"]*">[\s\S]*?<\/a>)/).filter(Boolean).flatMap((parte) => {
+    const m = parte.match(/^<a href="([^"]*)">([\s\S]*?)<\/a>$/);
+    if (m && /^(https:\/\/|[a-z0-9-]+\.html(#[a-z0-9-]+)?$)/i.test(m[1])) {
+      const a = el('a', { texto: m[2] });
+      a.href = m[1];
+      if (m[1].startsWith('https:')) a.rel = 'noopener';
+      return [a];
+    }
+    return plantilla(parte, {});
+  });
+}
+
 export async function pintarApuesta(contenedor) {
   const estado = leerApuesta();
   if (!estado) { contenedor.hidden = true; return; }
@@ -1425,6 +1518,7 @@ export async function pintarApuesta(contenedor) {
   ]);
   const mHoy = mediaFranja(horasHoy);
   const mManana = mediaFranja(horasManana);
+  const textos = await cargarTextosApuesta();
 
   // 1. Si hay una apuesta esperando y ya ha salido su precio, se resuelve. Una guardada a las
   //    12:00 o después de su día (con la respuesta ya decidida) no cuenta y se descarta.
@@ -1550,6 +1644,20 @@ export async function pintarApuesta(contenedor) {
     ]));
   }
 
+  // 3b. Con la apuesta cerrada (desde las 12:00 hasta medianoche), un ejemplo resuelto con hoy
+  //     frente a ayer, en el sitio de las pistas. Joseba lo pidió para entender el juego cuando
+  //     no se puede apostar. Hoy y ayer ya los ha pedido la gráfica de hoy: ninguna consulta nueva
+  //     a REE; solo una a Open-Meteo para las pistas, y sin ellas el ejemplo sale igual.
+  //     Se descartó usar mañana frente a hoy cuando ya ha salido: repetiría la frase de arriba.
+  if (!abierta && mHoy !== null) {
+    const ayer = diaAnterior(hoy);
+    const [horasAyer, pistas] = await Promise.all([
+      cargarDiaREData(ayer), pistasEjemplo(ayer, hoy, HORAS_APUESTA).catch(() => null),
+    ]);
+    const ejemplo = ejemploApuesta(textos, ayer, hoy, horasAyer, horasHoy, pistas);
+    if (ejemplo) piezas.push(ejemplo);
+  }
+
   // 4. La racha y de dónde sale todo.
   const r = estado.racha;
   if (r.jugadas > 0) {
@@ -1561,6 +1669,7 @@ export async function pintarApuesta(contenedor) {
   // A la vista, dónde se guarda la racha (es cuestión de confianza); el resto, plegado.
   piezas.push(
     el('p', { class: 'nota', texto: 'Tu apuesta y tu racha se quedan en este navegador.' }),
+    manualApuesta(textos),
     comoSeCalcula([
       'Se apuesta hasta las 12:00 porque a esa hora cierra la subasta de mañana: desde entonces el precio está decidido y solo falta publicarlo (',
       Object.assign(el('a', { texto: 'por qué' }), { href: 'como-se-forma-el-precio.html' }),
@@ -1569,7 +1678,7 @@ export async function pintarApuesta(contenedor) {
   );
 
   contenedor.hidden = false;
-  contenedor.replaceChildren(...piezas);
+  contenedor.replaceChildren(...piezas.filter(Boolean));
 }
 
 export async function iniciarGraficas() {
