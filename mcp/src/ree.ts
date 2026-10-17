@@ -12,10 +12,10 @@ import { comprobarRango, fechaMadrid, partesMadrid, sumarDias } from "./tiempo.t
 export const URL_REE = "https://apidatos.ree.es/es/datos/mercados/precios-mercados-tiempo-real";
 const ESPERA_MS = 15_000;
 const NO_PUBLICADO_MS = 10 * 60_000;
-/** REE publica el PVPC de mañana hacia las 20:15, hora peninsular: antes de las 20:00 ni se pregunta. */
+/** REE publica el PVPC de mañana hacia las 20:45, hora peninsular: antes de las 20:00 ni se pregunta. */
 const HORA_PUBLICACION = 20;
 const MENSAJE_NO_PUBLICADO = (fecha: string) =>
-  `REE aún no tiene precios del ${fecha} (salen hacia las 20:15, hora peninsular, del día anterior).`;
+  `REE aún no tiene precios del ${fecha} (salen hacia las 20:45, hora peninsular, del día anterior).`;
 const VERSION_CACHE = "v1";
 
 /** Lo que se usa de un espacio de Workers KV (así las pruebas pueden pasar uno falso). */

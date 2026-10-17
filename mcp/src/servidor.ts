@@ -14,7 +14,7 @@ export const VERSION = "0.1.0";
 const dia = z
   .string()
   .optional()
-  .describe("Día: hoy, manana o AAAA-MM-DD (hora peninsular). Los precios de mañana salen hacia las 20:15.");
+  .describe("Día: hoy, manana o AAAA-MM-DD (hora peninsular). Los precios de mañana salen hacia las 20:45.");
 const desde = z.string().optional().describe("Inicio de la ventana: ahora, HH:MM del día o fecha y hora ISO.");
 const hasta = z.string().optional().describe("Final de la ventana: HH:MM del día (24:00 es medianoche) o fecha y hora ISO.");
 
