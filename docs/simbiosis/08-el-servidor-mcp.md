@@ -16,7 +16,7 @@ La idea se apuntó el 12 de octubre en el [issue #2](https://github.com/JosebaDG
 - **Sin estado.** Cada pregunta crea un servidor, responde y se olvida. Se descartó guardar sesiones porque las cuatro herramientas no lo necesitan y obligaba a usar un servicio más de Cloudflare.
 - **Una consulta a REE por día.** Un día publicado no cambia, así que se guarda en Workers KV y no se vuelve a pedir. Es la condición que puso el issue desde el principio.
 - **Cerrado por defecto.** Si falta la clave, el servidor no responde datos. Es mejor cerrado por un olvido que abierto por un olvido.
-- **Desplegar es una decisión de la persona.** El código y el workflow los preparó un agente. Crear el token de Cloudflare, guardar los secretos y pulsar el botón de desplegar le tocan a Joseba, igual que publicar la web.
+- **Desplegar es una decisión de la persona.** El código y el workflow los preparó un agente. Crear el token de Cloudflare, guardar los secretos y pulsar el botón de desplegar le tocan a Joseba.
 
 ## Lo que aprendimos
 

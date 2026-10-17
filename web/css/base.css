@@ -74,8 +74,8 @@ main > section { padding-block: var(--e-7); border-top: 1px solid var(--c-borde)
   z-index: -1;
   pointer-events: none;
 }
-/* En el móvil el halo ocupa casi toda la pantalla y, al 45 %, el lima tiñe el titular (lo vio Joseba
-   en su iPhone). Se suaviza al 18 % en vez de quitarlo: sigue siendo el único adorno de la portada,
+/* En el móvil el halo ocupa casi toda la pantalla y, al 45 %, el lima tiñe el titular (se vio en
+   un móvil real). Se suaviza al 18 % en vez de quitarlo: sigue siendo el único adorno de la portada,
    pero ya no compite con el texto. Se descartó quitarlo del todo: la portada quedaba plana y en
    escritorio, donde va a un lado, no molesta. */
 @media (max-width: 47.99rem) {
@@ -103,7 +103,7 @@ main > section { padding-block: var(--e-7); border-top: 1px solid var(--c-borde)
    con la barra del menú tapando desde 779 y 503. Lo que la empujaba: el titular a 44 px en tres
    líneas, la entrada a 20 px, los márgenes de escritorio y el h2 repetido.
    Se recorta solo el envoltorio (márgenes y tamaños); el texto de Simone no se toca.
-   Se descartó esconder la entrada o el botón: son el gancho que pidió Joseba. */
+   Se descartó esconder la entrada o el botón: son el gancho de la portada. */
 @media (max-width: 47.99rem) {
   #portada:has(+ main) { padding-block: var(--e-5) var(--e-4); }
   #portada:has(+ main) h1 { font-size: clamp(2rem, 1.4rem + 3vw, 2.75rem); margin-bottom: var(--e-3); }

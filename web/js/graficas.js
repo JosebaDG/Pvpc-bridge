@@ -26,7 +26,7 @@
 import {
   precioDelDia, precioDelDiaAnterior, compararPrecio, cargarHistorico, tercios, mejorBloque, PRIMER_AÑO,
   cargarActividad, ZONA, diaDeHoy, diaAnterior, tiempoPrevistoYReal, generacionDiaria,
-  cargarDiaREData, diaSiguiente, tiempoEnHoras, horaEnZona, pistasEjemplo,
+  cargarDia, diaSiguiente, tiempoEnHoras, horaEnZona, pistasEjemplo,
 } from './datos.js';
 
 // ---------- Colores: solo variables CSS de Maya (web/css/tokens.css) ----------
@@ -227,7 +227,7 @@ export function pintarPrecioHoy(contenedor, dia) {
   //   movimiento. Antes bastaba con verlo entero al empezar el gesto: con la gráfica subida (las
   //   primeras barras fuera de la pantalla) el párrafo asomaba abajo, no salía la burbuja y la
   //   frase se leía solo al fondo de la pantalla, lejos del dedo; y si asomaba a medias, unas
-  //   veces salía y otras no (lo vio Joseba en su iPhone). Ahora solo se omite cuando el párrafo
+  //   veces salía y otras no (se vio en un móvil real). Ahora solo se omite cuando el párrafo
   //   está entero en la zona libre y a menos de dos filas del dedo, porque entonces ya está junto
   //   a él. Para volver a salir pide media fila más: sin parpadeos en el límite.
   // - Si el navegador se queda el gesto para desplazar la página (pointercancel) o la página se
@@ -414,7 +414,7 @@ export function pintarPrecioHoy(contenedor, dia) {
       el('span', { class: 'solo-lector', texto: `${sujeto} ${euros(h.precio)}, ` }),
       `${quien} ${f3.format(ref)} · `,
       el('strong', {}, [
-        // En «igual», sin símbolo: «hoy casi igual» ya lo dice (repaso de Joseba, punto 10).
+        // En «igual», sin símbolo: «hoy casi igual» ya lo dice.
         ...(cmp.sentido === 'igual' ? [] : [el('span', { 'aria-hidden': 'true', style: `color:${colorFlecha};margin-right:.25em`, texto: flecha })]),
         cmp.sentido === 'igual' ? `${sujeto} casi igual` : `${sujeto} ${cmp.texto}`,
       ]),
@@ -783,6 +783,10 @@ function prepararHistorico(horas) {
   return { inicio, dias, celdas, medias, escala: [pct(0.05), pct(0.5), pct(0.95)] };
 }
 
+// «el sábado 17 de octubre de 2026» o, si los datos ya llegan a mañana (la publicación de las
+// 21:30 guarda el precio de mañana), «mañana, domingo 18 de octubre de 2026».
+const hastaCuando = (f) => (f > diaDeHoy() ? `mañana, ${fechaLarga(f)}` : `el ${fechaLarga(f)}`);
+
 export function pintarHistorico(contenedor, horas) {
   const H = prepararHistorico(horas);
   const [pBajo, pMedio, pAlto] = H.escala;
@@ -800,7 +804,7 @@ export function pintarHistorico(contenedor, horas) {
   ]);
   const nota = el('p', {
     class: 'nota grafica-nota',
-    texto: `Desde el 1 de enero de ${PRIMER_AÑO} hasta el ${fechaLarga(ultimoDia)}. El color va del 5 % de horas más baratas (${euros(pBajo)}) al 5 % más caras (${euros(pAlto)}), con la mediana (${euros(pMedio)}) en el centro. PVPC de la península, sin impuestos. Fuente: Red Eléctrica (REE), REData.`,
+    texto: `Desde el 1 de enero de ${PRIMER_AÑO} hasta ${hastaCuando(ultimoDia)}. El color va del 5 % de horas más baratas (${euros(pBajo)}) al 5 % más caras (${euros(pAlto)}), con la mediana (${euros(pMedio)}) en el centro. PVPC de la península, sin impuestos. Fuente: Red Eléctrica (REE), REData.`,
   });
   const canvas = el('canvas', {
     role: 'img',
@@ -1513,7 +1517,7 @@ export async function pintarApuesta(contenedor) {
   const hoy = diaDeHoy();
   const manana = diaSiguiente(hoy);
   const [horasHoy, horasManana, tiempo] = await Promise.all([
-    cargarDiaREData(hoy), cargarDiaREData(manana),
+    cargarDia(hoy), cargarDia(manana),
     tiempoEnHoras(hoy, manana, HORAS_APUESTA).catch(() => null),
   ]);
   const mHoy = mediaFranja(horasHoy);
@@ -1530,7 +1534,7 @@ export async function pintarApuesta(contenedor) {
     p = null;
   }
   if (p) {
-    const horasDia = p.dia === manana ? horasManana : p.dia === hoy ? horasHoy : await cargarDiaREData(p.dia);
+    const horasDia = p.dia === manana ? horasManana : p.dia === hoy ? horasHoy : await cargarDia(p.dia);
     const m = mediaFranja(horasDia);
     if (m !== null) {
       const empate = redondeo(m) === redondeo(p.refMedia);
@@ -1645,14 +1649,14 @@ export async function pintarApuesta(contenedor) {
   }
 
   // 3b. Con la apuesta cerrada (desde las 12:00 hasta medianoche), un ejemplo resuelto con hoy
-  //     frente a ayer, en el sitio de las pistas. Joseba lo pidió para entender el juego cuando
+  //     frente a ayer, en el sitio de las pistas. Sirve para entender el juego cuando
   //     no se puede apostar. Hoy y ayer ya los ha pedido la gráfica de hoy: ninguna consulta nueva
   //     a REE; solo una a Open-Meteo para las pistas, y sin ellas el ejemplo sale igual.
   //     Se descartó usar mañana frente a hoy cuando ya ha salido: repetiría la frase de arriba.
   if (!abierta && mHoy !== null) {
     const ayer = diaAnterior(hoy);
     const [horasAyer, pistas] = await Promise.all([
-      cargarDiaREData(ayer), pistasEjemplo(ayer, hoy, HORAS_APUESTA).catch(() => null),
+      cargarDia(ayer), pistasEjemplo(ayer, hoy, HORAS_APUESTA).catch(() => null),
     ]);
     const ejemplo = ejemploApuesta(textos, ayer, hoy, horasAyer, horasHoy, pistas);
     if (ejemplo) piezas.push(ejemplo);

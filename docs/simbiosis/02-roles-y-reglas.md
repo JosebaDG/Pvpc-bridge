@@ -24,7 +24,7 @@ La regla de fondo es sencilla: **la persona decide y valida; los agentes propone
 - Propone enfoques y soluciones alternativas, y revisa los pull requests de Charlie.
 - Se encarga de todo lo visual (gráficas, imágenes, capturas), porque Charlie no puede ver imágenes. Así, lo que hace un agente lo comprueba otro distinto.
 - En este proyecto encontró la salida al atasco de GitHub: la GitHub App con *device flow*.
-- En la web coordina, monta el HTML y revisa los pull requests. Fusiona los que cumplen las cuatro condiciones de arriba y publica la web.
+- En la web coordina, monta el HTML y revisa los pull requests. Fusiona los que cumplen las cuatro condiciones de arriba y publica la web. Aparte, la web se publica sola cada día a las 21:30, hora peninsular, con el precio de mañana, el histórico y la actividad del equipo al día: es la única publicación automática y solo puede tocar datos.
 
 ### Maya, el agente del diseño
 
