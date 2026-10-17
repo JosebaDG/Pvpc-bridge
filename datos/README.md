@@ -67,6 +67,10 @@ python3 datos/herramientas/cache_ree.py verificar   # comprueba los SHA-256 de t
 
 En el índice hay dos orígenes. `descarga` lleva la URL exacta que se pidió. `semilla_inferida` son respuestas reales del estudio del 9 de octubre de 2026 cuya URL no se apuntó y se dedujo del contenido (ver `archivo/estudio-2026-10-09/README.md`).
 
+## Actualización diaria
+
+Desde el 17 de octubre de 2026, la Action que publica la web (`.github/workflows/web.yml`) pone al día cada día, a las 20:30 hora peninsular, el PVPC, el mercado diario y la generación con `actualizar_historico.py`, y guarda el resultado en `main` con un commit de `github-actions[bot]`. Con la caché son dos o tres peticiones al día, con las mismas pausas. A esa hora REE ya ha publicado los precios de mañana, así que el último día del CSV puede ser mañana. El tiempo de Open-Meteo no se actualiza solo: la web no lo lee del histórico. La tabla de arriba es la de la descarga inicial; el rango al día está en `manifiesto.json`.
+
 ## Cómo actualizar sin saturar el servidor
 
 ```bash

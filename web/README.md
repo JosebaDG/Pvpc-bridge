@@ -34,4 +34,11 @@ cd Pvpc-bridge && python3 -m http.server 8000
 
 ## Publicar
 
-La Action `web.yml` solo se lanza a mano hasta que Joseba active Pages. Publicar es decisión suya.
+La Action `web.yml` publica la web de dos formas:
+
+- **Sola, cada día a las 20:30, hora peninsular.** Es la única publicación automática. Antes de publicar pone al día el histórico de precios y de generación (`datos/`, con la caché y la regla de cortesía de [`datos/README.md`](../datos/README.md)) y la actividad del equipo de «Cómo se ha hecho» (`web/datos/actividad.json`), y guarda esos datos en `main` con un commit de `github-actions[bot]`. Ese commit solo puede tocar `datos/` y `web/datos/actividad.json`: si cambiara cualquier otro archivo, el paso se para. A esa hora REE ya ha publicado los precios de mañana (hacia las 20:15).
+- **A mano** (Actions > Web > Run workflow), cuando lo fusionado cambia lo que se ve. Miles la lanza después de fusionar y la persona revisa la web publicada. Publica `main` tal cual, con la actividad del equipo al día. Marcando «actualizar», hace también lo de la publicación diaria.
+
+Si REE falla, la web se publica igual con los datos que ya había y el resumen de la ejecución lo avisa.
+
+**Por qué dos horarios en el cron:** Actions va en UTC y no sabe del cambio de hora. Hay uno a las 18:30 UTC (las 20:30 en verano) y otro a las 19:30 UTC (las 20:30 en invierno), y el primer paso deja seguir solo al que cae a las 20:30 en Madrid ese día.

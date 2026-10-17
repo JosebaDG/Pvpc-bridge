@@ -33,4 +33,4 @@ La tabla de quién toca qué está en el [README de la web](../../web/README.md)
 
 ## Lo que queda
 
-La web ya está publicada en GitHub Pages. Se publica a mano, con una Action, cuando lo que se fusiona cambia lo que se ve, y Joseba revisa la versión publicada y dice lo que le chirría. Lo siguiente es seguir mejorándola de versión en versión.
+La web ya está publicada en GitHub Pages. Se publica a mano, con una Action, cuando lo que se fusiona cambia lo que se ve, y Joseba revisa la versión publicada y dice lo que le chirría. Además, desde el 17 de octubre de 2026 se publica sola cada día a las 20:30, hora peninsular: la misma Action pone al día el histórico de precios y la actividad del equipo, los guarda en `main` y publica. Es la única publicación automática, y solo puede tocar datos. Hasta entonces el histórico se había quedado en el 12 de octubre, el día de la descarga. **Lección:** lo que tiene que estar al día cada día no puede depender de que alguien se acuerde. Lo siguiente es seguir mejorándola de versión en versión.
