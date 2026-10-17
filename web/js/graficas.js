@@ -227,7 +227,7 @@ export function pintarPrecioHoy(contenedor, dia) {
   //   movimiento. Antes bastaba con verlo entero al empezar el gesto: con la gráfica subida (las
   //   primeras barras fuera de la pantalla) el párrafo asomaba abajo, no salía la burbuja y la
   //   frase se leía solo al fondo de la pantalla, lejos del dedo; y si asomaba a medias, unas
-  //   veces salía y otras no (lo vio Joseba en su iPhone). Ahora solo se omite cuando el párrafo
+  //   veces salía y otras no (se vio en un móvil real). Ahora solo se omite cuando el párrafo
   //   está entero en la zona libre y a menos de dos filas del dedo, porque entonces ya está junto
   //   a él. Para volver a salir pide media fila más: sin parpadeos en el límite.
   // - Si el navegador se queda el gesto para desplazar la página (pointercancel) o la página se
@@ -414,7 +414,7 @@ export function pintarPrecioHoy(contenedor, dia) {
       el('span', { class: 'solo-lector', texto: `${sujeto} ${euros(h.precio)}, ` }),
       `${quien} ${f3.format(ref)} · `,
       el('strong', {}, [
-        // En «igual», sin símbolo: «hoy casi igual» ya lo dice (repaso de Joseba, punto 10).
+        // En «igual», sin símbolo: «hoy casi igual» ya lo dice.
         ...(cmp.sentido === 'igual' ? [] : [el('span', { 'aria-hidden': 'true', style: `color:${colorFlecha};margin-right:.25em`, texto: flecha })]),
         cmp.sentido === 'igual' ? `${sujeto} casi igual` : `${sujeto} ${cmp.texto}`,
       ]),

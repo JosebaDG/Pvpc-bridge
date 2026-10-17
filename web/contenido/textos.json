@@ -114,7 +114,7 @@
   },
 
   "como-se-forma-el-precio": {
-    "_nota": "Página nueva aprobada por Joseba el 15-10-2026. Cada cifra sale del repo (docs/proyecto-precio-luz.md, comprobado con el archivo 70 de ESIOS) o de la fuente oficial que se enlaza. Se habla de coincidencias, no de causas, salvo donde la fórmula lo dice.",
+    "_nota": "Cada cifra sale del repo (docs/proyecto-precio-luz.md, comprobado con el archivo 70 de ESIOS) o de la fuente oficial que se enlaza. Se habla de coincidencias, no de causas, salvo donde la fórmula lo dice.",
     "titulo": "Cómo se forma el precio",
     "entrada": "El precio de cada hora del PVPC no lo pone nadie a mano. Sale de una subasta a mediodía, de los futuros y de los costes de la red, y se publica la tarde de antes.",
     "pasos": [
