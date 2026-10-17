@@ -1420,6 +1420,36 @@ function mediaFranja(horas) {
 }
 const redondeo = (p) => Math.round(p * 1000); // a tres decimales, como se ve en pantalla
 
+// Lo mismo con el precio del mercado diario (h.mercado, solo si el día vino de REData).
+function mercadoFranja(horas) {
+  const xs = (horas || []).filter((h) => HORAS_APUESTA.includes(h.hora) && Number.isFinite(h.mercado)).map((h) => h.mercado);
+  return xs.length === HORAS_APUESTA.length ? xs.reduce((a, b) => a + b, 0) / xs.length : null;
+}
+
+// ---------- Calendario: sábados, domingos y festivos de valle ----------
+// Peajes y cargos van en valle las 24 horas los sábados, los domingos y los festivos nacionales
+// de fecha fija. Es la lista de docs/proyecto-precio-luz.md (calendario.festivos_valle del
+// contrato), como MM-DD. Los autonómicos, los locales y el Viernes Santo no cuentan.
+const FESTIVOS_VALLE = ['01-01', '01-06', '05-01', '08-15', '10-12', '11-01', '12-06', '12-08', '12-25'];
+const diaDeLaSemana = (f) => aFecha(f).getUTCDay(); // 0 domingo … 6 sábado
+const esFestivoValle = (f) => FESTIVOS_VALLE.includes(f.slice(5));
+const esLaborable = (f) => diaDeLaSemana(f) % 6 !== 0 && !esFestivoValle(f);
+
+// Qué aviso de calendario lleva comparar `dia` con `ref` (el día anterior): 'sabado', 'lunes',
+// 'festivo' o null. Uno como mucho, y solo en los cambios con cifras comprobadas:
+// - 'festivo': un festivo de valle entre semana después de un laborable.
+// - 'sabado': un sábado después de un laborable (con el viernes festivo, los dos ya van en valle).
+// - 'lunes': un lunes laborable después de un domingo.
+// Sin aviso: domingo tras sábado, laborables seguidos y el laborable que sigue a un festivo
+// entre semana (de ese último no hay cifras: pocos casos).
+function avisoCalendario(dia, ref) {
+  if (!esLaborable(ref) && !(diaDeLaSemana(dia) === 1 && diaDeLaSemana(ref) === 0)) return null;
+  if (esLaborable(ref) && esFestivoValle(dia) && diaDeLaSemana(dia) % 6 !== 0) return 'festivo';
+  if (esLaborable(ref) && diaDeLaSemana(dia) === 6) return 'sabado';
+  if (diaDeLaSemana(ref) === 0 && diaDeLaSemana(dia) === 1 && esLaborable(dia)) return 'lunes';
+  return null;
+}
+
 // ---------- Ejemplo resuelto y manual de la apuesta (textos de Simone) ----------
 // Los textos están en `apuesta` de web/contenido/textos.json (dueña: Simone); lo que va entre
 // llaves lo rellena este código. Se lee el mismo JSON que pinta textos.js, una vez por visita.
@@ -1438,7 +1468,11 @@ function cargarTextosApuesta() {
 // valores se meten como texto, nunca como HTML. Se descartó innerHTML: un JSON con un <script>
 // u onclick no debe ejecutarse nunca (la misma regla que textos.js).
 function plantilla(texto, valores) {
-  const rellenar = (s) => s.replace(/\{(\w+)\}/g, (m, k) => (k in valores ? String(valores[k]) : m));
+  // Tras rellenar, las unidades no se parten: \u00a0 entre la cifra y la unidad y \u2060 tras la
+  // barra de «€/kWh», como en euros().
+  const rellenar = (s) => s.replace(/\{(\w+)\}/g, (m, k) => (k in valores ? String(valores[k]) : m))
+    .replace(/(\d) (?=€\/kWh|%|km\/h|W\/m²)/g, '$1\u00a0')
+    .replace(/€\/kWh/g, '€/\u2060kWh');
   return String(texto ?? '').split(/(<strong>[\s\S]*?<\/strong>)/).filter(Boolean)
     .map((parte) => (parte.startsWith('<strong>') && parte.endsWith('</strong>')
       ? el('strong', { texto: rellenar(parte.slice(8, -9)) })
@@ -1461,6 +1495,17 @@ function ejemploApuesta(t, ref, dia, horasRef, horasDia, pistas) {
     dia: diaSemana(dia), dia_ref: diaSemana(ref), media_ref: euros(mRef), media_dia: euros(mDia), eleccion,
     comparacion: cmp.sentido === 'igual' ? 'casi igual' : cmp.texto.replace(/o$/, 'a'),
   };
+  // Solo el mercado (indicador 600), si los dos días vinieron de REData. Sin él, el ejemplo sale igual.
+  const mercRef = mercadoFranja(horasRef);
+  const mercDia = mercadoFranja(horasDia);
+  const conMercado = e.mercado && mercRef !== null && mercDia !== null;
+  if (conMercado) Object.assign(v, { mercado_ref: f3.format(mercRef), mercado_dia: f3.format(mercDia) });
+  const aviso = avisoCalendario(dia, ref);
+  // La pista del mercado solo tiene sentido junto a la línea del mercado y con el aviso de sábado,
+  // que es el caso del que da la cifra (85 de cada 100, no 97).
+  const resultado = [...plantilla(empate ? e.empate : e.resultado, v)];
+  if (conMercado) resultado.push(' ', ...plantilla(e.mercado, v));
+  if (conMercado && aviso === 'sabado' && t.avisos?.pista_mercado) resultado.push(' ', ...plantilla(t.avisos.pista_mercado, v));
   if (pistas) {
     Object.assign(v, {
       viento_ref: f0.format(pistas.ref.viento), viento_dia: f0.format(pistas.dia.viento),
@@ -1478,9 +1523,18 @@ function ejemploApuesta(t, ref, dia, horasRef, horasDia, pistas) {
       ...(e.entrada ? [...plantilla(e.entrada, v), ' '] : []), ...plantilla(e.pregunta, v),
     ]),
     pistas && e.pistas ? el('p', {}, plantilla(e.pistas, v)) : null,
+    parrafoAviso(t, aviso),
     el('p', { class: 'juego__eleccion' }, botones),
-    el('p', { class: 'nota' }, plantilla(empate ? e.empate : e.resultado, v)),
+    // Resultado, mercado y pista del mercado en un solo párrafo: la tarjeta no crece una franja más.
+    el('p', { class: 'nota' }, resultado),
   ].filter(Boolean));
+}
+
+// El aviso de calendario (textos `apuesta.avisos` de textos.json) como párrafo, o null si no toca.
+// «Mañana» en esos textos es el día que se apuesta: en el ejemplo, el día ya resuelto.
+function parrafoAviso(t, aviso) {
+  const texto = aviso && t?.avisos?.[aviso];
+  return texto ? el('p', { class: 'nota juego__aviso' }, plantilla(texto, {})) : null;
 }
 
 // Manual de cuatro pasos (de la subasta al PVPC y qué lo mueve), plegado como «Cómo se calcula».
@@ -1629,6 +1683,8 @@ export async function pintarApuesta(contenedor) {
         ]),
       );
     }
+    // Debajo de las pistas, si mañana es sábado, lunes o festivo: el calendario pesa más que el tiempo.
+    piezas.push(parrafoAviso(textos, avisoCalendario(manana, hoy)));
     marcar();
   } else if (cerrada) {
     const tuya = estado.pendiente?.dia === manana ? estado.pendiente.eleccion : null;

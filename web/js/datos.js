@@ -155,17 +155,42 @@ async function pedirDiaREData(fecha) {
     const r = await fetch(url, { signal: corte.signal });
     if (!r.ok) return null;
     const json = await r.json();
-    const serie = (json.included || []).find((s) => s.type === 'PVPC' || s.id === '1001');
+    const series = json.included || [];
+    const serie = series.find((s) => s.type === 'PVPC' || s.id === '1001');
     const valores = serie?.attributes?.values || [];
     const horas = valores
       .map((v) => filaAHora(v.datetime, v.datetime, v.value))
       .filter((h) => h && h.fecha === fecha);
-    return horas.length >= 23 ? horas : null; // 23 o 25 horas los días de cambio de hora
+    if (horas.length < 23) return null; // 23 o 25 horas los días de cambio de hora
+    // El mercado diario (indicador 600) viene en la misma respuesta: no hay que pedir nada más.
+    const mercado = mercadoPorHora(series.find((s) => s.id === '600'));
+    for (const h of horas) if (mercado.has(h.utc)) h.mercado = mercado.get(h.utc);
+    return horas;
   } catch {
     return null;
   } finally {
     clearTimeout(reloj);
   }
+}
+
+// Precio del mercado diario (spot, indicador 600) por hora, en €/kWh, como Map(utc → precio).
+// Desde octubre de 2025 el mercado va por cuartos de hora y REData da los 96 cuartos aunque se
+// pida time_trunc=hour: la hora es la media de sus cuartos (si vinieran por horas, se usan tal cual).
+// Se agrupa por la hora UTC, no por la local, para que la hora repetida del cambio de hora no se
+// mezcle. Solo existe con REData: los CSV del repo guardan el PVPC, no el mercado.
+function mercadoPorHora(serie) {
+  const suma = new Map();
+  for (const v of serie?.attributes?.values || []) {
+    const t = Date.parse(v.datetime);
+    const precio = Number(v.value) / 1000;
+    if (!Number.isFinite(t) || !Number.isFinite(precio)) continue;
+    const hora = Math.floor(t / 3600e3) * 3600e3;
+    const s = suma.get(hora) || { total: 0, n: 0 };
+    s.total += precio;
+    s.n += 1;
+    suma.set(hora, s);
+  }
+  return new Map([...suma].map(([hora, s]) => [hora, s.total / s.n]));
 }
 
 // ---------- El día que enseña la gráfica de hoy ----------
