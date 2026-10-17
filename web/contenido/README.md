@@ -29,12 +29,13 @@ Todos los textos de `portada`, `puertas`, `como-funciona`, `instalar`, `pregunta
 
 **Ejemplo con un día real** (precios de REData y pistas de Open-Meteo, consultados el 16 de octubre de 2026). Así debe leerse la tarjeta con estos datos:
 
-> **Ejemplo.** ¿El sábado, de 14 a 17 h, la luz sería más barata o más cara que el viernes? El viernes, a esas horas: **0,089 €/kWh** de media, sin impuestos.
-> Pistas de aquella mañana: viento 9 → 23 km/h y sol 530 → 342 W/m² (previsto).
-> Ojo, mañana es sábado: peajes y cargos van en valle todo el día y baja el consumo. […]
+> **Ejemplo.** Un día ya resuelto. ¿El sábado, de 14 a 17 h, más barata o más cara que el viernes? El viernes: **0,089 €/kWh** de media, sin impuestos.
+> Pistas: viento 9 → 23 km/h y sol 530 → 342 W/m² (previsto).
+> Ojo, mañana es sábado: de viernes a sábado, la luz bajó 97 de cada 100 veces.
 > [Más barata] (marcado) [Más cara]
-> Salió a **0,020 €/kWh**, un 77 % más barata que el viernes: acertaba «más barata».
-> Solo el mercado, sin peajes ni cargos: 0,096 → 0,002 €/kWh.
+> Salió a **0,020 €/kWh**, un 77 % más barata: acertaba «más barata». Solo el mercado: 0,096 → 0,002 €/kWh. Así baja 85 de cada 100 veces, no 97.
+
+**Textos cortos, a propósito.** Con la apuesta cerrada, la tarjeta tiene que caber por debajo de 800 px a 390 de ancho (con estos textos, 781; antes, 967). Por eso los avisos dejan solo la cifra (el porqué del calendario está en el manual, paso «Qué lo mueve»), la pista del mercado va en una línea y el resumen del manual es «Cómo sale el precio». Se descartó tocar el CSS o quitar piezas del ejemplo: cada una enseña algo, y acortar el texto basta.
 
 En el ejemplo se marca la opción que salió, para que se lea como un día resuelto y no como una apuesta. Con un empate, la frase `empate`.
 

@@ -216,24 +216,24 @@
 
     "ejemplo": {
       "etiqueta": "Ejemplo",
-      "entrada": "Así se juega, con el último día que ya tiene respuesta.",
-      "pregunta": "¿El {dia}, de 14 a 17 h, la luz sería más barata o más cara que el {dia_ref}? El {dia_ref}, a esas horas: <strong>{media_ref}</strong> de media, sin impuestos.",
-      "pistas": "Pistas de aquella mañana: viento {viento_ref} → {viento_dia} km/h y sol {sol_ref} → {sol_dia} W/m² (previsto).",
-      "resultado": "Salió a <strong>{media_dia}</strong>, {comparacion} que el {dia_ref}: acertaba «más {eleccion}».",
+      "entrada": "Un día ya resuelto.",
+      "pregunta": "¿El {dia}, de 14 a 17 h, más barata o más cara que el {dia_ref}? El {dia_ref}: <strong>{media_ref}</strong> de media, sin impuestos.",
+      "pistas": "Pistas: viento {viento_ref} → {viento_dia} km/h y sol {sol_ref} → {sol_dia} W/m² (previsto).",
+      "resultado": "Salió a <strong>{media_dia}</strong>, {comparacion}: acertaba «más {eleccion}».",
       "empate": "Salió a <strong>{media_dia}</strong>, igual que el {dia_ref} a tres decimales: empate, no cuenta.",
-      "mercado": "Solo el mercado, sin peajes ni cargos: {mercado_ref} → {mercado_dia} €/kWh."
+      "mercado": "Solo el mercado: {mercado_ref} → {mercado_dia} €/kWh."
     },
 
     "avisos": {
       "_nota": "Uno como mucho, debajo de las pistas, según qué día es mañana. Ni domingo tras sábado ni días laborables seguidos llevan aviso: ahí decide el mercado. Festivo = la lista de festivos de valle de docs/proyecto-precio-luz.md.",
-      "sabado": "Ojo, mañana es sábado: peajes y cargos van en valle todo el día y baja el consumo. Desde junio de 2023, de viernes a sábado, de 14 a 17 h, la luz bajó 97 de cada 100 veces.",
-      "lunes": "Ojo, mañana es lunes: vuelven los peajes de día laborable y sube el consumo. Desde junio de 2023, de domingo a lunes, de 14 a 17 h, la luz subió 97 de cada 100 veces.",
-      "festivo": "Ojo, mañana es festivo nacional: peajes y cargos van en valle todo el día, como un domingo, y eso tira el precio hacia abajo.",
-      "pista_mercado": "Para ver qué hace el tiempo sin el calendario, fíjate en el mercado: de viernes a sábado baja 85 de cada 100 veces, no 97."
+      "sabado": "Ojo, mañana es sábado: de viernes a sábado, la luz bajó 97 de cada 100 veces.",
+      "lunes": "Ojo, mañana es lunes: de domingo a lunes, la luz subió 97 de cada 100 veces.",
+      "festivo": "Ojo, mañana es festivo nacional: peajes y cargos en valle todo el día, como un domingo.",
+      "pista_mercado": "Así baja 85 de cada 100 veces, no 97."
     },
 
     "manual": {
-      "resumen": "Cómo sale el precio de mañana",
+      "resumen": "Cómo sale el precio",
       "entrada": "Nadie pone el precio a mano. Sale en cuatro pasos:",
       "pasos": [
         { "titulo": "12:00, cierra la subasta", "texto": "En el <a href=\"https://www.omie.es/es/mercado-de-electricidad\">mercado diario de OMIE</a> se cruzan las ofertas de quien vende y quien compra la energía de mañana. Desde ese momento el precio está decidido: por eso la apuesta cierra a esa hora." },
