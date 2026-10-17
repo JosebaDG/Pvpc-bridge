@@ -13,13 +13,13 @@ Todos los textos de `portada`, `puertas`, `como-funciona`, `instalar`, `pregunta
 ## «Cómo se forma el precio», en fichas
 
 - **Qué se eligió:** cuatro pasos cortos (de la subasta de mediodía a la factura) y la sección «El mercado por dentro»: seis fichas con un título, un gancho de una o dos frases y el detalle a un clic, cada una con su fuente.
-- **Por qué:** Joseba pidió una idea por ficha y el detalle escondido. El gancho se entiende solo; quien quiera más abre la ficha.
+- **Por qué:** una idea por ficha y el detalle escondido. El gancho se entiende solo; quien quiera más abre la ficha.
 - **Qué se descartó:** cifras que no están comprobadas en el repo o en la fuente oficial (por ejemplo, qué tecnología marcó el precio de cada hora: el repo aún no tiene esos datos) y cualquier relación de causa entre el tiempo y el precio que no salga de la fórmula.
 
 ## La apuesta: ejemplo, avisos y manual
 
 - **Qué se eligió:** cuando la apuesta está cerrada, un ejemplo resuelto con el último día que ya tiene respuesta (pistas, apuesta y resultado), un aviso cuando mañana es sábado, lunes o festivo nacional, y un manual de cuatro pasos plegado. Los textos están en `apuesta` de `textos.json`; lo que va entre llaves lo rellena `graficas.js`.
-- **Por qué:** Joseba pidió entender la mecánica antes de apostar y que sirviera para desmitificar el precio. El ejemplo enseña el juego sin explicarlo; el manual explica de dónde sale el precio. El aviso existe porque el calendario pesa más que el tiempo: sin él, el viernes la apuesta es casi regalada y parece que acierta el viento.
+- **Por qué:** hay que entender la mecánica antes de apostar, y la apuesta sirve para desmitificar el precio. El ejemplo enseña el juego sin explicarlo; el manual explica de dónde sale el precio. El aviso existe porque el calendario pesa más que el tiempo: sin él, el viernes la apuesta es casi regalada y parece que acierta el viento.
 - **Qué se descartó:** un ejemplo inventado (tiene que ser un día real de nuestros datos) y avisos con cifras que no están comprobadas: los festivos no llevan porcentaje porque hay pocos casos.
 
 **Las cifras de los avisos**, de `datos/historico`, media de 14 a 17 h, 176 pares de días de junio de 2023 a octubre de 2026:
