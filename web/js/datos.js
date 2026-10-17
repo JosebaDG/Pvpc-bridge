@@ -327,6 +327,43 @@ export async function tiempoEnHoras(desde, hasta, horas) {
   return r.size ? r : null;
 }
 
+// Pistas del ejemplo de la apuesta (un día ya resuelto): viento a 100 m (km/h) y sol (W/m²) de
+// media en unas horas, en los seis puntos, con la API «Previous Runs» de Open-Meteo.
+// - Día de referencia (`ref`): su análisis más reciente, lo que hizo aquella tarde.
+// - Día apostado (`dia`): la previsión de un día antes, la que se veía la mañana de la apuesta.
+// Así cuadra con lo que enseña la apuesta de verdad: «hoy» casi real y «mañana» previsto.
+// Comprobado con el ejemplo de Simone (viernes 16 → sábado 17): 9 → 23 km/h y 530 → 342 W/m².
+// Se pide una vez por visita: si la tarjeta se repinta (a las 12:00), reutiliza la respuesta.
+// Devuelve { ref: { viento, sol }, dia: { viento, sol } } o null si falta algo.
+const pistasPedidas = new Map();
+export function pistasEjemplo(ref, dia, horas) {
+  const clave = `${ref}|${dia}|${horas.join(',')}`;
+  if (!pistasPedidas.has(clave)) pistasPedidas.set(clave, pedirPistasEjemplo(ref, dia, horas));
+  return pistasPedidas.get(clave);
+}
+async function pedirPistasEjemplo(ref, dia, horas) {
+  const vars = ['wind_speed_100m', 'shortwave_radiation'];
+  const url = `${OPEN_METEO}?latitude=${PUNTOS_METEO.map((p) => p[0]).join(',')}`
+    + `&longitude=${PUNTOS_METEO.map((p) => p[1]).join(',')}`
+    + `&hourly=${vars.flatMap((v) => [v, `${v}_previous_day1`]).join(',')}`
+    + `&start_date=${ref}&end_date=${dia}&timezone=${encodeURIComponent(ZONA)}`;
+  const puntos = [].concat((await pedirJSON(url)) || []);
+  if (puntos.length !== PUNTOS_METEO.length) return null;
+  const media = (fecha, sufijo) => {
+    const r = {};
+    for (const [clave, v] of [['viento', vars[0]], ['sol', vars[1]]]) {
+      const xs = puntos.flatMap((p) => (p.hourly?.time ?? [])
+        .map((iso, k) => (iso.slice(0, 10) === fecha && horas.includes(Number(iso.slice(11, 13))) ? p.hourly[v + sufijo]?.[k] : undefined))
+        .filter((x) => x !== undefined));
+      if (xs.length !== horas.length * PUNTOS_METEO.length || !xs.every(Number.isFinite)) return null;
+      r[clave] = mediaDe(xs);
+    }
+    return r;
+  };
+  const r = { ref: media(ref, ''), dia: media(dia, '_previous_day1') };
+  return r.ref && r.dia ? r : null;
+}
+
 // Eólica y fotovoltaica reales de España, en MWh por día, de `desde` a `hasta` (REData).
 // Devuelve Map(fecha -> { eolica, solar }) o null. REData no da la generación por horas.
 export async function generacionDiaria(desde, hasta) {
