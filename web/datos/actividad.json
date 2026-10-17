@@ -1,6 +1,6 @@
 {
  "repo": "JosebaDG/Pvpc-bridge",
- "generado": "2026-10-17T08:24:32Z",
+ "generado": "2026-10-17T08:36:09Z",
  "fuente": "API pública de GitHub, /repos/JosebaDG/Pvpc-bridge/pulls",
  "agentes": [
   "Miles",
@@ -470,6 +470,17 @@
    "fusionado": "2026-10-17T08:24:05Z",
    "cerrado": "2026-10-17T08:24:05Z",
    "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/50"
+  },
+  {
+   "numero": 51,
+   "titulo": "Web: publicación diaria a las 21:30 con el precio de mañana (Miles)",
+   "rama": "web/publicacion-2130",
+   "autor": "Miles",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-17T08:34:25Z",
+   "fusionado": "2026-10-17T08:35:44Z",
+   "cerrado": "2026-10-17T08:35:44Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/51"
   }
  ]
 }
