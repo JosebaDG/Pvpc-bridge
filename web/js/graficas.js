@@ -414,7 +414,8 @@ export function pintarPrecioHoy(contenedor, dia) {
       el('span', { class: 'solo-lector', texto: `${sujeto} ${euros(h.precio)}, ` }),
       `${quien} ${f3.format(ref)} · `,
       el('strong', {}, [
-        el('span', { 'aria-hidden': 'true', style: `color:${colorFlecha};margin-right:.25em`, texto: flecha }),
+        // En «igual», sin símbolo: «hoy casi igual» ya lo dice (repaso de Joseba, punto 10).
+        ...(cmp.sentido === 'igual' ? [] : [el('span', { 'aria-hidden': 'true', style: `color:${colorFlecha};margin-right:.25em`, texto: flecha })]),
         cmp.sentido === 'igual' ? `${sujeto} casi igual` : `${sujeto} ${cmp.texto}`,
       ]),
     );
@@ -1332,7 +1333,8 @@ export async function pintarAcerto(contenedor) {
     generacion,
     el('p', { class: 'juego__precio' }, [
       'La luz de ayer, sin impuestos: media ', el('strong', { texto: euros(mAyer) }), ', ',
-      el('span', { 'aria-hidden': 'true', style: `color:${colorFlecha};margin-right:.2em`, texto: flecha }),
+      // En «igual», sin símbolo: «media 0,221 €/kWh, casi igual que anteayer.» (punto 10).
+      ...(cmp.sentido === 'igual' ? [] : [el('span', { 'aria-hidden': 'true', style: `color:${colorFlecha};margin-right:.2em`, texto: flecha })]),
       cmp.sentido === 'igual' ? 'casi igual que anteayer.' : `${cmp.texto.replace(/o$/, 'a')} que anteayer.` // «la luz», en femenino,
     ]),
     // A la vista, la frase que evita leer el juego al revés; el método, plegado (nota de Simone).
