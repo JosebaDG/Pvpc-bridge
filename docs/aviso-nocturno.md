@@ -28,7 +28,7 @@ skill "Aviso nocturno de horas baratas"  ──►  python3 aviso_nocturno.py
 mensaje de Charlie en el chat de Sesame, con la imagen
 ```
 
-1. **Precios.** `aviso_nocturno.py` usa `puente_luz.py` para pedir a REData el PVPC peninsular de mañana, hora a hora. Es una sola petición y queda en la caché de siempre (`~/.cache/puente_luz/`). REE los publica hacia las 20:15; a las 21:30 lo normal es que ya estén.
+1. **Precios.** `aviso_nocturno.py` usa `puente_luz.py` para pedir a REData el PVPC peninsular de mañana, hora a hora. Es una sola petición y queda en la caché de siempre (`~/.cache/puente_luz/`). REE los publica hacia las 20:45; a las 21:30 lo normal es que ya estén.
 2. **Bloque más barato.** Son las horas seguidas alrededor del precio más bajo del día que no se alejan de él más de un 15 % del recorrido del día (de la hora más barata a la más cara), con un margen mínimo de medio céntimo. Si salen varios tramos así (por ejemplo, la madrugada y el mediodía), gana el de precio medio más bajo. Así la duración la marca el propio día: un mediodía de sol con precios a cero da un bloque largo, y un día sin un valle claro da uno corto.
 3. **Conclusión curiosa.** Explicada abajo.
 4. **Imagen.** La gráfica de siempre (una barra por hora, de 00-01 a 23-00, con su precio, el eje desde 0 y sin cortar picos), con el bloque más barato sombreado y recuadrado. Arriba van, en letra grande, el bloque, lo que dura, su precio medio y la hora más cara, y debajo, la conclusión. Mide 1350 × 1650 píxeles, en vertical, para leerse en el móvil sin ampliar.

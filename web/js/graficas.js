@@ -1366,7 +1366,7 @@ function comoSeCalcula(contenido) {
 // ---------- La apuesta: «¿Más barata o más cara mañana?» ----------
 // Segunda parte del juego, en su propia tarjeta debajo de «¿Acertó el mercado?». Desde medianoche
 // hasta las 12:00, hora peninsular, se elige si mañana de 14 a 17 h la luz será más barata o más
-// cara que hoy, con dos pistas: viento y sol previstos. Cuando sale el precio (hacia las 20:15), la
+// cara que hoy, con dos pistas: viento y sol previstos. Cuando sale el precio (hacia las 20:45), la
 // siguiente visita dice si se acertó y lleva la racha.
 // - Se cierra a las 12:00 porque a esa hora cierra la subasta de mañana y OMIE publica sus precios
 //   hacia las 13:00: desde entonces la respuesta se puede mirar. De 12:00 a la publicación la
@@ -1591,7 +1591,7 @@ export async function pintarApuesta(contenedor) {
         b.className = si ? 'boton' : 'boton boton--secundario';
       }
       estadoTexto.textContent = elegida
-        ? `Tu apuesta: más ${elegida}. Puedes cambiarla hasta las 12:00 y lo sabrás cuando salga el precio de mañana, hacia las 20:15.`
+        ? `Tu apuesta: más ${elegida}. Puedes cambiarla hasta las 12:00 y lo sabrás cuando salga el precio de mañana, hacia las 20:45.`
         : 'Se puede apostar hasta las 12:00, hora peninsular.';
     };
     for (const b of botones) {
@@ -1633,7 +1633,7 @@ export async function pintarApuesta(contenedor) {
   } else if (cerrada) {
     const tuya = estado.pendiente?.dia === manana ? estado.pendiente.eleccion : null;
     piezas.push(
-      el('p', {}, [el('strong', { texto: 'Apuestas cerradas:' }), ' el precio de mañana ya está decidido y sale hacia las 20:15.']),
+      el('p', {}, [el('strong', { texto: 'Apuestas cerradas:' }), ' el precio de mañana ya está decidido y sale hacia las 20:45.']),
       el('p', { class: 'nota juego__estado' }, tuya
         ? [`Tu apuesta: más ${tuya} que hoy ${TEXTO_FRANJA} (`, el('strong', { texto: euros(mHoy) }), ' de media, sin impuestos).']
         : ['La próxima apuesta abre a medianoche y cierra a las 12:00.']),

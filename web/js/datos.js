@@ -123,7 +123,7 @@ export async function diaDelCSV(fecha) {
 // el navegador haría si añadiéramos cabeceras propias. Devuelve null si algo falla.
 // Cada día se pide una sola vez por visita: la gráfica de hoy, «¿Acertó el mercado?» y la
 // apuesta comparten la misma respuesta (también si es null) y REE no recibe consultas repetidas.
-// - El precio de mañana sale hacia las 20:15, hora peninsular: antes de las 20:00 no se pide
+// - El precio de mañana sale hacia las 20:45, hora peninsular: antes de las 20:00 no se pide
 //   (REE contestaría 502 y sería una consulta perdida) y se da por «aun no ha salido» (null).
 //   Ese null no se guarda, para que una tarjeta que se repinte después de las 20:00 sí lo pida.
 //   Un día más allá de mañana nunca se pide.
