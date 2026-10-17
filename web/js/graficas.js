@@ -26,7 +26,7 @@
 import {
   precioDelDia, precioDelDiaAnterior, compararPrecio, cargarHistorico, tercios, mejorBloque, PRIMER_AÑO,
   cargarActividad, ZONA, diaDeHoy, diaAnterior, tiempoPrevistoYReal, generacionDiaria,
-  cargarDiaREData, diaSiguiente, tiempoEnHoras, horaEnZona,
+  cargarDia, diaSiguiente, tiempoEnHoras, horaEnZona,
 } from './datos.js';
 
 // ---------- Colores: solo variables CSS de Maya (web/css/tokens.css) ----------
@@ -783,6 +783,10 @@ function prepararHistorico(horas) {
   return { inicio, dias, celdas, medias, escala: [pct(0.05), pct(0.5), pct(0.95)] };
 }
 
+// «el sábado 17 de octubre de 2026» o, si los datos ya llegan a mañana (la publicación de las
+// 21:30 guarda el precio de mañana), «mañana, domingo 18 de octubre de 2026».
+const hastaCuando = (f) => (f > diaDeHoy() ? `mañana, ${fechaLarga(f)}` : `el ${fechaLarga(f)}`);
+
 export function pintarHistorico(contenedor, horas) {
   const H = prepararHistorico(horas);
   const [pBajo, pMedio, pAlto] = H.escala;
@@ -800,7 +804,7 @@ export function pintarHistorico(contenedor, horas) {
   ]);
   const nota = el('p', {
     class: 'nota grafica-nota',
-    texto: `Desde el 1 de enero de ${PRIMER_AÑO} hasta el ${fechaLarga(ultimoDia)}. El color va del 5 % de horas más baratas (${euros(pBajo)}) al 5 % más caras (${euros(pAlto)}), con la mediana (${euros(pMedio)}) en el centro. PVPC de la península, sin impuestos. Fuente: Red Eléctrica (REE), REData.`,
+    texto: `Desde el 1 de enero de ${PRIMER_AÑO} hasta ${hastaCuando(ultimoDia)}. El color va del 5 % de horas más baratas (${euros(pBajo)}) al 5 % más caras (${euros(pAlto)}), con la mediana (${euros(pMedio)}) en el centro. PVPC de la península, sin impuestos. Fuente: Red Eléctrica (REE), REData.`,
   });
   const canvas = el('canvas', {
     role: 'img',
@@ -1420,7 +1424,7 @@ export async function pintarApuesta(contenedor) {
   const hoy = diaDeHoy();
   const manana = diaSiguiente(hoy);
   const [horasHoy, horasManana, tiempo] = await Promise.all([
-    cargarDiaREData(hoy), cargarDiaREData(manana),
+    cargarDia(hoy), cargarDia(manana),
     tiempoEnHoras(hoy, manana, HORAS_APUESTA).catch(() => null),
   ]);
   const mHoy = mediaFranja(horasHoy);
@@ -1436,7 +1440,7 @@ export async function pintarApuesta(contenedor) {
     p = null;
   }
   if (p) {
-    const horasDia = p.dia === manana ? horasManana : p.dia === hoy ? horasHoy : await cargarDiaREData(p.dia);
+    const horasDia = p.dia === manana ? horasManana : p.dia === hoy ? horasHoy : await cargarDia(p.dia);
     const m = mediaFranja(horasDia);
     if (m !== null) {
       const empate = redondeo(m) === redondeo(p.refMedia);
