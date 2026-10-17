@@ -225,11 +225,11 @@ export function compararPrecio(precio, referencia) {
   if (referencia >= 0.005 && precio >= 0) {
     const pct = Math.abs(dif) / referencia * 100;
     if (pct < 2) return { sentido: 'igual', texto: 'casi igual' };
-    return { sentido, texto: `un ${Math.round(pct)} % más ${sentido}` };
+    return { sentido, texto: `un ${Math.round(pct)}\u00a0% más ${sentido}` };
   }
   if (Math.abs(dif) < 0.001) return { sentido: 'igual', texto: 'casi igual' };
   const cifra = new Intl.NumberFormat('es-ES', { minimumFractionDigits: 3, maximumFractionDigits: 3 }).format(Math.abs(dif));
-  return { sentido, texto: `${cifra} €/kWh más ${sentido}` };
+  return { sentido, texto: `${cifra}\u00a0€/\u2060kWh más ${sentido}` };
 }
 
 export function agruparPorDia(horas) {

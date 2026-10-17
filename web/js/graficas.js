@@ -71,7 +71,10 @@ const rgba = ([r, g, b, a], alfa = 1) => `rgba(${r},${g},${b},${((a / 255) * alf
 const num = (d) => new Intl.NumberFormat('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
 const f3 = num(3);
 const f2 = num(2);
-const euros = (p) => `${f3.format(p)} €/kWh`;
+// Unidades sin partir: espacio de no separación (\u00a0) entre la
+// cifra y la unidad, y unión invisible (\u2060) tras la barra para que «€/kWh» no se corte en dos.
+const UNIDAD = '\u00a0€/\u2060kWh';
+const euros = (p) => `${f3.format(p)}${UNIDAD}`;
 const dos = (n) => String(n).padStart(2, '0');
 const tramo = (h) => `${dos(h)}–${dos((h + 1) % 24)} h`;
 const aFecha = (f) => new Date(`${f}T12:00:00Z`);
@@ -358,7 +361,8 @@ export function pintarPrecioHoy(contenedor, dia) {
     el('li', {}, el('span', { class: 'tramo tramo--caro', texto: 'Las 8 más caras' })),
     el('li', {}, [muestra('superficie', `outline:2px solid ${color('acento')};outline-offset:-2px`), 'Mejor bloque de 3 h']),
     el('li', {}, [el('span', { 'aria-hidden': 'true', style: `display:inline-block;width:1.4em;vertical-align:.25em;margin-right:.35em;border-top:2px dashed ${color('eje')}` }), `Media del día, ${f3.format(media)}`]),
-    iAhora >= 0 ? el('li', {}, [muestra('chispa', `outline:2px solid ${color('acento')};outline-offset:-2px`), 'Hora actual']) : null,
+    // Hora actual: solo el halo chispa, sin contorno; el contorno de acento es del mejor bloque (punto 5).
+    iAhora >= 0 ? el('li', {}, [muestra('chispa'), 'Hora actual']) : null,
   ]);
 
   // El precio de ahora, en grande (.cifra de Maya), con su tramo. Solo si el día es hoy.
@@ -588,7 +592,6 @@ export function pintarPrecioHoy(contenedor, dia) {
       const barra = s('rect', {
         x: x(i) + (paso - anchoBarra) / 2, y: y0, width: anchoBarra, height: Math.max(1, y1 - y0),
         rx: Math.min(3, anchoBarra / 4), fill: color(grupo[i]), tabindex: 0, style: 'cursor:pointer',
-        stroke: i === iAhora ? color('acento') : null, 'stroke-width': i === iAhora ? 2 : null,
       });
       barraInteractiva(barra, i);
       barras.push(barra);
@@ -689,7 +692,6 @@ export function pintarPrecioHoy(contenedor, dia) {
       const barra = s('rect', {
         x: x0, y: yc - altoBarra / 2, width: Math.max(1, x1 - x0), height: altoBarra,
         rx: 3, fill: color(grupo[i]), tabindex: 0, style: 'cursor:pointer',
-        stroke: esAhora ? color('acento') : null, 'stroke-width': esAhora ? 2 : null,
       });
       barraInteractiva(barra, i);
       barras.push(barra);
@@ -800,7 +802,7 @@ export function pintarHistorico(contenedor, horas) {
       'aria-hidden': 'true',
       style: `flex:1 1 8em;max-width:16em;height:.8em;border-radius:.4em;background:linear-gradient(to right, ${color('barato')}, ${color('medio')}, ${color('caro')})`,
     }),
-    el('span', { texto: `≥ ${f3.format(pAlto)} €/kWh` }),
+    el('span', { texto: `≥\u00a0${f3.format(pAlto)}${UNIDAD}` }),
   ]);
   const nota = el('p', {
     class: 'nota grafica-nota',
@@ -1287,10 +1289,10 @@ export async function pintarAcerto(contenedor) {
   const nombreAyer = `ayer, ${diaSemana(ayer)}`;
   const fraseViento = v.nota === 'acerto'
     ? 'el viento fue el previsto'
-    : `sopló un ${v.pct} % ${v.dif < 0 ? 'menos' : 'más'} de lo previsto`;
+    : `sopló un ${v.pct}\u00a0% ${v.dif < 0 ? 'menos' : 'más'} de lo previsto`;
   const fraseSol = so.nota === 'acerto'
     ? 'el sol fue el previsto'
-    : `hubo un ${so.pct} % ${so.dif < 0 ? 'menos' : 'más'} de sol de lo previsto`;
+    : `hubo un ${so.pct}\u00a0% ${so.dif < 0 ? 'menos' : 'más'} de sol de lo previsto`;
   // Respuesta corta y su porqué, sin causas: «Sí», «A medias» o «No».
   const notas = [v.nota, so.nota];
   const respuesta = notas.every((n) => n === 'acerto') ? 'Sí'
@@ -1308,8 +1310,8 @@ export async function pintarAcerto(contenedor) {
 
   const fila = (titulo, previsto, real, unidad, ver, formato) => el('li', { class: 'juego__pista', 'data-nota': ver.nota }, [
     el('span', { class: 'juego__pista-titulo', texto: titulo }),
-    ` previsto ${formato.format(previsto)} ${unidad} · hubo ${formato.format(real)} ${unidad} `,
-    el('span', { class: 'tramo', 'data-nota': ver.nota, texto: ver.nota === 'acerto' ? PALABRA_NOTA.acerto : `${PALABRA_NOTA[ver.nota]} · ${ver.dif < 0 ? '−' : '+'}${ver.pct} %` }),
+    ` previsto ${formato.format(previsto)}\u00a0${unidad} · hubo ${formato.format(real)}\u00a0${unidad} `,
+    el('span', { class: 'tramo', 'data-nota': ver.nota, texto: ver.nota === 'acerto' ? PALABRA_NOTA.acerto : `${PALABRA_NOTA[ver.nota]} · ${ver.dif < 0 ? '−' : '+'}${ver.pct}\u00a0%` }),
   ]);
 
   const gAyer = gen?.get(ayer);
@@ -1617,7 +1619,7 @@ export async function pintarApuesta(contenedor) {
     if (tHoy && tManana) {
       const pista = (nombre, a, b, unidad, formato) => el('li', { class: 'juego__pista' }, [
         el('span', { class: 'juego__pista-titulo', texto: nombre }),
-        ` hoy ${formato.format(a)} ${unidad} · mañana ${formato.format(b)} ${unidad} (previsto)`,
+        ` hoy ${formato.format(a)}\u00a0${unidad} · mañana ${formato.format(b)}\u00a0${unidad} (previsto)`,
       ]);
       piezas.push(
         el('p', { class: 'nota', texto: `Pistas, ${TEXTO_FRANJA}:` }),
