@@ -71,7 +71,7 @@ const rgba = ([r, g, b, a], alfa = 1) => `rgba(${r},${g},${b},${((a / 255) * alf
 const num = (d) => new Intl.NumberFormat('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
 const f3 = num(3);
 const f2 = num(2);
-// Unidades sin partir (punto 6 del repaso de Joseba): espacio de no separación (\u00a0) entre la
+// Unidades sin partir: espacio de no separación (\u00a0) entre la
 // cifra y la unidad, y unión invisible (\u2060) tras la barra para que «€/kWh» no se corte en dos.
 const UNIDAD = '\u00a0€/\u2060kWh';
 const euros = (p) => `${f3.format(p)}${UNIDAD}`;
