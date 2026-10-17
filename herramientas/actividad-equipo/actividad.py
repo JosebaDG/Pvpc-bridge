@@ -5,12 +5,17 @@ Uso (desde la raíz del repo):
     python3 herramientas/actividad-equipo/actividad.py
 
 Qué hace:
-- Pide a la API pública de GitHub la lista de PR de JosebaDG/Pvpc-bridge (abiertos y cerrados),
-  sin token: una petición por cada 100 PR. Sin token GitHub deja 60 peticiones por hora y por IP,
-  de sobra para esto.
+- Pide a la API pública de GitHub la lista de PR de JosebaDG/Pvpc-bridge (abiertos y cerrados):
+  una petición por cada 100 PR. Sin token GitHub deja 60 peticiones por hora y por IP, de sobra
+  para esto. Si hay un GITHUB_TOKEN en el entorno (la Action de publicar la web lo pone), se usa
+  para no depender de ese límite, que en Actions se comparte entre muchos repositorios. Los datos
+  son los mismos: solo se leen PR públicos.
 - Para cada PR guarda solo datos públicos: número, título, rama, cuándo se abrió, se fusionó o
   se cerró, y quién lo hizo.
 - Escribe web/datos/actividad.json. La web lee ese archivo fijo, no la API en directo.
+
+Cuándo se ejecuta: lo lanza la Action de publicar la web (.github/workflows/web.yml) cada vez que
+publica, así que «Cómo se ha hecho» sale siempre al día.
 
 Por qué un JSON fijo y no la API desde el navegador: cada visita gastaría peticiones del límite
 de 60 por hora de esa IP, y un archivo en el repo se revisa en el PR antes de publicarse.
@@ -18,7 +23,7 @@ de 60 por hora de esa IP, y un archivo en el repo se revisa en el PR antes de pu
 Quién hizo cada PR: todos salen desde la misma cuenta de GitHub, así que el autor se saca, por
 este orden, de:
   1. «(Nombre)» al final del título,
-  2. la rama web/<nombre>,
+  2. la rama <nombre>/... o <carpeta>/<nombre> (web/charlie, mcp/miles...),
   3. la firma «— Nombre» al final de la descripción,
   4. la tabla MANUAL de abajo, con la fuente de cada caso.
 Si un PR nuevo no encaja en ninguno, el script avisa y lo deja como «sin autor»: la regla del
@@ -38,7 +43,7 @@ REPO = 'JosebaDG/Pvpc-bridge'
 AGENTES = ['Miles', 'Charlie', 'Maya', 'Simone']
 SALIDA = os.path.join(os.path.dirname(__file__), '..', '..', 'web', 'datos', 'actividad.json')
 
-# PR sin «(Nombre)», sin rama web/<nombre> y sin firma. La fuente es pública y comprobable.
+# PR sin «(Nombre)», sin el nombre en la rama y sin firma. La fuente es pública y comprobable.
 MANUAL = {
     7: ('Charlie', 'issue #1, apartado «Quién»: «Charlie escribe y abre el PR»'),
     10: ('Miles', 'descripción del PR #10, «Quién ha hecho qué»: «Miles hizo los cambios y abrió el PR»'),
@@ -46,11 +51,15 @@ MANUAL = {
 
 
 def pedir(url):
-    req = urllib.request.Request(url, headers={
+    cabeceras = {
         'Accept': 'application/vnd.github+json',
         'X-GitHub-Api-Version': '2022-11-28',
         'User-Agent': 'pvpc-bridge-actividad',
-    })
+    }
+    token = os.environ.get('GITHUB_TOKEN')
+    if token:
+        cabeceras['Authorization'] = f'Bearer {token}'
+    req = urllib.request.Request(url, headers=cabeceras)
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.load(r)
 
@@ -62,7 +71,7 @@ def autor_de(pr):
     if m:
         return m.group(1), 'título'
     rama = pr['head']['ref']
-    m = re.match(r'web/(' + '|'.join(a.lower() for a in AGENTES) + r')\b', rama)
+    m = re.match(r'(?:[a-z]+/)?(' + '|'.join(a.lower() for a in AGENTES) + r')\b', rama)
     if m:
         return m.group(1).capitalize(), 'rama'
     cuerpo = (pr.get('body') or '').strip()
@@ -104,7 +113,7 @@ def main():
     datos = {
         'repo': REPO,
         'generado': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
-        'fuente': f'API pública de GitHub, /repos/{REPO}/pulls (sin token)',
+        'fuente': f'API pública de GitHub, /repos/{REPO}/pulls',
         'agentes': AGENTES,
         'prs': salida,
     }
