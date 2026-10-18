@@ -1,6 +1,6 @@
 {
  "repo": "JosebaDG/Pvpc-bridge",
- "generado": "2026-10-17T21:38:07Z",
+ "generado": "2026-10-18T21:42:09Z",
  "fuente": "API pública de GitHub, /repos/JosebaDG/Pvpc-bridge/pulls",
  "agentes": [
   "Miles",
@@ -514,6 +514,28 @@
    "fusionado": "2026-10-17T19:04:24Z",
    "cerrado": "2026-10-17T19:04:24Z",
    "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/54"
+  },
+  {
+   "numero": 55,
+   "titulo": "Apuesta: ejemplo más corto para que la tarjeta cerrada quede en 780 px o menos a 390 (Simone)",
+   "rama": "web/simone-780",
+   "autor": "Simone",
+   "como_se_sabe": "título",
+   "abierto": "2026-10-18T07:51:24Z",
+   "fusionado": "2026-10-18T10:09:43Z",
+   "cerrado": "2026-10-18T10:09:43Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/55"
+  },
+  {
+   "numero": 56,
+   "titulo": "docs/simbiosis: el tope de seis mensajes ya no existe (fusible cada 30)",
+   "rama": "docs/simone-fusible",
+   "autor": "Simone",
+   "como_se_sabe": "rama",
+   "abierto": "2026-10-18T13:47:02Z",
+   "fusionado": "2026-10-18T15:02:05Z",
+   "cerrado": "2026-10-18T15:02:05Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/56"
   }
  ]
 }
