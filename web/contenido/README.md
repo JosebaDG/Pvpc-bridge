@@ -29,13 +29,15 @@ Todos los textos de `portada`, `puertas`, `como-funciona`, `instalar`, `pregunta
 
 **Ejemplo con un día real** (precios de REData y pistas de Open-Meteo, consultados el 16 de octubre de 2026). Así debe leerse la tarjeta con estos datos:
 
-> **Ejemplo.** Un día ya resuelto. ¿El sábado, de 14 a 17 h, más barata o más cara que el viernes? El viernes: **0,089 €/kWh** de media, sin impuestos.
+> **Ejemplo.** ¿El sábado, de 14 a 17 h, más barata o más cara que el viernes (**0,089 €/kWh** de media, sin impuestos)?
 > Pistas: viento 9 → 23 km/h y sol 530 → 342 W/m² (previsto).
 > Ojo, mañana es sábado: de viernes a sábado, la luz bajó 97 de cada 100 veces.
 > [Más barata] (marcado) [Más cara]
-> Salió a **0,020 €/kWh**, un 77 % más barata: acertaba «más barata». Solo el mercado: 0,096 → 0,002 €/kWh. Así baja 85 de cada 100 veces, no 97.
+> Salió a **0,020 €/kWh**, un 77 % más barata. Solo el mercado: 0,096 → 0,002. Así baja 85 de cada 100 veces, no 97.
 
-**Textos cortos, a propósito.** Con la apuesta cerrada, la tarjeta tiene que caber por debajo de 800 px a 390 de ancho (con estos textos, 781; antes, 967). Por eso los avisos dejan solo la cifra (el porqué del calendario está en el manual, paso «Qué lo mueve»), la pista del mercado va en una línea y el resumen del manual es «Cómo sale el precio». Se descartó tocar el CSS o quitar piezas del ejemplo: cada una enseña algo, y acortar el texto basta.
+**Textos cortos, a propósito.** Con la apuesta cerrada, la tarjeta tiene que medir 780 px o menos a 390 de ancho, para tener margen bajo los 800 (con estos textos, 734 en nuestro navegador sin pantalla; antes, 781 y 967). Por eso los avisos dejan solo la cifra (el porqué del calendario está en el manual, paso «Qué lo mueve»), la pista del mercado va en una línea y el resumen del manual es «Cómo sale el precio».
+
+En el ejemplo, además: la `entrada` va vacía y el precio de referencia va entre paréntesis dentro de la pregunta; el resultado ya no dice «acertaba “más barata”», porque lo dicen el botón marcado y «un 77 % más barata»; y la línea del mercado no repite «€/kWh», que ya sale en el mismo párrafo. Se descartó tocar el CSS, quitar piezas del ejemplo o quitar «(previsto)» de las pistas: cada pieza enseña algo, y acortar el texto basta.
 
 En el ejemplo se marca la opción que salió, para que se lea como un día resuelto y no como una apuesta. Con un empate, la frase `empate`.
 
