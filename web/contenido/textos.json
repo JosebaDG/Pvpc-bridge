@@ -216,12 +216,12 @@
 
     "ejemplo": {
       "etiqueta": "Ejemplo",
-      "entrada": "Un día ya resuelto.",
-      "pregunta": "¿El {dia}, de 14 a 17 h, más barata o más cara que el {dia_ref}? El {dia_ref}: <strong>{media_ref}</strong> de media, sin impuestos.",
+      "entrada": "",
+      "pregunta": "¿El {dia}, de 14 a 17 h, más barata o más cara que el {dia_ref} (<strong>{media_ref}</strong> de media, sin impuestos)?",
       "pistas": "Pistas: viento {viento_ref} → {viento_dia} km/h y sol {sol_ref} → {sol_dia} W/m² (previsto).",
-      "resultado": "Salió a <strong>{media_dia}</strong>, {comparacion}: acertaba «más {eleccion}».",
+      "resultado": "Salió a <strong>{media_dia}</strong>, {comparacion}.",
       "empate": "Salió a <strong>{media_dia}</strong>, igual que el {dia_ref} a tres decimales: empate, no cuenta.",
-      "mercado": "Solo el mercado: {mercado_ref} → {mercado_dia} €/kWh."
+      "mercado": "Solo el mercado: {mercado_ref} → {mercado_dia}."
     },
 
     "avisos": {
