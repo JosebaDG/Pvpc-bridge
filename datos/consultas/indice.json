@@ -1079,7 +1079,7 @@
   },
   "ad9ecd76e8a5b85e804f": {
    "bytes_json": 301052,
-   "guardado_en": "2026-10-30T23:56:11+00:00",
+   "guardado_en": "2026-10-31T23:30:28+00:00",
    "origen": "descarga",
    "provisional": true,
    "ruta": "datos/consultas/crudo/ad9ecd76e8a5b85e804f.json.gz",
@@ -1166,6 +1166,15 @@
    "ruta": "datos/consultas/crudo/c4558a9de50644361bd5.json.gz",
    "sha256_json": "78c82fda75647ff112dd5d04737b90587cfd45fb23bbf98421b9cbb2d5ac72dd",
    "url": "https://apidatos.ree.es/es/datos/mercados/precios-mercados-tiempo-real?end_date=2024-01-31T23%3A59&start_date=2024-01-01T00%3A00&time_trunc=hour"
+  },
+  "c74302bb34bc66139837": {
+   "bytes_json": 10392,
+   "guardado_en": "2026-10-31T23:30:33+00:00",
+   "origen": "descarga",
+   "provisional": true,
+   "ruta": "datos/consultas/crudo/c74302bb34bc66139837.json.gz",
+   "sha256_json": "b36d0f4f08748d965d06af7af414bc5cd840152310b768cbeffb10e0dc5fcd70",
+   "url": "https://apidatos.ree.es/es/datos/mercados/precios-mercados-tiempo-real?end_date=2026-11-30T23%3A59&start_date=2026-11-01T00%3A00&time_trunc=hour"
   },
   "c99427211bf8681063b7": {
    "bytes_json": 136001,
@@ -1467,7 +1476,7 @@
   },
   "eee5495e2b034d6b7e21": {
    "bytes_json": 454343,
-   "guardado_en": "2026-10-30T23:56:25+00:00",
+   "guardado_en": "2026-10-31T23:30:49+00:00",
    "origen": "descarga",
    "provisional": true,
    "ruta": "datos/consultas/crudo/eee5495e2b034d6b7e21.json.gz",
