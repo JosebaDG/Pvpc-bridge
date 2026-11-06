@@ -1168,12 +1168,12 @@
    "url": "https://apidatos.ree.es/es/datos/mercados/precios-mercados-tiempo-real?end_date=2024-01-31T23%3A59&start_date=2024-01-01T00%3A00&time_trunc=hour"
   },
   "c74302bb34bc66139837": {
-   "bytes_json": 49312,
-   "guardado_en": "2026-11-05T00:57:07+00:00",
+   "bytes_json": 59067,
+   "guardado_en": "2026-11-06T00:59:36+00:00",
    "origen": "descarga",
    "provisional": true,
    "ruta": "datos/consultas/crudo/c74302bb34bc66139837.json.gz",
-   "sha256_json": "1d00a882456e3f3d253aa16434ea94058067b0614929a05aae62a7fc9959b4d1",
+   "sha256_json": "c919fb7be5eb739ced89c7da7e8bb45e8cf7f09371807a2eedaf351c69e586d3",
    "url": "https://apidatos.ree.es/es/datos/mercados/precios-mercados-tiempo-real?end_date=2026-11-30T23%3A59&start_date=2026-11-01T00%3A00&time_trunc=hour"
   },
   "c99427211bf8681063b7": {
@@ -1475,12 +1475,12 @@
    "url": "https://apidatos.ree.es/es/datos/mercados/precios-mercados-tiempo-real?end_date=2016-10-31T23%3A59&start_date=2016-10-01T00%3A00&time_trunc=hour"
   },
   "eee5495e2b034d6b7e21": {
-   "bytes_json": 462547,
-   "guardado_en": "2026-11-05T00:57:21+00:00",
+   "bytes_json": 463953,
+   "guardado_en": "2026-11-06T00:59:51+00:00",
    "origen": "descarga",
    "provisional": true,
    "ruta": "datos/consultas/crudo/eee5495e2b034d6b7e21.json.gz",
-   "sha256_json": "d8f9f8b2888d6cb14ae5d4bf0ab145be7b94d801f3b3e6fe5df6f00b3d378688",
+   "sha256_json": "ce33a09b75756620608daab548a5013bdc50222e3b25537394731125092ffc2c",
    "url": "https://apidatos.ree.es/es/datos/generacion/estructura-generacion?end_date=2026-12-31T23%3A59&start_date=2026-01-01T00%3A00&time_trunc=day"
   },
   "eff14fa760bb2b44f3ff": {
