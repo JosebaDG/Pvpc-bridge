@@ -18,6 +18,18 @@ Fuente: API pública REData de Red Eléctrica, sin token
   Desglose oficial por componentes (subcomando desglose): archivo público 70
   de ESIOS, sin token: api.esios.ree.es/archives/70/download_json?date=AAAA-MM-DD
 
+Fuentes de repuesto, por orden, si REData falla (403 de su cortafuegos, red caída,
+respuesta rara). Ninguna pide credenciales y el JSON de salida no cambia:
+  1. Fichero de entrada: PUENTE_LUZ_ENTRADA/redata_AAAA-MM-DD.json (por defecto la
+     carpeta entrada/ junto a este script), la respuesta de REData de ese día
+     guardada a mano o desde un navegador. Sirve cuando nuestra IP está bloqueada.
+  2. Copia del repo: datos/historico/<serie>/AAAA.csv de JosebaDG/Pvpc-bridge en
+     raw.githubusercontent.com (PUENTE_LUZ_ESPEJO), que la Action de la web pone al
+     día cada noche desde los servidores de GitHub con los mismos datos de REData.
+     Trae el pasado y hoy; mañana solo cuando la Action ya ha pasado.
+  Tras un 403, REData no se vuelve a pedir en 30 minutos: insistir con una IP
+  bloqueada alarga el bloqueo. La fuente usada se anota en stderr.
+
 Contrato (contrato.json junto a este script, o --contrato RUTA, o la variable
 PUENTE_LUZ_CONTRATO; si no hay, contrato.ejemplo.json): potencia, peajes,
 cargos, impuestos, festivos y tipo de tarifa (pvpc, fijo o periodos). Lo
@@ -118,6 +130,13 @@ NOTA_PRECIO = {
 EPS = 1e-9
 DIR = os.path.dirname(os.path.abspath(__file__))
 URL_ESIOS_70 = "https://api.esios.ree.es/archives/70/download_json?locale=es&date={}"
+ENTRADA_DIR = os.path.expanduser(os.environ.get("PUENTE_LUZ_ENTRADA", os.path.join(DIR, "entrada")))
+URL_ESPEJO = os.environ.get(
+    "PUENTE_LUZ_ESPEJO",
+    "https://raw.githubusercontent.com/JosebaDG/Pvpc-bridge/main/datos/historico")
+CARPETA_ESPEJO = {"pvpc": "pvpc_peninsula_horario", "spot": "spot_mercado_diario"}
+PAUSA_TRAS_403_S = 30 * 60
+ULTIMA_FUENTE: str | None = None  # "redata", "entrada", "espejo" o "cache"
 
 # Tramos 2.0TD de lunes a viernes laborables (Circular CNMC 3/2020, art. 7).
 # Sábados, domingos, 6 de enero y festivos nacionales de fecha fija: todo P3.
@@ -427,8 +446,105 @@ def _parsear(cuerpo: dict, d: date, serie: str) -> list[Tramo]:
     return [Tramo(t, t + paso, p / 1000.0) for t, p in puntos]
 
 
+# ------------------------------------------------------ fuentes de repuesto
+
+def _marca_403() -> str:
+    return os.path.join(CACHE_DIR, "redata_403.marca")
+
+
+def _redata_en_pausa() -> bool:
+    try:
+        return time.time() - os.path.getmtime(_marca_403()) < PAUSA_TRAS_403_S
+    except OSError:
+        return False
+
+
+def _apuntar_403() -> None:
+    os.makedirs(CACHE_DIR, exist_ok=True)
+    with open(_marca_403(), "w") as f:
+        f.write(datetime.now(timezone.utc).isoformat())
+
+
+def _desde_entrada(d: date, serie: str) -> list[Tramo]:
+    """Respuesta de REData guardada a mano en ENTRADA_DIR/redata_AAAA-MM-DD.json."""
+    ruta = os.path.join(ENTRADA_DIR, f"redata_{d.isoformat()}.json")
+    if not os.path.exists(ruta):
+        raise ErrorFuente(f"no hay fichero de entrada {ruta}")
+    try:
+        with open(ruta, encoding="utf-8") as f:
+            cuerpo = json.load(f)
+    except (OSError, json.JSONDecodeError) as e:
+        raise ErrorFuente(f"fichero de entrada {ruta} ilegible: {e}") from None
+    return _parsear(cuerpo, d, serie)
+
+
+def _csv_a_cuerpo(texto: str, serie: str) -> dict:
+    """CSV del histórico (fecha_hora_local,fecha_hora_utc,eur_mwh) -> cuerpo tipo REData."""
+    lineas = [x for x in texto.splitlines() if x.strip()]
+    if not lineas or not lineas[0].startswith("fecha_hora_local"):
+        raise ErrorFuente("la copia del repo no tiene la cabecera esperada")
+    valores = []
+    for linea in lineas[1:]:
+        local, _utc, precio = linea.split(",")[:3]
+        valores.append({"datetime": local, "value": float(precio)})
+    return {"included": [{"id": SERIES[serie], "attributes": {"values": valores}}]}
+
+
+def _desde_espejo(d: date, serie: str) -> list[Tramo]:
+    """Histórico del repo, que la Action pone al día desde los servidores de GitHub."""
+    url = f"{URL_ESPEJO}/{CARPETA_ESPEJO[serie]}/{d.year}.csv"
+    req = urllib.request.Request(url, headers={"User-Agent": "puente_luz/1.1"})
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            texto = r.read().decode("utf-8")
+    except urllib.error.HTTPError as e:
+        raise ErrorFuente(f"HTTP {e.code} de la copia del repo ({url})") from None
+    except (urllib.error.URLError, TimeoutError) as e:
+        raise ErrorFuente(f"No se pudo conectar con la copia del repo: {e}") from None
+    return _parsear(_csv_a_cuerpo(texto, serie), d, serie)
+
+
+def _obtener_tramos(d: date, serie: str) -> list[Tramo]:
+    """REData y, si falla, las fuentes de repuesto. Lanza NoPublicado o ErrorFuente."""
+    global ULTIMA_FUENTE
+    fallos: list[str] = []
+    no_publicado = False
+    if _redata_en_pausa():
+        fallos.append("REData: en pausa por un 403 de hace menos de 30 min")
+    else:
+        try:
+            tramos = _parsear(_descargar_dia(d), d, serie)
+            ULTIMA_FUENTE = "redata"
+            return tramos
+        except NoPublicado as e:
+            no_publicado = True
+            fallos.append(f"REData: {e}")
+        except ErrorFuente as e:
+            if str(e).startswith("HTTP 403"):
+                _apuntar_403()
+            fallos.append(f"REData: {str(e)[:120]}")
+    for nombre, fuente in (("entrada", _desde_entrada), ("espejo", _desde_espejo)):
+        try:
+            tramos = fuente(d, serie)
+        except NoPublicado as e:
+            fallos.append(f"{nombre}: {e}")
+            continue
+        except ErrorFuente as e:
+            fallos.append(f"{nombre}: {e}")
+            continue
+        ULTIMA_FUENTE = nombre
+        print(f"puente_luz: {serie} del {d} sacado de la fuente de repuesto «{nombre}» "
+              f"({fallos[0]})", file=sys.stderr)
+        return tramos
+    detalle = "; ".join(fallos)
+    if no_publicado:
+        raise NoPublicado(detalle)
+    raise ErrorFuente(detalle)
+
+
 def tramos_dia(dia="hoy", serie: str = "pvpc") -> list[Tramo]:
     """Tramos completos de un día. Lanza NoPublicado o ErrorFuente."""
+    global ULTIMA_FUENTE
     if serie not in SERIES:
         raise ValueError(f"serie debe ser una de {list(SERIES)}")
     d = resolver_dia(dia)
@@ -436,10 +552,11 @@ def tramos_dia(dia="hoy", serie: str = "pvpc") -> list[Tramo]:
     if os.path.exists(ruta):  # un día publicado y completo no cambia
         with open(ruta) as f:
             datos = json.load(f)
+        ULTIMA_FUENTE = "cache"
         return [Tramo(datetime.fromisoformat(x["inicio"]).astimezone(timezone.utc),
                       datetime.fromisoformat(x["fin"]).astimezone(timezone.utc),
                       x["eur_kwh"]) for x in datos]
-    tramos = _parsear(_descargar_dia(d), d, serie)
+    tramos = _obtener_tramos(d, serie)
     os.makedirs(CACHE_DIR, exist_ok=True)
     with open(ruta, "w") as f:
         json.dump([{"inicio": t.inicio.isoformat(), "fin": t.fin.isoformat(),

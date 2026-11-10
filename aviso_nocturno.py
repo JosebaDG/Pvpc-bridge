@@ -450,7 +450,14 @@ def main(argv=None) -> int:
                          ensure_ascii=False, indent=1))
         return 2
     except (pl.ErrorFuente, ValueError, OSError) as e:
-        print(json.dumps({"ok": False, "dia": d.isoformat(), "error": str(e)}, ensure_ascii=False))
+        # Si REData nos bloquea (403) y la copia del repo aún no trae el día, queda la vía
+        # manual: abrir url_redata en un navegador, guardar la respuesta en fichero_entrada
+        # y volver a lanzar el aviso. puente_luz la lee sin pedir nada a REE.
+        q = f"?start_date={d}T00:00&end_date={d}T23:59&time_trunc=hour"
+        print(json.dumps({"ok": False, "dia": d.isoformat(), "error": str(e),
+                          "url_redata": pl.URL + q,
+                          "fichero_entrada": os.path.join(pl.ENTRADA_DIR, f"redata_{d.isoformat()}.json")},
+                         ensure_ascii=False))
         return 1
 
     bloque = bloque_mas_barato(tramos, factor)
