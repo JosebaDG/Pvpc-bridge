@@ -1,5 +1,5 @@
 {
- "generado_en": "2026-11-10T02:49:29+00:00",
+ "generado_en": "2026-11-11T00:44:27+00:00",
  "aviso_fuente": "Fuente de los datos de precios y generación: Red Eléctrica (REE), REData, https://www.ree.es/es/datos/apidatos. Uso informativo y no comercial según el aviso legal de REE (https://www.ree.es/es/aviso-legal). Datos meteorológicos: Open-Meteo.com, CC BY 4.0.",
  "generado_por": "datos/herramientas/actualizar_historico.py",
  "indice_de_consultas": "datos/consultas/indice.json",
@@ -23,10 +23,10 @@
    "consultas_semilla_inferida": 1,
    "descargado_entre": [
     "2026-10-09T11:13:06+00:00",
-    "2026-11-10T02:49:14+00:00"
+    "2026-11-11T00:44:12+00:00"
    ],
-   "bytes_json_descargados": 17136040,
-   "ultima_actualizacion_declarada_por_ree": "2026-11-09T20:46:53.000+01:00",
+   "bytes_json_descargados": 17145810,
+   "ultima_actualizacion_declarada_por_ree": "2026-11-10T20:46:23.000+01:00",
    "archivos": [
     {
      "ruta": "datos/historico/pvpc_peninsula_horario/2021.csv",
@@ -70,17 +70,17 @@
     },
     {
      "ruta": "datos/historico/pvpc_peninsula_horario/2026.csv",
-     "registros": 7536,
-     "bytes": 403937,
-     "sha256": "4f1088e0aeba391c1770f0ef66151613c0bd5c9e629d81e06e4e9b8665a023a9",
+     "registros": 7560,
+     "bytes": 405230,
+     "sha256": "514856dfd04cdbcf97a174b2db54118cd0bbfb5e606ab42b8ddb99fdb72a6b97",
      "desde": "2026-01-01T00:00:00+01:00",
-     "hasta": "2026-11-10T23:00:00+01:00"
+     "hasta": "2026-11-11T23:00:00+01:00"
     }
    ],
-   "registros": 47737,
+   "registros": 47761,
    "rango": [
     "2021-06-01T00:00:00+02:00",
-    "2026-11-10T23:00:00+01:00"
+    "2026-11-11T23:00:00+01:00"
    ]
   },
   {
@@ -102,10 +102,10 @@
    "consultas_semilla_inferida": 1,
    "descargado_entre": [
     "2026-10-09T11:13:06+00:00",
-    "2026-11-10T02:49:14+00:00"
+    "2026-11-11T00:44:12+00:00"
    ],
-   "bytes_json_descargados": 17136040,
-   "ultima_actualizacion_declarada_por_ree": "2026-11-09T20:46:53.000+01:00",
+   "bytes_json_descargados": 17145810,
+   "ultima_actualizacion_declarada_por_ree": "2026-11-10T20:46:23.000+01:00",
    "archivos": [
     {
      "ruta": "datos/historico/spot_mercado_diario/2014.csv",
@@ -205,18 +205,18 @@
     },
     {
      "ruta": "datos/historico/spot_mercado_diario/2026.csv",
-     "registros": 30144,
-     "bytes": 1579779,
-     "sha256": "10069fdb3d6e507690b117fcaa05791810129da41b915aa09582135ce3084998",
+     "registros": 30240,
+     "bytes": 1584914,
+     "sha256": "ff6ee25a733352cc5f0d3ff1e983cba98b8aef61d23739dd5b288602d9f1eb6c",
      "desde": "2026-01-01T00:00:00+01:00",
-     "hasta": "2026-11-10T23:45:00+01:00"
+     "hasta": "2026-11-11T23:45:00+01:00"
     }
    ],
    "nota": "Sale de la misma respuesta que el PVPC: no cuesta peticiones extra.",
-   "registros": 161616,
+   "registros": 161712,
    "rango": [
     "2014-01-01T00:00:00+01:00",
-    "2026-11-10T23:45:00+01:00"
+    "2026-11-11T23:45:00+01:00"
    ]
   },
   {
@@ -238,9 +238,9 @@
    "consultas_semilla_inferida": 1,
    "descargado_entre": [
     "2026-10-09T11:13:24+00:00",
-    "2026-11-10T02:49:28+00:00"
+    "2026-11-11T00:44:25+00:00"
    ],
-   "bytes_json_descargados": 8881970,
+   "bytes_json_descargados": 8882002,
    "ultima_actualizacion_declarada_por_ree": "2026-11-09T07:28:29.000+01:00",
    "archivos": [
     {
