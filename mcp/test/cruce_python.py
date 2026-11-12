@@ -26,6 +26,8 @@ def descarga_falsa(d):
 
 
 pl._descargar_dia = descarga_falsa
+# Sin fuentes de repuesto: la prueba no sale a internet ni lee entrada/.
+pl._desde_entrada = pl._desde_espejo = lambda d, serie: (_ for _ in ()).throw(pl.NoPublicado("sin repuesto en la prueba"))
 casos = json.loads(sys.argv[1])
 salida = []
 for caso in casos:
