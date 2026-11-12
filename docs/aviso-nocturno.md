@@ -64,6 +64,18 @@ Reglas para no inventar nada:
 - **Open-Meteo:** una petición por noche para los seis puntos a la vez, guardada en `~/.cache/puente_luz/aviso/`. Si falla, el aviso sale igual y solo se usa `bloque_ranking`, que no necesita previsión.
 - **Histórico:** se lee de los CSV de `datos/`, sin tocar la red.
 
+## Si REData falla
+
+El 10/11/2026 REData empezó a contestar 403 a nuestra máquina con la página del cortafuegos de REE (Imperva/Incapsula), aunque los precios estaban publicados (lo cuenta el issue del incidente). Desde entonces `puente_luz.py` prueba, por orden y sin credenciales:
+
+1. **REData**, como siempre. Tras un 403 no la vuelve a pedir en 30 minutos: REE bloquea más tiempo las IP que insisten con errores 4XX.
+2. **Fichero de entrada** `entrada/redata_AAAA-MM-DD.json` junto al script (o en `PUENTE_LUZ_ENTRADA`): la respuesta de REData de ese día guardada a mano o desde un navegador.
+3. **Copia del repo**: `datos/historico/<serie>/AAAA.csv` en raw.githubusercontent.com (`PUENTE_LUZ_ESPEJO`), que la Action de la web pone al día desde los servidores de GitHub. Trae el pasado y hoy; mañana, solo cuando la Action ya ha pasado, y GitHub suele retrasar sus ejecuciones programadas varias horas.
+
+El JSON de salida es el mismo venga de donde venga; la fuente usada se anota en stderr. Si fallan las tres, `aviso_nocturno.py` termina con código 1 y el JSON trae `url_redata` y `fichero_entrada`: abre la URL en un navegador, guarda lo que devuelve en ese fichero y vuelve a lanzar el aviso.
+
+Pruebas (sin red): `python3 -m unittest discover -s tests -v`.
+
 ## Uso
 
 ```bash
