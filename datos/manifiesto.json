@@ -1,5 +1,5 @@
 {
- "generado_en": "2026-11-11T00:44:27+00:00",
+ "generado_en": "2026-11-12T01:57:27+00:00",
  "aviso_fuente": "Fuente de los datos de precios y generación: Red Eléctrica (REE), REData, https://www.ree.es/es/datos/apidatos. Uso informativo y no comercial según el aviso legal de REE (https://www.ree.es/es/aviso-legal). Datos meteorológicos: Open-Meteo.com, CC BY 4.0.",
  "generado_por": "datos/herramientas/actualizar_historico.py",
  "indice_de_consultas": "datos/consultas/indice.json",
@@ -23,10 +23,10 @@
    "consultas_semilla_inferida": 1,
    "descargado_entre": [
     "2026-10-09T11:13:06+00:00",
-    "2026-11-11T00:44:12+00:00"
+    "2026-11-12T01:57:11+00:00"
    ],
-   "bytes_json_descargados": 17145810,
-   "ultima_actualizacion_declarada_por_ree": "2026-11-10T20:46:23.000+01:00",
+   "bytes_json_descargados": 17155511,
+   "ultima_actualizacion_declarada_por_ree": "2026-11-11T20:45:59.000+01:00",
    "archivos": [
     {
      "ruta": "datos/historico/pvpc_peninsula_horario/2021.csv",
@@ -70,17 +70,17 @@
     },
     {
      "ruta": "datos/historico/pvpc_peninsula_horario/2026.csv",
-     "registros": 7560,
-     "bytes": 405230,
-     "sha256": "514856dfd04cdbcf97a174b2db54118cd0bbfb5e606ab42b8ddb99fdb72a6b97",
+     "registros": 7584,
+     "bytes": 406522,
+     "sha256": "b6e1cca3febed53b03b745042fa221786dae95ca6903723bda84d4cfa1d9b802",
      "desde": "2026-01-01T00:00:00+01:00",
-     "hasta": "2026-11-11T23:00:00+01:00"
+     "hasta": "2026-11-12T23:00:00+01:00"
     }
    ],
-   "registros": 47761,
+   "registros": 47785,
    "rango": [
     "2021-06-01T00:00:00+02:00",
-    "2026-11-11T23:00:00+01:00"
+    "2026-11-12T23:00:00+01:00"
    ]
   },
   {
@@ -102,10 +102,10 @@
    "consultas_semilla_inferida": 1,
    "descargado_entre": [
     "2026-10-09T11:13:06+00:00",
-    "2026-11-11T00:44:12+00:00"
+    "2026-11-12T01:57:11+00:00"
    ],
-   "bytes_json_descargados": 17145810,
-   "ultima_actualizacion_declarada_por_ree": "2026-11-10T20:46:23.000+01:00",
+   "bytes_json_descargados": 17155511,
+   "ultima_actualizacion_declarada_por_ree": "2026-11-11T20:45:59.000+01:00",
    "archivos": [
     {
      "ruta": "datos/historico/spot_mercado_diario/2014.csv",
@@ -205,18 +205,18 @@
     },
     {
      "ruta": "datos/historico/spot_mercado_diario/2026.csv",
-     "registros": 30240,
-     "bytes": 1584914,
-     "sha256": "ff6ee25a733352cc5f0d3ff1e983cba98b8aef61d23739dd5b288602d9f1eb6c",
+     "registros": 30336,
+     "bytes": 1589973,
+     "sha256": "a91d5a79799f3909bcf264752ef927d6e213a73e64cf4b101a716520d42ec69f",
      "desde": "2026-01-01T00:00:00+01:00",
-     "hasta": "2026-11-11T23:45:00+01:00"
+     "hasta": "2026-11-12T23:45:00+01:00"
     }
    ],
    "nota": "Sale de la misma respuesta que el PVPC: no cuesta peticiones extra.",
-   "registros": 161712,
+   "registros": 161808,
    "rango": [
     "2014-01-01T00:00:00+01:00",
-    "2026-11-11T23:45:00+01:00"
+    "2026-11-12T23:45:00+01:00"
    ]
   },
   {
@@ -238,10 +238,10 @@
    "consultas_semilla_inferida": 1,
    "descargado_entre": [
     "2026-10-09T11:13:24+00:00",
-    "2026-11-11T00:44:25+00:00"
+    "2026-11-12T01:57:26+00:00"
    ],
-   "bytes_json_descargados": 8882002,
-   "ultima_actualizacion_declarada_por_ree": "2026-11-09T07:28:29.000+01:00",
+   "bytes_json_descargados": 8885018,
+   "ultima_actualizacion_declarada_por_ree": "2026-11-11T13:52:14.000+01:00",
    "archivos": [
     {
      "ruta": "datos/historico/generacion_diaria/2011.csv",
@@ -365,17 +365,17 @@
     },
     {
      "ruta": "datos/historico/generacion_diaria/2026.csv",
-     "registros": 313,
-     "bytes": 46095,
-     "sha256": "2107d916db3bdf5c76fea172f9c4e05a797b9e0140864b252d64117d9b7c4b6f",
+     "registros": 315,
+     "bytes": 46383,
+     "sha256": "b1243a477bf72459a9d9ba5a74e45389ff8de4454a747dfe9a4cec0501d72f42",
      "desde": "2026-01-01",
-     "hasta": "2026-11-09"
+     "hasta": "2026-11-11"
     }
    ],
-   "registros": 5792,
+   "registros": 5794,
    "rango": [
     "2011-01-01",
-    "2026-11-09"
+    "2026-11-11"
    ]
   },
   {
