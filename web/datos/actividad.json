@@ -1,6 +1,6 @@
 {
  "repo": "JosebaDG/Pvpc-bridge",
- "generado": "2026-11-12T01:57:28Z",
+ "generado": "2026-11-13T01:16:14Z",
  "fuente": "API pública de GitHub, /repos/JosebaDG/Pvpc-bridge/pulls",
  "agentes": [
   "Miles",
@@ -544,8 +544,8 @@
    "autor": "Charlie",
    "como_se_sabe": "rama",
    "abierto": "2026-11-10T21:03:26Z",
-   "fusionado": null,
-   "cerrado": null,
+   "fusionado": "2026-11-12T18:56:33Z",
+   "cerrado": "2026-11-12T18:56:33Z",
    "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/58"
   }
  ]

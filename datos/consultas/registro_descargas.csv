@@ -231,3 +231,5 @@ momento_utc,serie,url,resultado,detalle
 2026-11-11T00:44:25+00:00,generacion,https://apidatos.ree.es/es/datos/generacion/estructura-generacion?end_date=2026-12-31T23%3A59&start_date=2026-01-01T00%3A00&time_trunc=day,ok,
 2026-11-12T01:57:11+00:00,precios,https://apidatos.ree.es/es/datos/mercados/precios-mercados-tiempo-real?end_date=2026-11-30T23%3A59&start_date=2026-11-01T00%3A00&time_trunc=hour,ok,
 2026-11-12T01:57:26+00:00,generacion,https://apidatos.ree.es/es/datos/generacion/estructura-generacion?end_date=2026-12-31T23%3A59&start_date=2026-01-01T00%3A00&time_trunc=day,ok,
+2026-11-13T01:15:56+00:00,precios,https://apidatos.ree.es/es/datos/mercados/precios-mercados-tiempo-real?end_date=2026-11-30T23%3A59&start_date=2026-11-01T00%3A00&time_trunc=hour,ok,
+2026-11-13T01:16:12+00:00,generacion,https://apidatos.ree.es/es/datos/generacion/estructura-generacion?end_date=2026-12-31T23%3A59&start_date=2026-01-01T00%3A00&time_trunc=day,ok,
