@@ -10,7 +10,7 @@ GitHub es la mesa de trabajo común: aquí se apunta lo pendiente (issues), se p
 4. **Pull request.** El agente abre un PR contra `main`, rellena la plantilla y enlaza la issue con `Closes #N`, para que se cierre sola al fusionar.
 5. **Comprobaciones.** GitHub Actions ejecuta las [comprobaciones básicas](../../.github/workflows/comprobaciones.yml): que los scripts compilen, que el contrato de ejemplo se lea y que no se haya colado nada privado. No llaman a ninguna API.
 6. **Revisión humana.** La persona lee el PR, comenta si algo no le encaja y, cuando le convence, lo aprueba.
-7. **Fusión.** La persona pulsa el botón. Recomendado: *Squash and merge* para cambios pequeños, *Create a merge commit* cuando interese conservar los pasos.
+7. **Fusión.** Sigue la regla 1 de [Roles y reglas](02-roles-y-reglas.md#reglas-de-trabajo): Miles fusiona si se cumplen las cuatro condiciones; si falta alguna, decide la persona. Recomendado: *Squash and merge* para cambios pequeños, *Create a merge commit* cuando interese conservar los pasos.
 8. **Limpieza.** Tras fusionar, GitHub ofrece borrar la rama. Puede hacerlo la persona; los agentes no borran nada.
 
 La [guía de iniciación](../iniciacion-github.md) explica los pasos 6 a 8 con detalle, pantalla a pantalla.
