@@ -1,6 +1,6 @@
 {
  "repo": "JosebaDG/Pvpc-bridge",
- "generado": "2026-11-17T03:00:54Z",
+ "generado": "2026-11-18T02:30:51Z",
  "fuente": "API pública de GitHub, /repos/JosebaDG/Pvpc-bridge/pulls",
  "agentes": [
   "Miles",
@@ -547,6 +547,17 @@
    "fusionado": "2026-11-12T18:56:33Z",
    "cerrado": "2026-11-12T18:56:33Z",
    "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/58"
+  },
+  {
+   "numero": 59,
+   "titulo": "docs/simbiosis 03: el paso 7 remite a la regla 1 del 02 (quién fusiona)",
+   "rama": "docs/simone-fusion-03",
+   "autor": "Simone",
+   "como_se_sabe": "rama",
+   "abierto": "2026-11-17T17:47:17Z",
+   "fusionado": "2026-11-17T20:57:25Z",
+   "cerrado": "2026-11-17T20:57:25Z",
+   "url": "https://github.com/JosebaDG/Pvpc-bridge/pull/59"
   }
  ]
 }
