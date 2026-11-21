@@ -22,12 +22,15 @@ jobs:
           python-version: "3.12"
 
       - name: Los scripts compilan
-        run: python -m py_compile puente_luz.py precios_luz_ree.py aviso_nocturno.py herramientas/github-device-flow/*.py
+        run: python -m py_compile puente_luz.py precios_luz_ree.py aviso_nocturno.py herramientas/github-device-flow/*.py tests/*.py
 
       - name: El contrato de ejemplo se lee bien
         run: |
           python puente_luz.py contrato --contrato contrato.ejemplo.json > salida.json
           python -c "import json; d = json.load(open('salida.json')); assert d['ok'], d; print('factor de impuestos:', d['factor_impuestos'])"
+
+      - name: Pruebas unitarias de Python (sin red)
+        run: python -m unittest discover -s tests -v
 
       - name: No se ha colado nada privado
         run: |
