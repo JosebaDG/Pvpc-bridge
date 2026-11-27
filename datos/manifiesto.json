@@ -1,5 +1,5 @@
 {
- "generado_en": "2026-11-21T01:37:57+00:00",
+ "generado_en": "2026-11-27T02:59:54+00:00",
  "aviso_fuente": "Fuente de los datos de precios y generación: Red Eléctrica (REE), REData, https://www.ree.es/es/datos/apidatos. Uso informativo y no comercial según el aviso legal de REE (https://www.ree.es/es/aviso-legal). Datos meteorológicos: Open-Meteo.com, CC BY 4.0.",
  "generado_por": "datos/herramientas/actualizar_historico.py",
  "indice_de_consultas": "datos/consultas/indice.json",
@@ -23,10 +23,10 @@
    "consultas_semilla_inferida": 1,
    "descargado_entre": [
     "2026-10-09T11:13:06+00:00",
-    "2026-11-21T01:37:40+00:00"
+    "2026-11-27T02:59:36+00:00"
    ],
-   "bytes_json_descargados": 17242647,
-   "ultima_actualizacion_declarada_por_ree": "2026-11-20T20:45:57.000+01:00",
+   "bytes_json_descargados": 17300882,
+   "ultima_actualizacion_declarada_por_ree": "2026-11-26T20:46:05.000+01:00",
    "archivos": [
     {
      "ruta": "datos/historico/pvpc_peninsula_horario/2021.csv",
@@ -70,17 +70,17 @@
     },
     {
      "ruta": "datos/historico/pvpc_peninsula_horario/2026.csv",
-     "registros": 7800,
-     "bytes": 418134,
-     "sha256": "9f6f5c91a8a3776ed96fcd5694cbdeaff9efcfd0e443e706634b862c3a48c0d5",
+     "registros": 7944,
+     "bytes": 425884,
+     "sha256": "4fa68dcb4d095e53e03eb91e4e4fb12ab53f34e995b69b37f8f34e55ff3a847a",
      "desde": "2026-01-01T00:00:00+01:00",
-     "hasta": "2026-11-21T23:00:00+01:00"
+     "hasta": "2026-11-27T23:00:00+01:00"
     }
    ],
-   "registros": 48001,
+   "registros": 48145,
    "rango": [
     "2021-06-01T00:00:00+02:00",
-    "2026-11-21T23:00:00+01:00"
+    "2026-11-27T23:00:00+01:00"
    ]
   },
   {
@@ -102,10 +102,10 @@
    "consultas_semilla_inferida": 1,
    "descargado_entre": [
     "2026-10-09T11:13:06+00:00",
-    "2026-11-21T01:37:40+00:00"
+    "2026-11-27T02:59:36+00:00"
    ],
-   "bytes_json_descargados": 17242647,
-   "ultima_actualizacion_declarada_por_ree": "2026-11-20T20:45:57.000+01:00",
+   "bytes_json_descargados": 17300882,
+   "ultima_actualizacion_declarada_por_ree": "2026-11-26T20:46:05.000+01:00",
    "archivos": [
     {
      "ruta": "datos/historico/spot_mercado_diario/2014.csv",
@@ -205,18 +205,18 @@
     },
     {
      "ruta": "datos/historico/spot_mercado_diario/2026.csv",
-     "registros": 31200,
-     "bytes": 1635570,
-     "sha256": "3b1f7f1baa7c5604d0bdf0bfb89fbd37fd9ba2b75e61098b2d5280f5f43e83ed",
+     "registros": 31776,
+     "bytes": 1666085,
+     "sha256": "dcd9f5e4a2ee815b9fd9df6ce9f3e377fcbab0cadaf28f12b2d1ec58f78791a0",
      "desde": "2026-01-01T00:00:00+01:00",
-     "hasta": "2026-11-21T23:45:00+01:00"
+     "hasta": "2026-11-27T23:45:00+01:00"
     }
    ],
    "nota": "Sale de la misma respuesta que el PVPC: no cuesta peticiones extra.",
-   "registros": 162672,
+   "registros": 163248,
    "rango": [
     "2014-01-01T00:00:00+01:00",
-    "2026-11-21T23:45:00+01:00"
+    "2026-11-27T23:45:00+01:00"
    ]
   },
   {
@@ -238,144 +238,144 @@
    "consultas_semilla_inferida": 1,
    "descargado_entre": [
     "2026-10-09T11:13:24+00:00",
-    "2026-11-21T01:37:55+00:00"
+    "2026-11-27T02:59:53+00:00"
    ],
-   "bytes_json_descargados": 8898280,
-   "ultima_actualizacion_declarada_por_ree": "2026-11-20T09:59:13.000+01:00",
+   "bytes_json_descargados": 8933926,
+   "ultima_actualizacion_declarada_por_ree": "2026-11-26T08:26:35.000+01:00",
    "archivos": [
     {
      "ruta": "datos/historico/generacion_diaria/2011.csv",
      "registros": 365,
-     "bytes": 61346,
-     "sha256": "2efee16ab6229462ce7f1fe9c9b62da0d79344a64ff4d277daca385e71e7bcf7",
+     "bytes": 62125,
+     "sha256": "d2b48ea36e5ec29e888bb7e66046ba2ed1bbc5bdfc68d3655be252b93605fff3",
      "desde": "2011-01-01",
      "hasta": "2011-12-31"
     },
     {
      "ruta": "datos/historico/generacion_diaria/2012.csv",
      "registros": 366,
-     "bytes": 61494,
-     "sha256": "c31b3cebe3f67d10a95dbfbafb31d5f9c1115266463e6e1f4af4b955dbd3b8d8",
+     "bytes": 62275,
+     "sha256": "9bcb37fd19c83725bff81d06398629722a24be285e1799b0fd079777d045558f",
      "desde": "2012-01-01",
      "hasta": "2012-12-31"
     },
     {
      "ruta": "datos/historico/generacion_diaria/2013.csv",
      "registros": 365,
-     "bytes": 61073,
-     "sha256": "b0bdf0dc3bea9d3eb3aa2e81c03ae6a6875a7914ead4646bbdd1302129d7bdb6",
+     "bytes": 61852,
+     "sha256": "2e2c897a544182d50e4486c5a10f28a3be5ba893d056f76d0f06f850c52e9600",
      "desde": "2013-01-01",
      "hasta": "2013-12-31"
     },
     {
      "ruta": "datos/historico/generacion_diaria/2014.csv",
      "registros": 365,
-     "bytes": 61403,
-     "sha256": "57a4334ce92bebabbabdcd5182102696fbae59b1b6ca1ae883e7c1bacdaac1bb",
+     "bytes": 62182,
+     "sha256": "828deddc6465c559fb55fee2c89ca252a1954ef83dc8e8ed59b5eac4ad7bbe9a",
      "desde": "2014-01-01",
      "hasta": "2014-12-31"
     },
     {
      "ruta": "datos/historico/generacion_diaria/2015.csv",
      "registros": 365,
-     "bytes": 60787,
-     "sha256": "b1e4347d1ee6d701424f393250d94441f2c693cb30037045fa7e9ca1fd87b54c",
+     "bytes": 61566,
+     "sha256": "8c1354c9ce7bc4146bb1a4cb3c4000641535272961d9700a8b1153626659fa0f",
      "desde": "2015-01-01",
      "hasta": "2015-12-31"
     },
     {
      "ruta": "datos/historico/generacion_diaria/2016.csv",
      "registros": 366,
-     "bytes": 61041,
-     "sha256": "8c71c4bf339a7f4efa71e87d948b56bb9ea54e348e5769531a488cadd0555297",
+     "bytes": 61822,
+     "sha256": "bd4b06fafa7952c99e17e8e2b38bd1e47a9d5c436a7abd2bbc362746d2e4c90c",
      "desde": "2016-01-01",
      "hasta": "2016-12-31"
     },
     {
      "ruta": "datos/historico/generacion_diaria/2017.csv",
      "registros": 365,
-     "bytes": 61003,
-     "sha256": "30600045284f52ce5c5b7a6f46025b68453bb5d935a48274a0c16dc2dbb27c44",
+     "bytes": 61782,
+     "sha256": "94b62f4dc75a3ffa93a2a4830f3430f0e3d81cae5f38509e58cbd29932f7d2a1",
      "desde": "2017-01-01",
      "hasta": "2017-12-31"
     },
     {
      "ruta": "datos/historico/generacion_diaria/2018.csv",
      "registros": 365,
-     "bytes": 60954,
-     "sha256": "3ca235934985051b29043cef9a7d8cc0c4adba298fd641b24ac5d50242fd7193",
+     "bytes": 61733,
+     "sha256": "7e7acdb86c8193df5458d66b4ced4f0dfc01b0e7406f2b680c9b0922225f0ba5",
      "desde": "2018-01-01",
      "hasta": "2018-12-31"
     },
     {
      "ruta": "datos/historico/generacion_diaria/2019.csv",
      "registros": 365,
-     "bytes": 60875,
-     "sha256": "dc00e90b6b71aa2d6d71c783584168a450a3fc336eb4afc2c8d3125f354595f9",
+     "bytes": 61654,
+     "sha256": "b85bf1ce0b27cd87ba446616f576a53ea6d093f9aa6a7a223f0eb74cd20e995c",
      "desde": "2019-01-01",
      "hasta": "2019-12-31"
     },
     {
      "ruta": "datos/historico/generacion_diaria/2020.csv",
      "registros": 366,
-     "bytes": 60871,
-     "sha256": "20663f4ad3900444cab5da3adb82dcce2224d8c79953c3b374f2b1a2aceb1d5c",
+     "bytes": 61652,
+     "sha256": "d6f20f1f46d91cbec75234db3cea923b016806de00fb9300f2f9894289cba6b6",
      "desde": "2020-01-01",
      "hasta": "2020-12-31"
     },
     {
      "ruta": "datos/historico/generacion_diaria/2021.csv",
      "registros": 365,
-     "bytes": 60724,
-     "sha256": "a280553df10012f7583423f02aaeeadb83d61205f1c10a4094cae59347023caf",
+     "bytes": 61503,
+     "sha256": "6f968cdb280ea7359fd871e0ca4abb5b20b93897febc598bf300a1715aea2adb",
      "desde": "2021-01-01",
      "hasta": "2021-12-31"
     },
     {
      "ruta": "datos/historico/generacion_diaria/2022.csv",
      "registros": 365,
-     "bytes": 61129,
-     "sha256": "d95f1631d361f4b45b93651689f9b8ff054144ddd9d99baf7ba5dd194a769aca",
+     "bytes": 61908,
+     "sha256": "c02559fcbfebaba6571f916b1dc5f89208e00f05b78816ca9c6fa9c688d59ee9",
      "desde": "2022-01-01",
      "hasta": "2022-12-31"
     },
     {
      "ruta": "datos/historico/generacion_diaria/2023.csv",
      "registros": 365,
-     "bytes": 60775,
-     "sha256": "0381c5362653938fb4adc88d5f0743834a25e6ab9152c8e38c7c2ce03b92ffb7",
+     "bytes": 61554,
+     "sha256": "07984a53416efd5b6bbc343a49f0c966d53ad93141173c6f82a9312f21e810f5",
      "desde": "2023-01-01",
      "hasta": "2023-12-31"
     },
     {
      "ruta": "datos/historico/generacion_diaria/2024.csv",
      "registros": 366,
-     "bytes": 60853,
-     "sha256": "441a65a637aff1238c04bebe3b9fea3fb3c735c560db3efd44ea5139b7146dd3",
+     "bytes": 61634,
+     "sha256": "5fa8cc810f293961b3417a1b70fe1703b9b7b3a5db1cc392db19d0502ff5e8c6",
      "desde": "2024-01-01",
      "hasta": "2024-12-31"
     },
     {
      "ruta": "datos/historico/generacion_diaria/2025.csv",
      "registros": 365,
-     "bytes": 60513,
-     "sha256": "1dd3e4171b1dca0afde203405038dc756c8c95bca97eb27a0005c1c26689ff7d",
+     "bytes": 61292,
+     "sha256": "9ac7cc6ef4cb5a9aff17d727a37173c990862e473f16b8bf5322927275b5b22d",
      "desde": "2025-01-01",
      "hasta": "2025-12-31"
     },
     {
      "ruta": "datos/historico/generacion_diaria/2026.csv",
-     "registros": 324,
-     "bytes": 47671,
-     "sha256": "f37bdc7e4fb10c95dbfc34d9251c7dab98ed5bb38b12b43face8f6c5f954e47c",
+     "registros": 330,
+     "bytes": 50332,
+     "sha256": "d589462b8514efd3b4bc1ccfb9c01ab75f6bd776579f31072a9a3954a192dd26",
      "desde": "2026-01-01",
-     "hasta": "2026-11-20"
+     "hasta": "2026-11-26"
     }
    ],
-   "registros": 5803,
+   "registros": 5809,
    "rango": [
     "2011-01-01",
-    "2026-11-20"
+    "2026-11-26"
    ]
   },
   {
